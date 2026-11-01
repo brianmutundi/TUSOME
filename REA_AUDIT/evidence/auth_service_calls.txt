@@ -1,0 +1,83 @@
+### chunk-7HIPCZWP.js
+setText(){this.authState.pageInfo={title:this.translate.instant("homePage.login.pageInfo.recoverAccount
+function(e,r){e&1&&(s(0,"form",0),f("ngSubmit",function(){return r.recoverAccount
+
+### chunk-A7MAWEAL.js
+u("click",function(){b(e);let t=d();return x(t.requestOtp
+
+### chunk-IJFMQNCN.js
+GET "username"
+GET "homePage.login.pageInfo.welcomeTitle",{greetings:Me.getGreetings(
+GET "homePage.login.pageInfo.welcomeMessage"
+
+### chunk-LJBQHZUX.js
+GET "newPassword"
+GET "confirmPassword"
+ve(a,t){if(a&1){let e=E();r(0,"form",2),v("ngSubmit",function(){w(e);let s=m();return f(s.verifyResetCode
+xe(a,t){if(a&1){let e=E();r(0,"form",2),v("ngSubmit",function(){w(e);let s=m();return f(s.setNewPassword
+
+### chunk-QSFK6GLI.js
+GET "username"
+GET "homePage.login.pageInfo.welcomeMessage"
+
+### chunk-R2R3AWN3.js
+$e(t,a){if(t&1){let e=y();r(0,"div",43)(1,"button",44),x("click",function(){let n=h(e).user,c=p();return C(c.requestOtp
+x("click",function(){return h(c),C(n.requestOtp
+
+### chunk-XHRNTPMH.js
+le(P,t){if(P&1){let e=R();s(0,"form",3),C("ngSubmit",function(){v(e);let r=h();return w(r.verifyResetCode
+me(P,t){if(P&1){let e=R();s(0,"form",3),C("ngSubmit",function(){v(e);let r=h();return w(r.setNewPassword
+
+### chunk-XT66RTGT.js
+setText(){this.authState.pageInfo={title:this.translate.instant("homePage.login.pageInfo.recoverAccount
+function(e,r){e&1&&(t(0,"form",0),m("ngSubmit",function(){return r.recoverAccount
+m("onKeyUpEnter",function(){return r.recoverAccount
+
+### chunk-ZMZCYM6K.js
+GET `${l.legacyApiUrl}/groups/school/summary`
+GET `${l.modularithApiUrl}/school/summary`
+POST `${l.legacyApiUrl}/users/check/phone?forgot_password=true&language=${n}`,i
+POST `${l.legacyApiUrl}/users/check/phone?forgot_password=true`,i
+POST `${l.modularithApiUrl}/user/changepassword`,r
+POST `${l.modularithApiUrl}/user/changepassword`,i
+POST `${l.modularithApiUrl}/user/check/resetcode`,n
+POST `${l.modularithApiUrl}/user/forgotpassword?${n.toString(
+POST `${l.modularithApiUrl}/login`,i
+POST `${l.modularithApiUrl}/mfa/otp`,{sendEmail:r},{headers:n}
+POST `${l.modularithApiUrl}/mfa/validate`,{otp:r},{headers:n}
+PUT `${l.modularithApiUrl}/mfa/changepassword`,{password:r},{headers:n}
+POST `${l.modularithApiUrl}/user/change-password?signOutDevices=${n}`,{oldPassword:e,password:r}
+POST `${l.modularithApiUrl}/user/refresh-token`,{refreshToken:e},{observe:"response"}
+GET `${l.modularithApiUrl}/flow/switch-school`,{headers:r}
+GET `${l.modularithApiUrl}/school/switch?schoolId=${e}`
+GET `${l.modularithApiUrl}/linked/switch?userId=${e}`
+POST `${l.legacyApiUrl}/users/forgotusername?language=${r}`,{forgotusername_phone:e},{headers:new D({"content-type":"application/json"}
+POST `${l.legacyApiUrl}/users/forgotusername`,{forgotusername_phone:e},{headers:new D({"content-type":"application/json"}
+GET `${l.modularithApiUrl}/user/check?username=${e.trim(
+POST `${l.modularithApiUrl}/user/logout`,null
+POST `${l.legacyApiUrl}/users/customermessage${r}`,null
+POST `${l.modularithApiUrl}/user/otp`,{username:e}
+POST `${l.legacyApiUrl}/users/account`,e
+POST `${l.modularithApiUrl}/linked/otp`,e??null
+GET `${l.modularithApiUrl}/user/linked-accounts`
+PUT `${l.modularithApiUrl}/linked/account`,e
+PUT `${l.modularithApiUrl}/users/account`,e,{headers:n}
+PUT `${l.modularithApiUrl}/users/account`,e
+PUT `${l.modularithApiUrl}/linked/delink?userId=${e}`,null
+GET `${l.legacyApiUrl}/users/changepassword?e=${encodeURIComponent(e
+POST `${l.legacyApiUrl}/users/check?forgot_password=true&language=${r}`,e
+POST `${l.legacyApiUrl}/users/check?forgot_password=true`,e
+POST `${l.legacyBaseUrl}/authenticate_v2`,i,{observe:"response",headers:new D({"Content-Type":"application/x-www-form-urlencoded"}
+GET `${l.legacyApiUrl}/flow/switch-user`,{headers:r}
+POST `${l.legacyApiUrl}/users/init/${e}`,null,{observe:"response"}
+POST `${l.legacyApiUrl}/users/check`,{username:e},{headers:new D({"content-type":"application/json"}
+POST `${l.legacyApiUrl}/users/check`,{userName:e.trim(
+POST `${l.legacyApiUrl}/users/otp`,{userName:e}
+POST `${l.modularithApiUrl}/linked/otp`,null
+GET `${l.legacyApiUrl}/users/linked`
+PUT `${l.legacyApiUrl}/users/account`,e,{headers:n}
+PUT `${l.legacyApiUrl}/users/account`,e
+PUT `${l.legacyApiUrl}/users/removeuser?userId=${e}`,null
+GET `${l.financeApiUrl}/school_settings/product_subscription`
+GET `${l.financeApiUrl}/schools/${e??this.schoolId}`
+GET `${l.financeApiUrl}/students/list_by_guardian_phone?username=${e}`

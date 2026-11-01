@@ -1,0 +1,73 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Test / coverage
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Local env files (never commit values)
+.env
+.env.local
+.env.*.local
+.env.production.local.bak
+
+# Local isolated backend (never commit data, secrets or node_modules)
+local/.pgdata/
+local/.run/
+local/.local-secrets.json
+local/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Extracted third-party apps and local runtime files
+/run/
+/.run/
+mss_apk/
+mss_extracted/
+xapk_extracted/
+
+# Archives and local credentials
+*.apk
+*.xapk
+*.zip
+Test accounts.txt
+
+# Local runtime and generated files
+.run/
+**/dev.log
+mss_apk/
+mss_extracted/
+xapk_extracted/
+supabase/.temp/
+
+# Third-party archives
+*.apk
+*.xapk
+*.zip
+
+# Local credentials
+Test accounts.txt
+.env
+.env.*
+!.env.example
+
+# Local development and authentication diagnostics
+local/
+reports/
+.run/
+supabase/.temp/
+supabase/tests/disposable/
+
+# Local logs, runtime output and test artifacts
+*.log

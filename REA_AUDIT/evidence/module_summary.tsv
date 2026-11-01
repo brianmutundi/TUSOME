@@ -1,0 +1,435 @@
+module	routes	endpoints	permissions	permission_list	allow_roles
+:bannerId	1	0	0		
+:checkoutId	3	0	1	create-checkout	
+:classId	6	0	1	view-my-classes	
+:examId	5	0	1	manage-exams	
+:groupId	2	0	0		
+:id	15	0	0		
+:intakeid	3	0	0		
+:intakeId	3	0	1	manage-exams	
+:leaveOutId	2	0	1	create-leaveout	
+:noticeId	1	0	0		
+:noticeType	1	0	0		
+:param	0	35	0		
+:param?:param	0	2	0		
+:seriesid	2	0	0		
+:staffId	1	0	2	add-staff-bom-pa,add-teachers	
+:streamId	2	0	1	manage-exams	
+:studentGroupId	2	0	0		
+:studentId	1	0	0		
+:termIndex	1	0	1	manage-exams	
+:termWeekId	2	0	0		
+:zoneId	2	0	0		
+?type=:param	0	1	0		
+?userId=:param	0	1	0		
+**	1	0	0		
+academic	0	2	0		
+academic-years	1	1	0		
+account	1	0	0		
+account-verified	1	0	0		
+active-sessions	1	0	0		
+activities	1	0	0		
+add	3	1	5	add-classes,add-staff-bom-pa,add-teachers,view-edit-combinations,view-edit-compulsory-subjects	
+add-edit	1	0	0		
+add-to-merged-schools	1	0	2	add-staff-bom-pa,add-teachers	
+add-user-role	1	0	1	edit-user-roles	
+admin	1	4	1	view-admin-dashboard	
+admin-overview	0	1	0		
+agent	1	0	0		
+all?type=:param	0	1	0		
+analysis	1	0	0		
+analysis-report	1	0	1	access-printouts	
+analytics	2	22	1	view-student-analysis	STUDENT
+api	0	4	0		
+application-details	1	0	0		
+applications	0	2	0		
+approvals	1	0	1	manage-counselling-referrals	
+assessment	0	22	0		
+assessment-administration-method	0	1	0		
+assessment-field	0	1	0		
+assessment-report	1	0	1	view-assessments	
+assessment-type	0	1	0		
+assessment?	0	1	0		
+assessment?:param	0	1	0		
+assessment?id=:param	0	1	0		
+assessments	1	2	0		
+assign	0	1	0		
+assignment	1	0	0		
+assignments	1	0	0		
+attendance	1	12	0		
+attendance-report	1	0	1	access-printouts	
+attendance-v2	1	0	1	access-attendance	
+audit	0	1	0		
+auth	1	0	0		
+authenticate_v2	0	1	0		
+availability	1	0	1	manage-counselling-sessions	
+backup	0	1	0		
+balance-list	2	0	0		
+balances	1	1	0		
+bank_accounts	0	1	0		
+banner	0	2	0		
+banner?page=:param	0	1	0		
+banners	1	0	0		
+behaviour	4	8	1	access-behavior	STUDENT
+behaviour-v2	1	0	1	access-behavior	
+billing	1	0	1	access-billing	
+bulk	0	1	0		
+bulksms	0	1	0		
+buy	1	0	1	purchase-sms	
+by-case	0	1	0		
+by-student	0	1	0		
+categories	1	0	1	view-edit-categories	
+change-password	1	0	0		
+check	0	1	0		
+check-in	0	1	0		
+checkin	0	1	0		
+checkout	1	1	0		
+checkouts	1	0	0		
+claire	0	1	0		
+class	3	0	1	manage-attendance-facts	
+class-list	1	0	1	view-class-list	
+classes	2	0	2	access-classes,manage-classes	
+classMember	0	1	0		
+clinic-details	3	0	1	create-medical-incident-report	
+clinic-visits	0	2	0		
+clinical-visits	5	0	2	manage-clinic-visits,manage-medical-followups	
+coefficient-system	2	0	1	view-edit-coefficient-system	
+coefficients-credit-systems	1	0	0		
+collections	0	2	0		
+combination	0	2	0		
+combinations	1	0	1	view-edit-combinations	
+combined-subject	0	3	0		
+comment?:param	0	1	0		
+competency	0	3	0		
+compose	1	0	1	compose-send-sms	
+compulsory	1	0	1	view-edit-compulsory-subjects	
+config	1	0	1	manage-exams	
+configurations	1	0	0		
+counselling	1	8	0		
+counselling-support	1	0	0		
+counsellor-roster	0	1	0		
+counsellor-summary	0	1	0		
+country	0	3	0		
+country?countryId=:param	0	1	0		
+county	0	3	0		
+county?countyId=:param	0	1	0		
+county?currentPage=:param	0	1	0		
+create	1	0	0		
+create-exam	1	0	1	create-edit-exam	
+created	1	0	0		
+crisis-cases	2	0	2	manage-counselling-referrals,manage-counselling-sessions	
+cs	2	0	1	manage-exams	
+customer-support	1	0	0		
+dashboard	2	31	2	manage-counselling-referrals,manage-counselling-sessions	
+dashboard?intakeId=:param	0	1	0		
+data	0	1	0		
+dean	1	0	0		
+default-configurations	1	0	0		
+deleted-exams	1	0	1	can-delete-exam-permanently	
+deleted-students	1	0	0		
+deleteSubject	0	1	0		
+departmental-analysis	1	0	0		
+departments	1	9	0		
+desktop	1	0	0		
+details	2	1	0		
+diary	1	0	0		
+discipline	1	1	0		
+dispense	0	1	0		
+dispensing	1	0	1	manage-medical-dispensing	
+documents	0	1	0		
+dosing-slots	1	0	1	manage-medical-dispensing	
+duty	0	1	0		
+duty-roster	1	0	1	edit-duty-rota	
+edit	2	0	0		
+education-system	0	35	0		
+education-system-exams	1	0	0		
+educationSystem	0	7	0		
+educationSystem?:param	0	1	0		
+educationSystem?countryId=:param	0	1	0		
+educationSystem?educationSystemId=:param	0	1	0		
+educationSystems	1	0	0		
+egroup	1	0	1	manage-exams	
+evaluation	2	6	1	view-my-classes	
+events	1	0	1	access-events	
+exam	0	54	0		
+exam-comment-system	1	0	1	access-comments	
+exam-group	1	0	0		
+exams	1	0	2	access-exams,view-my-classes	
+feature-toggles	1	0	0		
+fee	0	3	0		
+fee_structure_groups	0	1	0		
+fee_structures	0	1	0		
+fee-str	2	0	0		
+fee:param	0	1	0		
+fee?balance=:param	0	1	0		
+finance	1	0	1	manage-finance	STUDENT
+finance-details	1	0	0		
+flexible-timetable	0	1	0		
+flow	0	2	0		
+form-mapping	0	1	0		
+forms	0	3	0		
+general	4	0	0		
+general-updates	1	0	0		
+global	1	0	0		
+gradclasses	1	0	0		
+grades-and-comments	1	0	0		
+grading	0	1	0		
+grading-systems	1	0	1	view-edit-grading-system	
+graduation	0	4	0		
+groups	2	152	3	add-edit-staff-bom-pa-groups,add-edit-teacher-groups,edit-student-groups	
+groups?staffType=:param	0	1	0		
+head	0	1	0		
+head-summary	0	1	0		
+heads	0	1	0		
+history	1	1	1	manage-clinic-visits	
+hod	1	0	0		
+hos	1	0	0		
+house-list	1	0	1	view-class-list	
+import	0	1	0		
+inbox	1	0	1	access-messages	
+incident-reports	1	0	1	manage-medical-incident-reports	
+incidents	0	1	0		
+indicator	0	3	0		
+indicator?competencyId=:param	0	1	0		
+indicator?indicatorId=:param	0	1	0		
+indicators	1	0	0		
+infraction	0	1	0		
+infractions-approval	1	0	0		
+intake	1	10	0		
+intakes	0	1	0		
+internal	0	13	0		
+invalid	1	0	0		
+inventory	3	0	1	manage-medical-inventory	
+invoice	1	0	0		
+invoices	1	0	0		
+invoicing	0	1	0		
+leadership	0	1	0		
+learning	1	0	0		
+leave	0	2	0		
+leave_outs	0	2	0		
+leave-outs	1	0	0		
+leaveouts	1	0	0		
+leaving-certificate	1	0	1	access-printouts	
+linked	0	5	0		
+linked-accounts	1	0	0		
+list	1	0	1	view-edit-categories	
+litemore	1	0	0		
+localisation	0	1	0		
+lock	1	0	0		
+login	1	1	0		
+m,l,21600r21600,l21600,xe	1	0	0		
+main	1	0	0		
+main-legacy	1	0	0		
+majors	1	1	1	manage-exams	
+manage	7	0	5	manage-exams,view-edit-categories,view-edit-strands-topics,view-staff-bom-pa-list,view-teacher-list	
+manage-attendance	1	0	0		
+manage-behaviour	1	0	1	manage-behavior	
+mark-attendance	1	0	0		
+mark-list	1	0	1	view-mark-list	
+match	1	0	0		
+medical	1	14	1	view-medical	
+medical_conditions	0	3	0		
+medication-history	1	0	1	manage-medical-dispensing	
+member	1	1	0		
+members	0	1	0		
+mentions	1	0	1	manage-exams	
+merit	0	1	0		
+merit-list	2	0	2	manage-exams,view-merit-list	
+messages	1	0	1	access-messages	
+mfa	0	5	0		
+mine	0	3	0		
+mobile	1	0	0		
+mvSt	1	0	1	move-students	
+my-classes	1	0	1	view-my-classes	
+my-prof	1	0	0		
+my-schools	1	0	0		
+myclass	6	0	0		
+myclasses	1	0	0		
+new	1	0	4	add-students,create-checkout,create-leaveout,manage-clinic-visits	
+new-record	1	0	0		
+newsletter	1	0	0		
+newsletters	0	2	0		
+no-access	1	0	0		
+no-accounts	1	0	0		
+note?:param	0	1	0		
+notes	1	0	0		
+notice	0	4	0		
+notices	1	0	0		
+olevels	2	0	2	view-evaluation-report,view-transcripts	
+open-for-student	0	1	0		
+open-or-create-for-student	0	1	0		
+opportunities	1	0	1	access-opportunities	
+opt-outs	1	0	1	compose-send-sms	
+other-settings	1	0	2	view-leave-out-types,view-medical-conditions	
+overview	1	0	1	view-admin-dashboard	
+parent	1	0	0		
+parents	0	5	0		
+partner	1	0	0		
+password-reset-success	1	0	0		
+pathway	0	11	0		
+pathways	1	2	1	view-edit-categories	
+pay-fees	1	0	0		
+pending	0	1	0		
+permissions	0	1	0		
+pledges	1	5	0		
+pledges?:param	0	1	0		
+positions	0	2	0		
+pricing	1	0	0		
+printout-settings	1	0	1	edit-printout-settings	
+printouts	1	0	1	access-printouts	
+products	0	1	0		
+prof	1	0	0		
+profile	1	0	1	view-student-profile	STUDENT
+proforma	2	1	0		
+publish	2	0	1	view-my-classes	
+ranking-policies	0	1	0		
+read	1	0	1	access-messages	
+receipt	1	0	1	purchase-sms	
+receipts	1	0	0		
+recommendations	0	2	0		
+recompute	0	1	0		
+record-card	1	0	0		
+recover-account	1	0	0		
+recover-password	1	0	0		
+referrals	3	0	2	manage-counselling-referrals,refer-student-counselling	
+region	0	1	0		
+region?currentPage=:param	0	1	0		
+region?regionId=:param	0	1	0		
+remove	0	2	0		
+report	4	2	0		
+report-forms	1	0	1	view-report-forms	
+reports	1	0	1	view-medical-reports	
+reset-code	1	0	0		
+residence	3	1	0		
+restrictions	2	1	0		
+results	0	7	0		
+resume-or-start	0	1	0		
+reversal_reasons	0	1	0		
+role	2	0	2	can-manage-user-permissions,view-user-roles	
+roles	0	4	0		
+save-to-wallet	1	0	0		
+sch-fin	1	0	0		
+schedules	0	1	0		
+school	1	65	0		
+school_pricing_band	0	1	0		
+school_settings	0	1	0		
+school-attendance	1	0	0		
+school-checkout	0	1	0		
+school-groups	1	0	0		
+school-opt	1	0	1	view-school-options	
+school-prof	1	0	1	view-school-profile	
+school-redirect	1	0	0		
+schoolEvents	0	7	0		
+schoolMember	0	3	0		
+schools	1	1	0		
+score-sheet	1	0	1	view-class-list	
+search	1	1	1	search-student	
+secretary	1	0	1	view-secretary-dashboard	
+section-heads	1	3	1	view-user-roles	
+select-account	1	0	0		
+send-results	1	0	0		
+session	1	0	0		
+session-activity	1	0	0		
+sessions	5	0	1	manage-counselling-sessions	
+settings	1	0	2	access-settings,manage-counselling-settings	
+setup	1	0	0		
+shop	0	1	0		
+sickbay	0	1	0		
+signup	1	0	0		
+single	0	1	0		
+sms-blacklist	0	4	0		
+st	1	0	0		
+staff	2	5	7	access-staff-bom-pa,access-teachers,edit-duty-rota,manage-counselling-referrals,merge-bom-pa-schools,merge-teacher-schools,view-admin-dashboard	
+staff-overview	0	1	0		
+staff?type=:param	0	1	0		
+staff?userId=:param	0	1	0		
+start-application	1	0	0		
+statements	1	1	0		
+status	1	0	0		
+strands-topics	1	0	0		
+stream	2	6	0		
+streams	3	1	3	add-classes,can-manage-subject-class,manage-classes	
+stRes	1	0	1	add-edit-student-residences	
+student	5	30	1	view-student-dashboard	
+student-behaviour	11	0	0		
+student-diary	1	0	0		
+student-report	1	0	0		
+student-target	0	3	0		
+student-target?classId=:param&termId=:param	0	1	0		
+student-targets	0	1	0		
+student?intakeId=:param	0	1	0		
+student?userId=:param	0	1	0		
+student?userId=:param&deleteReason=:param	0	1	0		
+students	1	3	0		
+subject	2	16	1	manage-attendance-facts	
+subject-categories	1	0	0		
+subject-class	0	5	0		
+subject-combinations	0	3	0		
+subject-combinations?combinationId=:param	0	1	0		
+subject-groupings	1	0	0		
+subject-papers	1	0	1	manage-exams	
+subject?:param	0	1	0		
+subject?educationSystemId=:param	0	1	0		
+subject?fromActiveClasses=true	0	1	0		
+subjects	1	3	1	access-subjects	
+substrands	1	0	0		
+summary	1	0	0		
+swap	1	2	0		
+swap?countyToId=:param	0	1	0		
+swap?currentPage=:param	0	1	0		
+swap?currentPage=1	0	1	0		
+swap?subjectId=:param	0	1	0		
+switching-school	1	0	0		
+teacher	1	0	1	view-teacher-dashboard	
+teacher-loans	1	0	0		
+tenures	0	2	0		
+term	0	4	0		
+term-average	1	0	1	manage-exams	
+term-dates	1	0	1	view-term-dates	
+term?:param	0	1	0		
+terms	0	1	0		
+terra	0	7	0		
+test	0	4	0		
+timetable	1	5	0		
+timetables	0	1	0		
+today	0	1	0		
+topic	0	7	0		
+topic?classId=:param	0	1	0		
+topic?subjectId=:param&classLevel=:param	0	1	0		
+topic?topicId=:param	0	1	0		
+topics	1	0	0		
+track	2	0	1	track-sms-usage	
+tracks	1	4	0		
+transactions	0	1	0		
+transcripts	1	0	1	view-transcripts	
+tsc	0	5	0		
+uDp	1	0	1	edit-update-student-photo	
+undispense	0	1	0		
+unit	3	0	0		
+update	2	0	1	view-edit-compulsory-subjects	
+upFeeStmts	1	0	1	upload-students-fee-balances	
+upload	6	0	2	manage-exams,view-my-classes	
+uPrf	1	0	1	edit-student-profile	
+upStGrades	1	0	1	add-target-grades	
+user	0	16	0		
+user-permissions	0	6	0		
+users	0	33	0		
+usr-roles	1	0	1	view-user-roles	
+v2	1	0	0		
+vac	1	0	0		
+vacancy	0	1	0		
+vacancy?title=:param&currentPage=:param&vacancyType=:param	0	1	0		
+vacancy?title=:param&vacancyType=:param	0	1	0		
+vacancy?vacancyId=:param	0	1	0		
+vacancy?vacancyType=:param&currentPage=:param	0	1	0		
+vacancy?vacancyType=:param&subjectId=:param	0	1	0		
+verify	1	0	0		
+view	1	0	0		
+vote_head_categories	0	1	0		
+vote_heads	0	1	0		
+wallet	1	1	1	manage-finance	STUDENT
+wallets	0	7	0		
+welcome	2	0	0		
+z_finance	0	4	0		
+zeraki_pay	0	1	0		
+zones	1	0	0		

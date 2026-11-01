@@ -1,0 +1,79 @@
+### chunk-QSFK6GLI.js
+endpoints: /auth/desktop/recover-account | /auth/desktop/recover-password | /auth/desktop/verify
+keywords: Password | accountVerification | password | phone | phoneInput | phoneNumber | showPhoneOnly | token | username
+
+### chunk-LJBQHZUX.js
+endpoints: /auth/desktop | /auth/desktop/password-reset-success
+keywords: confirmPassword | enterResetCode | newPassword | password | resetPassword | setNewPassword
+
+### chunk-XT66RTGT.js
+endpoints: /auth/desktop | /auth/desktop/verify
+keywords: phone | showPhoneOnly
+
+### chunk-3GD56DBU.js
+endpoints: /auth/mobile
+keywords: appinfoanimate
+
+### chunk-EAWVGXTR.js
+endpoints: 
+keywords: token
+
+### chunk-IJFMQNCN.js
+endpoints: /auth/mobile/recover-account | /auth/mobile/recover-password | /auth/mobile/verify
+keywords: accountVerification | biometric | password | phone | phoneInput | phoneNumber | showPhoneOnly | token | username
+
+### chunk-7HIPCZWP.js
+endpoints: /auth/mobile/verify
+keywords: phone | showPhoneOnly
+
+### chunk-DUJEFOOK.js
+endpoints: /auth/mobile/recover-password
+keywords: 
+
+### chunk-QOUSAK5H.js
+endpoints: /auth/mobile/recover-password
+keywords: 
+
+### chunk-4THGJPYR.js
+endpoints: /auth/mobile/account-verified
+keywords: accounts
+
+### chunk-XHRNTPMH.js
+endpoints: /auth/mobile/password-reset-success
+keywords: confirmPassword | enterResetCode | newPassword | password | resetPassword | setNewPassword
+
+### chunk-PFSMQ7TG.js
+endpoints: /auth/desktop/recover-password
+keywords: 
+
+### chunk-KU7AVUK3.js
+endpoints: /account/invalid | /linked-accounts | /main-legacy/customer-support | /setup
+keywords: isJointAccount
+
+### chunk-6YAHTK64.js
+endpoints: /linked-accounts
+keywords: 
+
+### chunk-2RGCDPQF.js
+endpoints: /linked-accounts | /main/customer-support | /setup
+keywords: isJointAccount
+
+### chunk-OVTIWFFH.js
+endpoints: /linked-accounts
+keywords: 
+
+### chunk-DZTHJJJ3.js
+endpoints: /account | /account/invalid
+keywords: 
+
+### chunk-QELWKASV.js
+endpoints: /account | /account/invalid
+keywords: 
+
+### chunk-5XSH3TK4.js
+endpoints: 
+keywords: token
+
+### chunk-PP5Q34DC.js
+endpoints: /auth
+keywords: BiometricAuthNative | confirmPassword | confirmPasswordField | currentPassword | currentPasswordField | password | passwordChanged | passwordField | token

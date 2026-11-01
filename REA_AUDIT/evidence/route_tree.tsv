@@ -1,0 +1,867 @@
+full_path	path	chunk	parent_chunk	kind	permission	permissions	allow_roles
+/account	account	chunk-FU2SXCNW.js	main-WD43ENPP.js	Children			
+/account/		chunk-YLPW4PQX.js	chunk-FU2SXCNW.js	Component			
+/account/invalid	invalid	chunk-MZKIFGGI.js	chunk-FU2SXCNW.js	Component			
+/account/invoice/:invoiceid	invoice/:invoiceid	chunk-ATA5FWSJ.js	chunk-FU2SXCNW.js	Component			
+/account/lock	lock	chunk-3DB2MD7V.js	chunk-FU2SXCNW.js	Component			
+/account/proforma/:proformaid	proforma/:proformaid	chunk-ATA5FWSJ.js	chunk-FU2SXCNW.js	Component			
+/auth	auth	chunk-7FF6T4VD.js	main-WD43ENPP.js	Children			
+/auth/desktop	desktop	chunk-VWLVPRUT.js	chunk-7FF6T4VD.js	Children			
+/auth/desktop/		chunk-Z6RGWGFF.js	chunk-VWLVPRUT.js	Component			
+/auth/desktop/		chunk-QSFK6GLI.js	chunk-VWLVPRUT.js	Component			
+/auth/desktop/password-reset-success	password-reset-success	chunk-5XSH3TK4.js	chunk-VWLVPRUT.js	Component			
+/auth/desktop/recover-account	recover-account	chunk-XT66RTGT.js	chunk-VWLVPRUT.js	Component			
+/auth/desktop/recover-password	recover-password	chunk-LJBQHZUX.js	chunk-VWLVPRUT.js	Component			
+/auth/desktop/verify	verify	chunk-PFSMQ7TG.js	chunk-VWLVPRUT.js	Component			
+/auth/mobile	mobile	chunk-XMIL64E4.js	chunk-7FF6T4VD.js	Children			
+/auth/mobile/		chunk-3GD56DBU.js	chunk-XMIL64E4.js	Component			
+/auth/mobile/		chunk-IJFMQNCN.js	chunk-XMIL64E4.js	Component			
+/auth/mobile/account-verified	account-verified	chunk-DUJEFOOK.js	chunk-XMIL64E4.js	Component			
+/auth/mobile/password-reset-success	password-reset-success	chunk-EAWVGXTR.js	chunk-XMIL64E4.js	Component			
+/auth/mobile/recover-account	recover-account	chunk-7HIPCZWP.js	chunk-XMIL64E4.js	Component			
+/auth/mobile/recover-password	recover-password	chunk-XHRNTPMH.js	chunk-XMIL64E4.js	Component			
+/auth/mobile/select-account	select-account	chunk-4THGJPYR.js	chunk-XMIL64E4.js	Component			
+/auth/mobile/verify	verify	chunk-QOUSAK5H.js	chunk-XMIL64E4.js	Component			
+/litemore	litemore	chunk-STICJ63M.js	main-WD43ENPP.js	Children			
+/litemore/		chunk-K7ZWX7BI.js	chunk-STICJ63M.js	Component			
+/litemore/banners	banners	chunk-LUBSSK7J.js	chunk-STICJ63M.js	Children			
+/litemore/banners/		chunk-HZ3SZ5I4.js	chunk-LUBSSK7J.js	Component			
+/litemore/banners/		chunk-ICKIQMOH.js	chunk-LUBSSK7J.js	Component			
+/litemore/banners/:bannerId/update	:bannerId/update	chunk-WBQPKO7J.js	chunk-LUBSSK7J.js	Component			
+/litemore/banners/add	add	chunk-WBQPKO7J.js	chunk-LUBSSK7J.js	Component			
+/litemore/change-password	change-password	chunk-EPZDFROB.js	chunk-STICJ63M.js	Component			
+/litemore/configurations	configurations	chunk-WIMJCAPM.js	chunk-STICJ63M.js	Children			
+/litemore/configurations/		chunk-Y4OZGK6I.js	chunk-WIMJCAPM.js	Component			
+/litemore/configurations/educationSystems	educationSystems	chunk-34VHIYYC.js	chunk-WIMJCAPM.js	Component			
+/litemore/configurations/manage	manage	chunk-SR6L4J4R.js	chunk-WIMJCAPM.js	Children			
+/litemore/configurations/manage/		chunk-X7UYBPIM.js	chunk-SR6L4J4R.js	Component			
+/litemore/configurations/manage/:id/academic-years	:id/academic-years	chunk-QU7FD3V7.js	chunk-SR6L4J4R.js	Component			
+/litemore/configurations/manage/:id/assessments	:id/assessments	chunk-KHSIWTQR.js	chunk-SR6L4J4R.js	Children			
+/litemore/configurations/manage/:id/assessments/		chunk-FJH43RYU.js	chunk-KHSIWTQR.js	Component			
+/litemore/configurations/manage/:id/assessments/add-edit	add-edit	chunk-7VO33OB2.js	chunk-KHSIWTQR.js	Component			
+/litemore/configurations/manage/:id/default-configurations	:id/default-configurations	chunk-OTXISPJ7.js	chunk-SR6L4J4R.js	Component			
+/litemore/configurations/manage/:id/education-system-configs	:id/education-system-configs	chunk-QHU53MWZ.js	chunk-SR6L4J4R.js	Component			
+/litemore/configurations/manage/:id/education-system-exams	:id/education-system-exams	chunk-WXSAIFGD.js	chunk-SR6L4J4R.js	Component			
+/litemore/configurations/manage/:id/education-system-exams/add-examType	:id/education-system-exams/add-examType	chunk-AIH7UBFM.js	chunk-SR6L4J4R.js	Component			
+/litemore/configurations/manage/:id/education-system-exams/edit-examType/:examDefaultId	:id/education-system-exams/edit-examType/:examDefaultId	chunk-AIH7UBFM.js	chunk-SR6L4J4R.js	Component			
+/litemore/configurations/manage/:id/grades-and-comments	:id/grades-and-comments	chunk-EKVYYNK2.js	chunk-SR6L4J4R.js	Component			
+/litemore/configurations/manage/:id/grading-systems	:id/grading-systems	chunk-GWBIDVOH.js	chunk-SR6L4J4R.js	Children			
+/litemore/configurations/manage/:id/grading-systems/		chunk-PATNNP5M.js	chunk-GWBIDVOH.js	Component			
+/litemore/configurations/manage/:id/grading-systems/add-edit	add-edit	chunk-SHJ3KSYS.js	chunk-GWBIDVOH.js	Component			
+/litemore/configurations/manage/:id/pathways	:id/pathways	chunk-7ZGTHVZN.js	chunk-SR6L4J4R.js	Children			
+/litemore/configurations/manage/:id/pathways/		chunk-7YNHLYRM.js	chunk-7ZGTHVZN.js	Component			
+/litemore/configurations/manage/:id/pathways/		chunk-7JXDPKID.js	chunk-7ZGTHVZN.js	Component			
+/litemore/configurations/manage/:id/pathways/subjects	subjects	chunk-25ENPRBH.js	chunk-7ZGTHVZN.js	Component			
+/litemore/configurations/manage/:id/pathways/tracks	tracks	chunk-QDSPJHOT.js	chunk-7ZGTHVZN.js	Component			
+/litemore/configurations/manage/:id/strands-topics	:id/strands-topics	chunk-4T2EGLN7.js	chunk-SR6L4J4R.js	Children			
+/litemore/configurations/manage/:id/strands-topics/		chunk-DE2TH77L.js	chunk-4T2EGLN7.js	Component			
+/litemore/configurations/manage/:id/strands-topics/indicators	indicators	chunk-Q57PZFZA.js	chunk-4T2EGLN7.js	Component			
+/litemore/configurations/manage/:id/strands-topics/substrands	substrands	chunk-3IS4KSP5.js	chunk-4T2EGLN7.js	Component			
+/litemore/configurations/manage/:id/subject-categories	:id/subject-categories	chunk-SODEL7AA.js	chunk-SR6L4J4R.js	Children			
+/litemore/configurations/manage/:id/subject-categories/		chunk-V6MYJ5KN.js	chunk-SODEL7AA.js	Component			
+/litemore/configurations/manage/:id/subject-categories/manage/:categoryId	manage/:categoryId	chunk-Y5ZG5VBG.js	chunk-SODEL7AA.js	Component			
+/litemore/configurations/manage/:id/subject-groupings	:id/subject-groupings	chunk-47X74RUV.js	chunk-SR6L4J4R.js	Children			
+/litemore/configurations/manage/:id/subject-groupings/		chunk-DELSPVBJ.js	chunk-47X74RUV.js	Component			
+/litemore/configurations/manage/:id/subject-groupings/add	add	chunk-GD6KEJ6O.js	chunk-47X74RUV.js	Component			
+/litemore/configurations/manage/:id/subject-groupings/update/:groupId	update/:groupId	chunk-GD6KEJ6O.js	chunk-47X74RUV.js	Component			
+/litemore/configurations/manage/:id/subject-papers	:id/subject-papers	chunk-H2RSBULQ.js	chunk-SR6L4J4R.js	Children			
+/litemore/configurations/manage/:id/subject-papers/		chunk-3XSMJHRD.js	chunk-H2RSBULQ.js	Component			
+/litemore/customer-support	customer-support	chunk-JX75VHQK.js	chunk-STICJ63M.js	Children			
+/litemore/customer-support/		chunk-CWMAZ3EZ.js	chunk-JX75VHQK.js	Component			
+/litemore/customer-support/agent	agent	chunk-MRBUDMM7.js	chunk-JX75VHQK.js	Component			
+/litemore/customer-support/session-activity/:sessionId	session-activity/:sessionId	chunk-GXRASJI6.js	chunk-JX75VHQK.js	Component			
+/litemore/profile	profile	chunk-WU4XCEMB.js	chunk-STICJ63M.js	Children			
+/litemore/profile/		chunk-XLWDA2IZ.js	chunk-WU4XCEMB.js	Component			
+/litemore/reset-code	reset-code	chunk-FKHNJ36V.js	chunk-STICJ63M.js	Children			
+/litemore/reset-code/		chunk-M5BJRWR7.js	chunk-FKHNJ36V.js	Component			
+/litemore/school-groups	school-groups	chunk-VA5W7OBS.js	chunk-STICJ63M.js	Children			
+/litemore/school-groups/		chunk-S3PMF5XN.js	chunk-VA5W7OBS.js	Component			
+/litemore/school-groups/		chunk-TZ2MSNWP.js	chunk-VA5W7OBS.js	Component			
+/litemore/school-groups/:groupId/add	:groupId/add	chunk-5VMQ5NW3.js	chunk-VA5W7OBS.js	Component			
+/litemore/school-groups/:groupId/manage	:groupId/manage	chunk-NLSDHOKQ.js	chunk-VA5W7OBS.js	Component			
+/litemore/schools	schools	chunk-BO7IMKLL.js	chunk-STICJ63M.js	Children			
+/litemore/schools/		chunk-LS2HD24B.js	chunk-BO7IMKLL.js	Component			
+/litemore/schools/feature-toggles/:schoolId	feature-toggles/:schoolId	chunk-FDD4NUWC.js	chunk-BO7IMKLL.js	Component			
+/litemore/schools/my-schools	my-schools	chunk-YOXERBGV.js	chunk-BO7IMKLL.js	Component			
+/main	main	chunk-2FNEJMO3.js	main-WD43ENPP.js	Children			
+/main-legacy	main-legacy	chunk-OVTIWFFH.js	main-WD43ENPP.js	Children			
+/main-legacy/		chunk-KU7AVUK3.js	chunk-OVTIWFFH.js	Component			
+/main-legacy/active-sessions	active-sessions	chunk-KYWQFOQ4.js	chunk-OVTIWFFH.js	Component			
+/main-legacy/attendance	attendance	chunk-YXX4667J.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/attendance/		chunk-NMOOAZTO.js	chunk-YXX4667J.js	Component			
+/main-legacy/attendance/categories	categories	chunk-BGTUCSTK.js	chunk-YXX4667J.js	Children			
+/main-legacy/attendance/categories/		chunk-DX3WSACY.js	chunk-BGTUCSTK.js	Component			
+/main-legacy/attendance/categories/class/:classId	class/:classId	chunk-DV4ER76J.js	chunk-BGTUCSTK.js	Component			
+/main-legacy/attendance/categories/groups/:groupId	groups/:groupId	chunk-X3KIBRHJ.js	chunk-BGTUCSTK.js	Component			
+/main-legacy/attendance/categories/report/class/:classId	report/class/:classId	chunk-B7P2LSFM.js	chunk-BGTUCSTK.js	Component			
+/main-legacy/attendance/categories/report/group/:groupId	report/group/:groupId	chunk-B7P2LSFM.js	chunk-BGTUCSTK.js	Component			
+/main-legacy/attendance/categories/report/residence/:residenceId	report/residence/:residenceId	chunk-B7P2LSFM.js	chunk-BGTUCSTK.js	Component			
+/main-legacy/attendance/categories/report/stream/:streamId	report/stream/:streamId	chunk-B7P2LSFM.js	chunk-BGTUCSTK.js	Component			
+/main-legacy/attendance/categories/residence/:residenceId	residence/:residenceId	chunk-DV4ER76J.js	chunk-BGTUCSTK.js	Component			
+/main-legacy/attendance/categories/stream/:streamId	stream/:streamId	chunk-DV4ER76J.js	chunk-BGTUCSTK.js	Component			
+/main-legacy/attendance/checkout	checkout	chunk-6LVXPB4V.js	chunk-YXX4667J.js	Children			
+/main-legacy/attendance/checkout/		chunk-WPIG77ZL.js	chunk-6LVXPB4V.js	Component			
+/main-legacy/attendance/checkout/:checkoutId/update	:checkoutId/update	chunk-CVO55366.js	chunk-6LVXPB4V.js	Component			
+/main-legacy/attendance/checkout/new	new	chunk-CVO55366.js	chunk-6LVXPB4V.js	Component			
+/main-legacy/attendance/checkout/view/:zoneId	view/:zoneId	chunk-C6VL6DLE.js	chunk-6LVXPB4V.js	Component			
+/main-legacy/attendance/leave-outs	leave-outs	chunk-6ZZ3EMUC.js	chunk-YXX4667J.js	Children			
+/main-legacy/attendance/leave-outs/		chunk-6AP7R3XY.js	chunk-6ZZ3EMUC.js	Component			
+/main-legacy/attendance/leave-outs/		chunk-XEBQ3HCS.js	chunk-6ZZ3EMUC.js	Component			
+/main-legacy/attendance/leave-outs/:leaveOutId	:leaveOutId	chunk-IP47QI76.js	chunk-6ZZ3EMUC.js	Component			
+/main-legacy/attendance/leave-outs/:leaveOutId/update	:leaveOutId/update	chunk-JIYI64L4.js	chunk-6ZZ3EMUC.js	Component			
+/main-legacy/attendance/leave-outs/new	new	chunk-JIYI64L4.js	chunk-6ZZ3EMUC.js	Component			
+/main-legacy/attendance/zones	zones	chunk-HXHVU2RR.js	chunk-YXX4667J.js	Children			
+/main-legacy/attendance/zones/		chunk-MHHXQNKP.js	chunk-HXHVU2RR.js	Component			
+/main-legacy/attendance/zones/		chunk-6DKH7KSO.js	chunk-HXHVU2RR.js	Component			
+/main-legacy/attendance/zones/:zoneId/manage	:zoneId/manage	chunk-OM3XKNOK.js	chunk-HXHVU2RR.js	Component			
+/main-legacy/attendance/zones/:zoneId/update	:zoneId/update	chunk-6LHXKI4J.js	chunk-HXHVU2RR.js	Component			
+/main-legacy/attendance/zones/create	create	chunk-6LHXKI4J.js	chunk-HXHVU2RR.js	Component			
+/main-legacy/behaviour	behaviour	chunk-ZMAMNVJZ.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/behaviour/		chunk-3IJLKMTA.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/behaviour/class	class	chunk-3IJLKMTA.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/behaviour/infractions-approval	infractions-approval	chunk-3IJLKMTA.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/behaviour/intake/:intakeid/:ayid/:term	intake/:intakeid/:ayid/:term	chunk-O7D7XRGH.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/behaviour/manage	manage	chunk-3IJLKMTA.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/behaviour/new-record	new-record	chunk-3IJLKMTA.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/behaviour/residence	residence	chunk-3IJLKMTA.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/behaviour/residence/students/:residenceid/:ayid/:term	residence/students/:residenceid/:ayid/:term	chunk-UKFRCE4K.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/behaviour/stream/:streamid/:ayid/:term	stream/:streamid/:ayid/:term	chunk-ZQ732M4N.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/behaviour/student/:userid	student/:userid	chunk-3IJLKMTA.js	chunk-ZMAMNVJZ.js	Component			
+/main-legacy/billing	billing	chunk-QGAXATK3.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/billing/		chunk-3BTYMVWW.js	chunk-QGAXATK3.js	Component			
+/main-legacy/billing/invoices	invoices	chunk-QI5SXN2P.js	chunk-QGAXATK3.js	Component			
+/main-legacy/billing/proforma/:id	proforma/:id	chunk-ATA5FWSJ.js	chunk-QGAXATK3.js	Component			
+/main-legacy/billing/receipts	receipts	chunk-PV2ILAI4.js	chunk-QGAXATK3.js	Component			
+/main-legacy/change-password	change-password	chunk-OAGQATQJ.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/change-password/		chunk-EPZDFROB.js	chunk-OAGQATQJ.js	Component			
+/main-legacy/classes	classes	chunk-H6LT2O43.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/classes/		chunk-A6S6NR2S.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/add	add	chunk-CORB45QI.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/manage	manage	chunk-GU6IHBLW.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/manage/classes/:id	manage/classes/:id	chunk-Q7QGW4QV.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/manage/streams/:id	manage/streams/:id	chunk-KPL7GM5O.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/manage/streams/add/:streamid	manage/streams/add/:streamid	chunk-CORB45QI.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/manage/streams/subjects/:streamId/:id	manage/streams/subjects/:streamId/:id	chunk-IARQ65PL.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/myclass	myclass	chunk-W4YECN2Q.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/myclass/attendance-report/:streamId	myclass/attendance-report/:streamId	chunk-3YLQ2GPK.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/myclass/attendance/residence/report/:residenceId	myclass/attendance/residence/report/:residenceId	chunk-3YLQ2GPK.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/myclass/attendance/subject/report/:classId	myclass/attendance/subject/report/:classId	chunk-3YLQ2GPK.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/myclass/sc/:id	myclass/sc/:id	chunk-LWP3N3HQ.js	chunk-H6LT2O43.js	Component			
+/main-legacy/classes/myclass/student-promotion	myclass/student-promotion	chunk-K63IAOJL.js	chunk-H6LT2O43.js	Children			
+/main-legacy/classes/myclass/student-promotion/		chunk-BMK7BNMN.js	chunk-K63IAOJL.js	Component			
+/main-legacy/customer-support	customer-support	chunk-JCK3KFVC.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/customer-support/		chunk-DHHYHL6E.js	chunk-JCK3KFVC.js	Component			
+/main-legacy/dashboard	dashboard	chunk-AOLCGSXT.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/dashboard/		chunk-TNSSUNYQ.js	chunk-AOLCGSXT.js	Component			
+/main-legacy/dashboard/attendance-report	attendance-report	chunk-SKBEGHBE.js	chunk-AOLCGSXT.js	Component			
+/main-legacy/dashboard/global	global	chunk-PSL6VMIS.js	chunk-AOLCGSXT.js	Component			
+/main-legacy/dashboard/gradclasses	gradclasses	chunk-QTXYGOWB.js	chunk-AOLCGSXT.js	Component			
+/main-legacy/dashboard/myclasses	myclasses	chunk-LF7L5SHU.js	chunk-AOLCGSXT.js	Component			
+/main-legacy/dashboard/setup	setup	chunk-RU3YNFLK.js	chunk-AOLCGSXT.js	Component			
+/main-legacy/dashboard/welcome	welcome	chunk-XNVO5U67.js	chunk-AOLCGSXT.js	Children			
+/main-legacy/dashboard/welcome/		chunk-T5GPTOST.js	chunk-XNVO5U67.js	Component			
+/main-legacy/dashboard/welcome/admin	admin	chunk-SXYPQH4T.js	chunk-XNVO5U67.js	Component			
+/main-legacy/dashboard/welcome/attendance-report/:id	welcome/attendance-report/:id	chunk-3Q2CDKWS.js	chunk-AOLCGSXT.js	Component			
+/main-legacy/dashboard/welcome/secretary	secretary	chunk-PKSRY4AE.js	chunk-XNVO5U67.js	Component			
+/main-legacy/dashboard/welcome/student	student	chunk-C3YMM5QH.js	chunk-XNVO5U67.js	Children			
+/main-legacy/dashboard/welcome/student/analysis	analysis	chunk-OZ6MQXNF.js	chunk-C3YMM5QH.js	Component			
+/main-legacy/dashboard/welcome/student/analytics	analytics	chunk-DH7ADCYX.js	chunk-C3YMM5QH.js	Component			
+/main-legacy/dashboard/welcome/student/diary	diary	chunk-JT6YVOL2.js	chunk-C3YMM5QH.js	Children			
+/main-legacy/dashboard/welcome/student/diary/		chunk-ZLBPCYN6.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/dashboard/welcome/student/diary/:noticeId/:noticeType/edit-notice	:noticeId/:noticeType/edit-notice	chunk-WAXOW4UG.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/dashboard/welcome/student/diary/:noticeType/create-notice	:noticeType/create-notice	chunk-WAXOW4UG.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/dashboard/welcome/student/diary/assignment	assignment	chunk-QY3KURG6.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/dashboard/welcome/student/diary/behaviour	behaviour	chunk-WS7LWLFG.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/dashboard/welcome/student/diary/general-updates	general-updates	chunk-RJG6M5VA.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/dashboard/welcome/student/diary/notices	notices	chunk-RJG6M5VA.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/dashboard/welcome/student/diary/student-diary	student-diary	chunk-5O5J34SG.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/dashboard/welcome/student/messages	messages	chunk-3A5M76D4.js	chunk-C3YMM5QH.js	Component			
+/main-legacy/dashboard/welcome/student/profile	profile	chunk-F67HLBEU.js	chunk-C3YMM5QH.js	Component			
+/main-legacy/dashboard/welcome/teacher	teacher	chunk-E3GEILMB.js	chunk-XNVO5U67.js	Component			
+/main-legacy/evaluation	evaluation	chunk-YJYODTBL.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/evaluation/		chunk-TMSEXCZ7.js	chunk-YJYODTBL.js	Component			
+/main-legacy/evaluation/exams	exams	chunk-2WEHXEG2.js	chunk-YJYODTBL.js	Component			
+/main-legacy/evaluation/manage/:evaluation	manage/:evaluation	chunk-VSS2SPEP.js	chunk-YJYODTBL.js	Component			
+/main-legacy/evaluation/upload/:id	upload/:id	chunk-BOFDOSYW.js	chunk-YJYODTBL.js	Component			
+/main-legacy/events	events	chunk-S3AO4TT6.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/events/		chunk-TBGLRR5K.js	chunk-S3AO4TT6.js	Component			
+/main-legacy/events/assignments	assignments	chunk-VIO63NJI.js	chunk-S3AO4TT6.js	Component			
+/main-legacy/events/manage	manage	chunk-2DSQ3PZQ.js	chunk-S3AO4TT6.js	Component			
+/main-legacy/events/newsletter	newsletter	chunk-TIWWI2GY.js	chunk-S3AO4TT6.js	Component			
+/main-legacy/events/notices	notices	chunk-U4HWM4AP.js	chunk-S3AO4TT6.js	Component			
+/main-legacy/exam-comment-system	exam-comment-system	chunk-OQIWQA2N.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/exam-comment-system/		chunk-UXCF34JX.js	chunk-OQIWQA2N.js	Component			
+/main-legacy/exam-comment-system/categories	categories	chunk-CJREUOQI.js	chunk-OQIWQA2N.js	Children			
+/main-legacy/exam-comment-system/categories/		chunk-PI7X7V3E.js	chunk-CJREUOQI.js	Component			
+/main-legacy/exam-comment-system/categories/exam-group	exam-group	chunk-HWL57AA6.js	chunk-CJREUOQI.js	Component			
+/main-legacy/exam-comment-system/categories/general/class/:classId	general/class/:classId	chunk-OYHZAXWW.js	chunk-CJREUOQI.js	Component			
+/main-legacy/exam-comment-system/categories/general/principal/:principalId	general/principal/:principalId	chunk-OYHZAXWW.js	chunk-CJREUOQI.js	Component			
+/main-legacy/exam-comment-system/categories/general/residence/:residenceId	general/residence/:residenceId	chunk-OYHZAXWW.js	chunk-CJREUOQI.js	Component			
+/main-legacy/exam-comment-system/categories/general/stream/:streamId	general/stream/:streamId	chunk-OYHZAXWW.js	chunk-CJREUOQI.js	Component			
+/main-legacy/exam-comment-system/categories/student/principal/:principalId	student/principal/:principalId	chunk-QTTS6VKH.js	chunk-CJREUOQI.js	Component			
+/main-legacy/exam-comment-system/categories/student/residence/:residenceId	student/residence/:residenceId	chunk-QTTS6VKH.js	chunk-CJREUOQI.js	Component			
+/main-legacy/exam-comment-system/categories/student/stream/:streamId	student/stream/:streamId	chunk-QTTS6VKH.js	chunk-CJREUOQI.js	Component			
+/main-legacy/exams	exams	chunk-TDCQSBOD.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/exams/		chunk-TW6IWMJL.js	chunk-TDCQSBOD.js	Component			
+/main-legacy/exams/coefficient-system	coefficient-system	chunk-PNUO45DY.js	chunk-TDCQSBOD.js	Children			
+/main-legacy/exams/coefficient-system/		chunk-O7CAVV7L.js	chunk-PNUO45DY.js	Component			
+/main-legacy/exams/create-exam	create-exam	chunk-HS2P3SAH.js	chunk-TDCQSBOD.js	Children			
+/main-legacy/exams/create-exam/		chunk-N6PU5E2S.js	chunk-HS2P3SAH.js	Component			
+/main-legacy/exams/deleted-exams	deleted-exams	chunk-5N7X6GOR.js	chunk-TDCQSBOD.js	Children			
+/main-legacy/exams/deleted-exams/		chunk-CF5AV7VP.js	chunk-5N7X6GOR.js	Component			
+/main-legacy/exams/grading-systems	grading-systems	chunk-ZVDWZZ4U.js	chunk-TDCQSBOD.js	Children			
+/main-legacy/exams/grading-systems/		chunk-LDXFVHJ6.js	chunk-ZVDWZZ4U.js	Component			
+/main-legacy/exams/majors	majors	chunk-XVOOCURZ.js	chunk-TDCQSBOD.js	Children			
+/main-legacy/exams/majors/		chunk-EG2QINFP.js	chunk-XVOOCURZ.js	Component			
+/main-legacy/exams/manage	manage	chunk-Q7HWBFIA.js	chunk-TDCQSBOD.js	Children			
+/main-legacy/exams/manage/		chunk-TATPBLTA.js	chunk-Q7HWBFIA.js	Component			
+/main-legacy/exams/manage/:termIndex/:examIndex	:termIndex/:examIndex	chunk-TATPBLTA.js	chunk-Q7HWBFIA.js	Component			
+/main-legacy/exams/manage/analysis	analysis	chunk-YAGJ7HWU.js	chunk-Q7HWBFIA.js	Children			
+/main-legacy/exams/manage/analysis/:intakeid	:intakeid	chunk-EFUULT4U.js	chunk-YAGJ7HWU.js	Component			
+/main-legacy/exams/manage/analysis/:intakeid/:streamid/:seriesid/:egroupid	:intakeid/:streamid/:seriesid/:egroupid	chunk-EFUULT4U.js	chunk-YAGJ7HWU.js	Component			
+/main-legacy/exams/manage/analysis/:intakeid/:streamid/:seriesid/:egroupid/:annual_egroup_id	:intakeid/:streamid/:seriesid/:egroupid/:annual_egroup_id	chunk-EFUULT4U.js	chunk-YAGJ7HWU.js	Component			
+/main-legacy/exams/manage/analysis/subject	subject	chunk-HOJHVKZM.js	chunk-YAGJ7HWU.js	Children			
+/main-legacy/exams/manage/analysis/subject/:seriesid/:egroupid/:subjectid/:intakeid/:classid/:lock	:seriesid/:egroupid/:subjectid/:intakeid/:classid/:lock	chunk-C3NGCJL4.js	chunk-HOJHVKZM.js	Component			
+/main-legacy/exams/manage/analysis/subject/:seriesid/:egroupid/:subjectid/:intakeid/:classid/:lock/:major/:annual_egroup_id	:seriesid/:egroupid/:subjectid/:intakeid/:classid/:lock/:major/:annual_egroup_id	chunk-C3NGCJL4.js	chunk-HOJHVKZM.js	Component			
+/main-legacy/exams/manage/analysis/subject/merit-list/:seriesid/:egroupid/:subjectid/:intakeid/:classid	merit-list/:seriesid/:egroupid/:subjectid/:intakeid/:classid	chunk-OBZCHEBY.js	chunk-HOJHVKZM.js	Component			
+/main-legacy/exams/manage/coefficient-system/:intakeId/:seriesId/:egroupId/:annualEgroupId	coefficient-system/:intakeId/:seriesId/:egroupId/:annualEgroupId	chunk-MXLMFIRY.js	chunk-Q7HWBFIA.js	Component			
+/main-legacy/exams/manage/config	config	chunk-RO5BB3ET.js	chunk-Q7HWBFIA.js	Children			
+/main-legacy/exams/manage/config/:intakeId/:seriesId	:intakeId/:seriesId	chunk-TJXLT7JQ.js	chunk-RO5BB3ET.js	Component			
+/main-legacy/exams/manage/publish	publish	chunk-6XNPSE5U.js	chunk-Q7HWBFIA.js	Children			
+/main-legacy/exams/manage/publish/:intakeId/:seriesId	:intakeId/:seriesId	chunk-VE74CDQX.js	chunk-6XNPSE5U.js	Component			
+/main-legacy/exams/manage/publish/cs/:seriesid/:intakeid/:lock/:viewonly	cs/:seriesid/:intakeid/:lock/:viewonly	chunk-QOFTCAEY.js	chunk-6XNPSE5U.js	Component			
+/main-legacy/exams/manage/publish/egroup/:intakeId/:examId	egroup/:intakeId/:examId	chunk-6MWDEGPU.js	chunk-6XNPSE5U.js	Component			
+/main-legacy/exams/manage/publish/status	status	chunk-SC7WFCYE.js	chunk-6XNPSE5U.js	Children			
+/main-legacy/exams/manage/publish/status/:streamId/:seriesId	:streamId/:seriesId	chunk-QDWJ5Q4S.js	chunk-SC7WFCYE.js	Component			
+/main-legacy/exams/manage/publish/status/st/:lock/:seriesId/:classId/:viewonly	st/:lock/:seriesId/:classId/:viewonly	chunk-GMCKBZO3.js	chunk-SC7WFCYE.js	Component			
+/main-legacy/exams/manage/publish/status/upload/:classId/:seriesId/:lock	upload/:classId/:seriesId/:lock	chunk-Z7RGEFGV.js	chunk-SC7WFCYE.js	Component			
+/main-legacy/exams/manage/publish/term-average/:intakeId/:examId/:type	term-average/:intakeId/:examId/:type	chunk-3HOWJT4S.js	chunk-6XNPSE5U.js	Component			
+/main-legacy/exams/manage/send-results	send-results	chunk-SSTNFMPW.js	chunk-Q7HWBFIA.js	Children			
+/main-legacy/exams/manage/send-results/:intakeId/:examId	:intakeId/:examId	chunk-R7UO3TVI.js	chunk-SSTNFMPW.js	Component			
+/main-legacy/exams/manage/send-results/egroup/:intakeId/:examId	egroup/:intakeId/:examId	chunk-LKSAACC7.js	chunk-SSTNFMPW.js	Component			
+/main-legacy/exams/manage/upload/:intakeId/:seriesId	upload/:intakeId/:seriesId	chunk-KY2D4D6D.js	chunk-Q7HWBFIA.js	Component			
+/main-legacy/exams/mentions	mentions	chunk-ZVDWZZ4U.js	chunk-TDCQSBOD.js	Children			
+/main-legacy/exams/mentions/		chunk-LDXFVHJ6.js	chunk-ZVDWZZ4U.js	Component			
+/main-legacy/exams/my-classes	my-classes	chunk-CH5SKTVN.js	chunk-TDCQSBOD.js	Children			
+/main-legacy/exams/my-classes/		chunk-AIPNRQKU.js	chunk-CH5SKTVN.js	Component			
+/main-legacy/exams/my-classes/:classId	:classId	chunk-JO2MWULK.js	chunk-CH5SKTVN.js	Component			
+/main-legacy/exams/my-classes/assessments	assessments	chunk-WVUHXHPE.js	chunk-CH5SKTVN.js	Children			
+/main-legacy/exams/my-classes/assessments/:classId	:classId	chunk-3NFEAS2G.js	chunk-WVUHXHPE.js	Component			
+/main-legacy/exams/my-classes/assessments/:classId/:interrogationId/results-upload	:classId/:interrogationId/results-upload	chunk-P7ENNMXN.js	chunk-WVUHXHPE.js	Component			
+/main-legacy/exams/my-classes/assessments/:classId/create	:classId/create	chunk-3BMOTCI5.js	chunk-WVUHXHPE.js	Component			
+/main-legacy/exams/my-classes/assessments/:classId/results/:interrogationId	:classId/results/:interrogationId	chunk-PFG2SSMM.js	chunk-WVUHXHPE.js	Component			
+/main-legacy/exams/my-classes/assessments/assessment-report	assessment-report	chunk-YIQTJ66K.js	chunk-WVUHXHPE.js	Component			
+/main-legacy/exams/my-classes/assessments/student-report/:classId/:studentId/:term/:year	student-report/:classId/:studentId/:term/:year	chunk-XDW34GCB.js	chunk-WVUHXHPE.js	Component			
+/main-legacy/exams/my-classes/assessments/v2/:classId	v2/:classId	chunk-IW2D5FMU.js	chunk-WVUHXHPE.js	Component			
+/main-legacy/exams/my-classes/departmental-analysis	departmental-analysis	chunk-7GG4MBNG.js	chunk-CH5SKTVN.js	Children			
+/main-legacy/exams/my-classes/departmental-analysis/dean	dean	chunk-4BPTDYAC.js	chunk-7GG4MBNG.js	Component			
+/main-legacy/exams/my-classes/departmental-analysis/hod	hod	chunk-SDJL4CXW.js	chunk-7GG4MBNG.js	Component			
+/main-legacy/exams/my-classes/departmental-analysis/hos	hos	chunk-5PEOA5I2.js	chunk-7GG4MBNG.js	Component			
+/main-legacy/exams/my-classes/evaluation/publish	evaluation/publish	chunk-LNLNJGHA.js	chunk-CH5SKTVN.js	Component			
+/main-legacy/exams/my-classes/exams	exams	chunk-2BIBXQQJ.js	chunk-CH5SKTVN.js	Component			
+/main-legacy/exams/my-classes/upload/results/subject/:classId/:seriesId/:lock	upload/results/subject/:classId/:seriesId/:lock	chunk-Z7RGEFGV.js	chunk-CH5SKTVN.js	Component			
+/main-legacy/exams/subject-papers	subject-papers	chunk-UJKH4GJI.js	chunk-TDCQSBOD.js	Children			
+/main-legacy/exams/subject-papers/		chunk-GFAPMCHU.js	chunk-UJKH4GJI.js	Component			
+/main-legacy/finance	finance	chunk-5F4VHNOC.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/finance/		chunk-KKKQ5P7D.js	chunk-5F4VHNOC.js	Component			
+/main-legacy/finance/balances	balances	chunk-P6QO2YX2.js	chunk-5F4VHNOC.js	Children			
+/main-legacy/finance/balances/		chunk-4EKRGNUX.js	chunk-P6QO2YX2.js	Component			
+/main-legacy/finance/balances/balance-list	balance-list	chunk-ZK56UJXB.js	chunk-P6QO2YX2.js	Component			
+/main-legacy/finance/balances/balance-list/:streamId	balance-list/:streamId	chunk-ZK56UJXB.js	chunk-P6QO2YX2.js	Component			
+/main-legacy/finance/fee-str	fee-str	chunk-BXKIECT2.js	chunk-5F4VHNOC.js	Component			
+/main-legacy/finance/fee-str/:feeStructureId	fee-str/:feeStructureId	chunk-VBFGN2MV.js	chunk-5F4VHNOC.js	Component			
+/main-legacy/finance/pledges	pledges	chunk-PK3B6RTT.js	chunk-5F4VHNOC.js	Children			
+/main-legacy/finance/pledges/		chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main-legacy/finance/pledges/:studentId	:studentId	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main-legacy/finance/pledges/**	**	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main-legacy/finance/pledges/add	add	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main-legacy/finance/pledges/add/:pledgeId	add/:pledgeId	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main-legacy/finance/pledges/list	list	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main-legacy/finance/sch-fin	sch-fin	chunk-5OPFSVXW.js	chunk-5F4VHNOC.js	Component			
+/main-legacy/finance/student	student	chunk-IGRF2DW5.js	chunk-5F4VHNOC.js	Children			
+/main-legacy/finance/student/		chunk-MFM5KIUR.js	chunk-IGRF2DW5.js	Component			
+/main-legacy/finance/student/**	**	chunk-AGCEL5P7.js	chunk-IGRF2DW5.js	Component			
+/main-legacy/finance/student/dashboard	dashboard	chunk-AGCEL5P7.js	chunk-IGRF2DW5.js	Component			
+/main-legacy/finance/student/dashboard	dashboard	chunk-J2ISOZNP.js	chunk-IGRF2DW5.js	Component			
+/main-legacy/finance/student/dashboard/pay	dashboard/pay	chunk-MFHS5V6K.js	chunk-IGRF2DW5.js	Component			
+/main-legacy/finance/student/finance-details	finance-details	chunk-UGOGZ6F2.js	chunk-IGRF2DW5.js	Component			
+/main-legacy/finance/student/mobile	mobile	chunk-SSLHKQBJ.js	chunk-IGRF2DW5.js	Component			
+/main-legacy/finance/teacher-loans	teacher-loans	chunk-6DIFJAL4.js	chunk-5F4VHNOC.js	Children			
+/main-legacy/finance/teacher-loans/		chunk-VEVZVIMZ.js	chunk-6DIFJAL4.js	Component			
+/main-legacy/finance/teacher-loans/		chunk-GOGLLH6Z.js	chunk-6DIFJAL4.js	Component			
+/main-legacy/finance/teacher-loans/application-details	application-details	chunk-NH2G2EM7.js	chunk-6DIFJAL4.js	Component			
+/main-legacy/finance/teacher-loans/start-application	start-application	chunk-G3IQZW2Y.js	chunk-6DIFJAL4.js	Component			
+/main-legacy/learning	learning	chunk-4NZTHXCC.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/learning/		chunk-6D2NFEEO.js	chunk-4NZTHXCC.js	Component			
+/main-legacy/linked-accounts	linked-accounts	chunk-A3JSP2DT.js	chunk-OVTIWFFH.js	Component			
+/main-legacy/messages	messages	chunk-BBDTQOVG.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/messages/		chunk-OM4FJE37.js	chunk-BBDTQOVG.js	Component			
+/main-legacy/messages/buy	buy	chunk-6ECF2RX3.js	chunk-BBDTQOVG.js	Component			
+/main-legacy/messages/compose	compose	chunk-SYKZUAVC.js	chunk-BBDTQOVG.js	Children			
+/main-legacy/messages/compose/		chunk-UKFN33B7.js	chunk-SYKZUAVC.js	Component			
+/main-legacy/messages/inbox	inbox	chunk-I6XMBYMY.js	chunk-BBDTQOVG.js	Children			
+/main-legacy/messages/inbox/		chunk-XNTYG3OJ.js	chunk-I6XMBYMY.js	Component			
+/main-legacy/messages/inbox/		chunk-6P3IP72X.js	chunk-I6XMBYMY.js	Component			
+/main-legacy/messages/inbox/read/:id	read/:id	chunk-WMCKKQPY.js	chunk-I6XMBYMY.js	Component			
+/main-legacy/messages/opt-outs	opt-outs	chunk-F2LTRXT4.js	chunk-BBDTQOVG.js	Component			
+/main-legacy/messages/receipt/:id	receipt/:id	chunk-YOXEFLBC.js	chunk-BBDTQOVG.js	Component			
+/main-legacy/messages/track	track	chunk-UMSEIV4Z.js	chunk-BBDTQOVG.js	Component			
+/main-legacy/messages/track/msggroup/:id	track/msggroup/:id	chunk-ZTROMT5F.js	chunk-BBDTQOVG.js	Component			
+/main-legacy/no-access	no-access	chunk-WGXVHE4R.js	chunk-OVTIWFFH.js	Component			
+/main-legacy/opportunities	opportunities	chunk-QBYPGQ3G.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/opportunities/		chunk-4HVI6OTC.js	chunk-QBYPGQ3G.js	Component			
+/main-legacy/opportunities/match	match	chunk-QGH3ANUT.js	chunk-QBYPGQ3G.js	Component			
+/main-legacy/opportunities/swap	swap	chunk-BY74S3AN.js	chunk-QBYPGQ3G.js	Component			
+/main-legacy/opportunities/vac	vac	chunk-BFWHDKAB.js	chunk-QBYPGQ3G.js	Component			
+/main-legacy/partner	partner	chunk-72M7MPYP.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/partner/		chunk-2VZVOFXU.js	chunk-72M7MPYP.js	Component			
+/main-legacy/printouts	printouts	chunk-ZKI5U7YF.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/printouts/		chunk-F3GDH7VJ.js	chunk-ZKI5U7YF.js	Component			
+/main-legacy/printouts/analysis-report	analysis-report	chunk-Q4FKRZWB.js	chunk-ZKI5U7YF.js	Component	access-printouts		
+/main-legacy/printouts/assessment-report	assessment-report	chunk-5NUMDZ45.js	chunk-ZKI5U7YF.js	Component	view-assessments		
+/main-legacy/printouts/attendance-report	attendance-report	chunk-B7P2LSFM.js	chunk-ZKI5U7YF.js	Component	access-printouts		
+/main-legacy/printouts/class-list	class-list	chunk-A44RTHIO.js	chunk-ZKI5U7YF.js	Component	view-class-list		
+/main-legacy/printouts/house-list	house-list	chunk-LUFKXTCF.js	chunk-ZKI5U7YF.js	Component	view-class-list		
+/main-legacy/printouts/leaving-certificate	leaving-certificate	chunk-MPB6PNNR.js	chunk-ZKI5U7YF.js	Component	access-printouts		
+/main-legacy/printouts/mark-list	mark-list	chunk-Z2GYXG2A.js	chunk-ZKI5U7YF.js	Component	view-mark-list		
+/main-legacy/printouts/merit-list	merit-list	chunk-FRJZU4QD.js	chunk-ZKI5U7YF.js	Component	view-merit-list		
+/main-legacy/printouts/olevels/evaluation-report	olevels/evaluation-report	chunk-IEPWWMP3.js	chunk-ZKI5U7YF.js	Component	view-evaluation-report		
+/main-legacy/printouts/olevels/transcripts	olevels/transcripts	chunk-EQLEZHW7.js	chunk-ZKI5U7YF.js	Component	view-transcripts		
+/main-legacy/printouts/report-forms	report-forms	chunk-GE7RWLIH.js	chunk-ZKI5U7YF.js	Component	view-report-forms		
+/main-legacy/printouts/score-sheet	score-sheet	chunk-EPGDOQAP.js	chunk-ZKI5U7YF.js	Component	view-class-list		
+/main-legacy/printouts/transcripts	transcripts	chunk-67MEQ2KN.js	chunk-ZKI5U7YF.js	Component	view-transcripts		
+/main-legacy/settings	settings	chunk-7OE4HMTM.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/settings/		chunk-2EH2VPVR.js	chunk-7OE4HMTM.js	Component			
+/main-legacy/settings/other-settings	other-settings	chunk-2KEVFLUS.js	chunk-7OE4HMTM.js	Children			
+/main-legacy/settings/other-settings/		chunk-MNAC3BH3.js	chunk-2KEVFLUS.js	Component			
+/main-legacy/settings/pricing	pricing	chunk-VAEASVGM.js	chunk-7OE4HMTM.js	Children			
+/main-legacy/settings/pricing/		chunk-TJ3FTMLP.js	chunk-VAEASVGM.js	Component			
+/main-legacy/settings/printout-settings	printout-settings	chunk-RYNXRVJO.js	chunk-7OE4HMTM.js	Children			
+/main-legacy/settings/printout-settings/		chunk-6DW3UOTZ.js	chunk-RYNXRVJO.js	Component			
+/main-legacy/settings/profile	profile	chunk-OTGA5TWO.js	chunk-7OE4HMTM.js	Children			
+/main-legacy/settings/profile/		chunk-IHOIHSSK.js	chunk-OTGA5TWO.js	Component			
+/main-legacy/settings/profile/active-sessions	active-sessions	chunk-MPUNMYHD.js	chunk-OTGA5TWO.js	Component			
+/main-legacy/settings/profile/change-password	change-password	chunk-EPZDFROB.js	chunk-OTGA5TWO.js	Component			
+/main-legacy/settings/profile/linked-accounts	linked-accounts	chunk-A3JSP2DT.js	chunk-OTGA5TWO.js	Component			
+/main-legacy/settings/profile/my-prof	my-prof	chunk-QTANPAKK.js	chunk-OTGA5TWO.js	Component			
+/main-legacy/settings/school-opt	school-opt	chunk-EGYU7FNO.js	chunk-7OE4HMTM.js	Component			
+/main-legacy/settings/school-prof	school-prof	chunk-FG5WIMPJ.js	chunk-7OE4HMTM.js	Component			
+/main-legacy/settings/term-dates	term-dates	chunk-3YVGFK2W.js	chunk-7OE4HMTM.js	Children			
+/main-legacy/settings/term-dates/		chunk-67BGTPQS.js	chunk-3YVGFK2W.js	Component			
+/main-legacy/settings/usr-roles	usr-roles	chunk-VT5I4JZP.js	chunk-7OE4HMTM.js	Children			
+/main-legacy/settings/usr-roles/		chunk-UYYCA7BM.js	chunk-VT5I4JZP.js	Component			
+/main-legacy/staff/:staffType	staff/:staffType	chunk-SYXMRVDO.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/staff/:staffType/		chunk-PEUVMIQ7.js	chunk-SYXMRVDO.js	Component			
+/main-legacy/staff/:staffType/:staffId	:staffId	chunk-SS4L6RRJ.js	chunk-SYXMRVDO.js	Children		add-teachers,add-staff-bom-pa	
+/main-legacy/staff/:staffType/:staffId/		chunk-5HFXAVQB.js	chunk-SS4L6RRJ.js	Component			
+/main-legacy/staff/:staffType/:staffId/classes	classes	chunk-VV4PTQX5.js	chunk-SS4L6RRJ.js	Component			
+/main-legacy/staff/:staffType/:staffId/edit	edit	chunk-I55WY5NV.js	chunk-SS4L6RRJ.js	Component			
+/main-legacy/staff/:staffType/:staffId/schools	schools	chunk-FOAYLXQM.js	chunk-SS4L6RRJ.js	Component			
+/main-legacy/staff/:staffType/add	add	chunk-LK4IDXY4.js	chunk-SYXMRVDO.js	Component		add-teachers,add-staff-bom-pa	
+/main-legacy/staff/:staffType/add-to-merged-schools	add-to-merged-schools	chunk-WE5G7JVL.js	chunk-SYXMRVDO.js	Component		add-teachers,add-staff-bom-pa	
+/main-legacy/staff/:staffType/duty-roster	duty-roster	chunk-YMCPYGBD.js	chunk-SYXMRVDO.js	Children		edit-duty-rota	
+/main-legacy/staff/:staffType/duty-roster/		chunk-QYOB2YRU.js	chunk-YMCPYGBD.js	Component			
+/main-legacy/staff/:staffType/duty-roster/:termWeekId/add-teachers	:termWeekId/add-teachers	chunk-7UPH2SYW.js	chunk-YMCPYGBD.js	Component			
+/main-legacy/staff/:staffType/duty-roster/:termWeekId/details	:termWeekId/details	chunk-VM5Q2VZM.js	chunk-YMCPYGBD.js	Component			
+/main-legacy/staff/:staffType/duty-roster/summary	summary	chunk-J2WTRUF5.js	chunk-YMCPYGBD.js	Component			
+/main-legacy/staff/:staffType/groups	groups	chunk-WBMAEWNC.js	chunk-SYXMRVDO.js	Component		add-edit-teacher-groups,add-edit-staff-bom-pa-groups	
+/main-legacy/staff/:staffType/manage	manage	chunk-AROQXNN2.js	chunk-SYXMRVDO.js	Component		view-teacher-list,view-staff-bom-pa-list	
+/main-legacy/students	students	chunk-T4RRQALD.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/students/		chunk-RLBLXK7O.js	chunk-T4RRQALD.js	Component			
+/main-legacy/students/assessments	assessments	chunk-UOUMJ6AT.js	chunk-T4RRQALD.js	Children			
+/main-legacy/students/assessments/		chunk-PWPFUPN5.js	chunk-UOUMJ6AT.js	Component			
+/main-legacy/students/assessments/analysis	analysis	chunk-ZF5TAORX.js	chunk-UOUMJ6AT.js	Component			
+/main-legacy/students/assessments/assignments	assignments	chunk-TF2G2ZK2.js	chunk-UOUMJ6AT.js	Component			
+/main-legacy/students/assessments/reports	reports	chunk-TF2G2ZK2.js	chunk-UOUMJ6AT.js	Component			
+/main-legacy/students/deleted-students	deleted-students	chunk-WIYCJE26.js	chunk-T4RRQALD.js	Children			
+/main-legacy/students/deleted-students/		chunk-PQQZGCTR.js	chunk-WIYCJE26.js	Component			
+/main-legacy/students/groups	groups	chunk-MGLIMBNL.js	chunk-T4RRQALD.js	Children			
+/main-legacy/students/groups/		chunk-EKLIJNMO.js	chunk-MGLIMBNL.js	Component			
+/main-legacy/students/groups/		chunk-7QNAQC7E.js	chunk-MGLIMBNL.js	Component			
+/main-legacy/students/groups/:studentGroupId/manage	:studentGroupId/manage	chunk-PPCNDTPZ.js	chunk-MGLIMBNL.js	Component			
+/main-legacy/students/groups/:studentGroupId/student-addition	:studentGroupId/student-addition	chunk-YSSRTZOJ.js	chunk-MGLIMBNL.js	Component			
+/main-legacy/students/mvSt	mvSt	chunk-FTV3FJXE.js	chunk-T4RRQALD.js	Component			
+/main-legacy/students/new	new	chunk-YXDUPOG5.js	chunk-T4RRQALD.js	Component			
+/main-legacy/students/prof/:id	prof/:id	chunk-BTBDQO35.js	chunk-T4RRQALD.js	Children			
+/main-legacy/students/prof/:id/		chunk-A6VSMZFQ.js	chunk-BTBDQO35.js	Component			
+/main-legacy/students/prof/:id/analytics	analytics	chunk-DH7ADCYX.js	chunk-BTBDQO35.js	Component			
+/main-legacy/students/prof/:id/analytics/:subjectid/:seriesid/:egroupid	analytics/:subjectid/:seriesid/:egroupid	chunk-6QGHCLAZ.js	chunk-BTBDQO35.js	Component			
+/main-legacy/students/prof/:id/diary	diary	chunk-JT6YVOL2.js	chunk-BTBDQO35.js	Children			
+/main-legacy/students/prof/:id/diary/		chunk-ZLBPCYN6.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/students/prof/:id/diary/:noticeId/:noticeType/edit-notice	:noticeId/:noticeType/edit-notice	chunk-WAXOW4UG.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/students/prof/:id/diary/:noticeType/create-notice	:noticeType/create-notice	chunk-WAXOW4UG.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/students/prof/:id/diary/assignment	assignment	chunk-QY3KURG6.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/students/prof/:id/diary/behaviour	behaviour	chunk-WS7LWLFG.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/students/prof/:id/diary/general-updates	general-updates	chunk-RJG6M5VA.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/students/prof/:id/diary/notices	notices	chunk-RJG6M5VA.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/students/prof/:id/diary/student-diary	student-diary	chunk-5O5J34SG.js	chunk-JT6YVOL2.js	Component			
+/main-legacy/students/prof/:id/inbox	inbox	chunk-XZKKOTIS.js	chunk-BTBDQO35.js	Component			
+/main-legacy/students/prof/:id/linked-accounts	linked-accounts	chunk-UBSHBSWG.js	chunk-BTBDQO35.js	Component			
+/main-legacy/students/prof/:id/notes	notes	chunk-DUXZPEKZ.js	chunk-BTBDQO35.js	Children			
+/main-legacy/students/prof/:id/notes/		chunk-ZLE2BE4O.js	chunk-DUXZPEKZ.js	Component			
+/main-legacy/students/prof/:id/notes/activities	activities	chunk-QG6JHHVP.js	chunk-DUXZPEKZ.js	Component			
+/main-legacy/students/prof/:id/notes/behaviour	behaviour	chunk-WS7LWLFG.js	chunk-DUXZPEKZ.js	Component			
+/main-legacy/students/prof/:id/notes/discipline	discipline	chunk-X6CRAXMK.js	chunk-DUXZPEKZ.js	Component			
+/main-legacy/students/prof/:id/pathways	pathways	chunk-YNFVPGN2.js	chunk-BTBDQO35.js	Component			
+/main-legacy/students/prof/:id/profile	profile	chunk-SSNZZ7HO.js	chunk-BTBDQO35.js	Component			
+/main-legacy/students/prof/:id/record-card	record-card	chunk-E44T2DPO.js	chunk-BTBDQO35.js	Component			
+/main-legacy/students/search	search	chunk-IOG26Q6H.js	chunk-T4RRQALD.js	Component			
+/main-legacy/students/stRes	stRes	chunk-RQ5PJI2T.js	chunk-T4RRQALD.js	Children			
+/main-legacy/students/stRes/		chunk-NFMWSGDC.js	chunk-RQ5PJI2T.js	Component			
+/main-legacy/students/stRes/:id	:id	chunk-NFMWSGDC.js	chunk-RQ5PJI2T.js	Component			
+/main-legacy/students/uDp	uDp	chunk-T2AFAKAT.js	chunk-T4RRQALD.js	Component			
+/main-legacy/students/upFeeStmts	upFeeStmts	chunk-TCM4DBNJ.js	chunk-T4RRQALD.js	Component			
+/main-legacy/students/uPrf	uPrf	chunk-MNMRUUI4.js	chunk-T4RRQALD.js	Component			
+/main-legacy/students/upStGrades	upStGrades	chunk-LKFVHICQ.js	chunk-T4RRQALD.js	Component			
+/main-legacy/subjects	subjects	chunk-57GH2PL7.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/subjects/		chunk-AEUPHMO2.js	chunk-57GH2PL7.js	Component			
+/main-legacy/subjects/categories	categories	chunk-574FSLVU.js	chunk-57GH2PL7.js	Children			
+/main-legacy/subjects/categories/		chunk-MF7OMECL.js	chunk-574FSLVU.js	Component			
+/main-legacy/subjects/categories/list	list	chunk-EJFF2SIP.js	chunk-574FSLVU.js	Component			
+/main-legacy/subjects/categories/manage	manage	chunk-2MKDZRPO.js	chunk-574FSLVU.js	Component			
+/main-legacy/subjects/combinations	combinations	chunk-LZ5DWPZ7.js	chunk-57GH2PL7.js	Children			
+/main-legacy/subjects/combinations/		chunk-G7KG3DZG.js	chunk-LZ5DWPZ7.js	Component			
+/main-legacy/subjects/combinations/add	add	chunk-6AHB2AF2.js	chunk-LZ5DWPZ7.js	Component			
+/main-legacy/subjects/compulsory	compulsory	chunk-CC2QYQ6I.js	chunk-57GH2PL7.js	Children			
+/main-legacy/subjects/compulsory/		chunk-MGS3KUC5.js	chunk-CC2QYQ6I.js	Component			
+/main-legacy/subjects/compulsory/add	add	chunk-SBT4E76J.js	chunk-CC2QYQ6I.js	Component			
+/main-legacy/subjects/compulsory/update/:form	update/:form	chunk-SBT4E76J.js	chunk-CC2QYQ6I.js	Component			
+/main-legacy/subjects/departments	departments	chunk-MDC5Q54L.js	chunk-57GH2PL7.js	Children			
+/main-legacy/subjects/departments/		chunk-AKXKPPWS.js	chunk-MDC5Q54L.js	Component			
+/main-legacy/subjects/departments/add	add	chunk-BJQTER4W.js	chunk-MDC5Q54L.js	Component			
+/main-legacy/subjects/departments/details/:departmentId	details/:departmentId	chunk-XTAENNHH.js	chunk-MDC5Q54L.js	Component			
+/main-legacy/subjects/departments/edit/:departmentId	edit/:departmentId	chunk-BJQTER4W.js	chunk-MDC5Q54L.js	Component			
+/main-legacy/subjects/manage	manage	chunk-ALYR4HYQ.js	chunk-57GH2PL7.js	Children			
+/main-legacy/subjects/manage/		chunk-DWKQY6QG.js	chunk-ALYR4HYQ.js	Component			
+/main-legacy/subjects/manage/topics	topics	chunk-QJKTWMAB.js	chunk-ALYR4HYQ.js	Children			
+/main-legacy/subjects/manage/topics/		chunk-2BZUDDMM.js	chunk-QJKTWMAB.js	Component			
+/main-legacy/subjects/pathways	pathways	chunk-QMWAPV7Q.js	chunk-57GH2PL7.js	Children			
+/main-legacy/subjects/pathways/		chunk-KLZSIPKI.js	chunk-QMWAPV7Q.js	Component			
+/main-legacy/subjects/pathways/add/:pathwayId	add/:pathwayId	chunk-NBNSSJUB.js	chunk-QMWAPV7Q.js	Component			
+/main-legacy/subjects/pathways/details/:pathwayId	details/:pathwayId	chunk-LCVXMKRV.js	chunk-QMWAPV7Q.js	Component			
+/main-legacy/subjects/subject-groupings	subject-groupings	chunk-ZSAIDHYM.js	chunk-57GH2PL7.js	Children			
+/main-legacy/subjects/subject-groupings/		chunk-ZCEE7KL4.js	chunk-ZSAIDHYM.js	Component			
+/main-legacy/subjects/subject-groupings/add	add	chunk-RFUOCXX4.js	chunk-ZSAIDHYM.js	Component			
+/main-legacy/subjects/subject-groupings/update/:groupId	update/:groupId	chunk-RFUOCXX4.js	chunk-ZSAIDHYM.js	Component			
+/main-legacy/switching-school	switching-school	chunk-JUSN5IA3.js	chunk-OVTIWFFH.js	Component			
+/main-legacy/timetable	timetable	chunk-OE5F4MKK.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/timetable/		chunk-2IYAHSGV.js	chunk-OE5F4MKK.js	Component			
+/main-legacy/timetable/class	class	chunk-4DTRPQ2S.js	chunk-OE5F4MKK.js	Component			
+/main-legacy/timetable/dashboard	dashboard	chunk-DJQJA2C7.js	chunk-OE5F4MKK.js	Component			
+/main-legacy/timetable/teacher	teacher	chunk-QQBFV7KW.js	chunk-OE5F4MKK.js	Component			
+/main-legacy/wallet	wallet	chunk-G5QPCOPR.js	chunk-OVTIWFFH.js	Children			
+/main-legacy/wallet/		chunk-VHGL4GKF.js	chunk-G5QPCOPR.js	Component			
+/main-legacy/wallet/auth	auth	chunk-AILP4TAZ.js	chunk-G5QPCOPR.js	Children			
+/main-legacy/wallet/auth/		chunk-J3EBDUJH.js	chunk-AILP4TAZ.js	Component			
+/main-legacy/wallet/auth/**	**	chunk-VCOSVWFW.js	chunk-AILP4TAZ.js	Component			
+/main-legacy/wallet/auth/login	login	chunk-VCOSVWFW.js	chunk-AILP4TAZ.js	Component			
+/main-legacy/wallet/auth/signup	signup	chunk-5G656X3L.js	chunk-AILP4TAZ.js	Component			
+/main-legacy/wallet/created	created	chunk-5B6E2C2J.js	chunk-G5QPCOPR.js	Component			
+/main-legacy/wallet/dashboard	dashboard	chunk-QRLO5OK7.js	chunk-G5QPCOPR.js	Component			
+/main-legacy/wallet/pay-fees	pay-fees	chunk-MGJGNQVM.js	chunk-G5QPCOPR.js	Component			
+/main-legacy/wallet/save-to-wallet	save-to-wallet	chunk-WI3BURHR.js	chunk-G5QPCOPR.js	Component			
+/main-legacy/wallet/statements/:admNo	statements/:admNo	chunk-4H67GGU7.js	chunk-G5QPCOPR.js	Component			
+/main-legacy/wallet/welcome	welcome	chunk-AV7TAAPG.js	chunk-G5QPCOPR.js	Component			
+/main/		chunk-B2VBJNVH.js	chunk-2FNEJMO3.js	Component			
+/main/active-sessions	active-sessions	chunk-KYWQFOQ4.js	chunk-2FNEJMO3.js	Component			
+/main/attendance-v2	attendance-v2	chunk-QMNXHS3F.js	chunk-2FNEJMO3.js	Children	access-attendance		
+/main/attendance-v2/		chunk-IJNNLKLM.js	chunk-QMNXHS3F.js	Component			
+/main/attendance-v2/checkouts	checkouts	chunk-32WO4H7I.js	chunk-QMNXHS3F.js	Children			
+/main/attendance-v2/checkouts/		chunk-RTEBFMIC.js	chunk-32WO4H7I.js	Component			
+/main/attendance-v2/checkouts/:checkoutId	:checkoutId	chunk-463KMMXH.js	chunk-32WO4H7I.js	Component			
+/main/attendance-v2/checkouts/:checkoutId/report	:checkoutId/report	chunk-R2LRFMEG.js	chunk-32WO4H7I.js	Component			
+/main/attendance-v2/checkouts/:checkoutId/update	:checkoutId/update	chunk-QABRS6TX.js	chunk-32WO4H7I.js	Component	create-checkout		
+/main/attendance-v2/checkouts/new	new	chunk-QABRS6TX.js	chunk-32WO4H7I.js	Component	create-checkout		
+/main/attendance-v2/leaveouts	leaveouts	chunk-ONLKXLEA.js	chunk-QMNXHS3F.js	Children			
+/main/attendance-v2/leaveouts/		chunk-622MCTC5.js	chunk-ONLKXLEA.js	Component			
+/main/attendance-v2/leaveouts/:leaveOutId	:leaveOutId	chunk-BGBKSV2N.js	chunk-ONLKXLEA.js	Component			
+/main/attendance-v2/leaveouts/:leaveOutId/update	:leaveOutId/update	chunk-EVRTSUL4.js	chunk-ONLKXLEA.js	Component	create-leaveout		
+/main/attendance-v2/leaveouts/member/:leaveOutMemberId	member/:leaveOutMemberId	chunk-BGBKSV2N.js	chunk-ONLKXLEA.js	Component			
+/main/attendance-v2/leaveouts/new	new	chunk-EVRTSUL4.js	chunk-ONLKXLEA.js	Component	create-leaveout		
+/main/attendance-v2/manage-attendance	manage-attendance	chunk-GFTSQIZC.js	chunk-QMNXHS3F.js	Children			
+/main/attendance-v2/manage-attendance/		chunk-XLUFPUA2.js	chunk-GFTSQIZC.js	Component	manage-attendance-status-levels		
+/main/attendance-v2/mark-attendance	mark-attendance	chunk-UFLJ7KN6.js	chunk-QMNXHS3F.js	Children			
+/main/attendance-v2/mark-attendance/		chunk-5JK3YTGN.js	chunk-UFLJ7KN6.js	Component			
+/main/attendance-v2/mark-attendance/session/:sessionId	session/:sessionId	chunk-KO7LIZ5Z.js	chunk-UFLJ7KN6.js	Component			
+/main/attendance-v2/mark-attendance/unit/:unitType/:unitId	unit/:unitType/:unitId	chunk-HBMISOBB.js	chunk-UFLJ7KN6.js	Component			
+/main/attendance-v2/mark-attendance/unit/:unitType/:unitId/mark	unit/:unitType/:unitId/mark	chunk-L6HDIGOL.js	chunk-UFLJ7KN6.js	Component			
+/main/attendance-v2/mark-attendance/unit/:unitType/:unitId/student/:studentId	unit/:unitType/:unitId/student/:studentId	chunk-KIIPXHCK.js	chunk-UFLJ7KN6.js	Component			
+/main/attendance-v2/school-attendance	school-attendance	chunk-BLMDYJTJ.js	chunk-QMNXHS3F.js	Children			
+/main/attendance-v2/school-attendance/		chunk-FWSEUHNF.js	chunk-BLMDYJTJ.js	Component	manage-attendance-facts		
+/main/attendance-v2/school-attendance/class/:entityId	class/:entityId	chunk-IRPL77EW.js	chunk-BLMDYJTJ.js	Component	manage-attendance-facts		
+/main/attendance-v2/school-attendance/subject/:entityId	subject/:entityId	chunk-IRPL77EW.js	chunk-BLMDYJTJ.js	Component	manage-attendance-facts		
+/main/behaviour-v2	behaviour-v2	chunk-6BKAUP7N.js	chunk-2FNEJMO3.js	Children	access-behavior		
+/main/behaviour-v2/		chunk-PZJSNKFS.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/manage-behaviour	manage-behaviour	chunk-5V7YVG2B.js	chunk-6BKAUP7N.js	Component	manage-behavior		
+/main/behaviour-v2/student-behaviour	student-behaviour	chunk-USLGTW5M.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/application/:applicationId	student-behaviour/application/:applicationId	chunk-U5AV24B3.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/assign-position	student-behaviour/assign-position	chunk-A5N26IM7.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/new	student-behaviour/new	chunk-OT54P3JL.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/position/:positionId	student-behaviour/position/:positionId	chunk-7XCZHIVG.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/recommend	student-behaviour/recommend	chunk-HBRNQRNS.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/recommendation/:recommendationId	student-behaviour/recommendation/:recommendationId	chunk-IQ6JAPK6.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/record/:recordId	student-behaviour/record/:recordId	chunk-QROQPV7M.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/residence/:id	student-behaviour/residence/:id	chunk-LMTOAHTG.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/stream/:id	student-behaviour/stream/:id	chunk-LMTOAHTG.js	chunk-6BKAUP7N.js	Component			
+/main/behaviour-v2/student-behaviour/student/:studentId	student-behaviour/student/:studentId	chunk-6W5IWDN4.js	chunk-6BKAUP7N.js	Component			
+/main/billing	billing	chunk-QGAXATK3.js	chunk-2FNEJMO3.js	Children		access-billing	
+/main/billing/		chunk-3BTYMVWW.js	chunk-QGAXATK3.js	Component			
+/main/billing/invoices	invoices	chunk-QI5SXN2P.js	chunk-QGAXATK3.js	Component			
+/main/billing/proforma/:id	proforma/:id	chunk-ATA5FWSJ.js	chunk-QGAXATK3.js	Component			
+/main/billing/receipts	receipts	chunk-PV2ILAI4.js	chunk-QGAXATK3.js	Component			
+/main/change-password	change-password	chunk-2JLOZU34.js	chunk-2FNEJMO3.js	Component			
+/main/classes	classes	chunk-P2CTEU4K.js	chunk-2FNEJMO3.js	Children	access-classes		
+/main/classes/		chunk-ENAEJURT.js	chunk-P2CTEU4K.js	Component			
+/main/classes/add	add	chunk-ENAEJURT.js	chunk-P2CTEU4K.js	Component	add-classes		
+/main/classes/manage	manage	chunk-XGUAHZ52.js	chunk-P2CTEU4K.js	Children			
+/main/classes/manage/		chunk-ENAEJURT.js	chunk-XGUAHZ52.js	Component	manage-classes		
+/main/classes/manage/classes/:id	classes/:id	chunk-ENAEJURT.js	chunk-XGUAHZ52.js	Component	manage-classes		
+/main/classes/manage/streams/:id	streams/:id	chunk-ENAEJURT.js	chunk-XGUAHZ52.js	Component	manage-classes		
+/main/classes/manage/streams/add/:streamid	streams/add/:streamid	chunk-ENAEJURT.js	chunk-XGUAHZ52.js	Component	add-classes		
+/main/classes/manage/streams/subjects/:classId	streams/subjects/:classId	chunk-ENAEJURT.js	chunk-XGUAHZ52.js	Component	can-manage-subject-class		
+/main/classes/myclass	myclass	chunk-ENAEJURT.js	chunk-P2CTEU4K.js	Component			
+/main/classes/myclass/sc/:id	myclass/sc/:id	chunk-ENAEJURT.js	chunk-P2CTEU4K.js	Component			
+/main/counselling	counselling	chunk-TA2V37GA.js	chunk-2FNEJMO3.js	Children			
+/main/counselling/		chunk-NCOUM5T3.js	chunk-TA2V37GA.js	Component			
+/main/counselling/approvals	approvals	chunk-7LWN4FZX.js	chunk-TA2V37GA.js	Component			
+/main/counselling/availability	availability	chunk-PAAUMDVQ.js	chunk-TA2V37GA.js	Component			
+/main/counselling/crisis-cases	crisis-cases	chunk-T6PA6EQ2.js	chunk-TA2V37GA.js	Component			
+/main/counselling/crisis-cases/:crisisCaseId	crisis-cases/:crisisCaseId	chunk-XEVZZHJ3.js	chunk-TA2V37GA.js	Component			
+/main/counselling/dashboard	dashboard	chunk-RMD5E5N5.js	chunk-TA2V37GA.js	Component			
+/main/counselling/overview	overview	chunk-4I4F7H2A.js	chunk-TA2V37GA.js	Component	view-admin-dashboard		
+/main/counselling/referrals	referrals	chunk-QLXPM3VX.js	chunk-TA2V37GA.js	Component			
+/main/counselling/referrals/:referralId	referrals/:referralId	chunk-7UAO7R26.js	chunk-TA2V37GA.js	Component			
+/main/counselling/sessions	sessions	chunk-GYYATAR4.js	chunk-TA2V37GA.js	Component			
+/main/counselling/sessions/:sessionId	sessions/:sessionId	chunk-U3UZK7XP.js	chunk-TA2V37GA.js	Component			
+/main/counselling/sessions/:sessionId/wizard	sessions/:sessionId/wizard	chunk-PVWBTRNK.js	chunk-TA2V37GA.js	Component			
+/main/counselling/sessions/history	sessions/history	chunk-6QMOPY24.js	chunk-TA2V37GA.js	Component			
+/main/counselling/sessions/new	sessions/new	chunk-PVWBTRNK.js	chunk-TA2V37GA.js	Component			
+/main/counselling/settings	settings	chunk-HV3L7SGI.js	chunk-TA2V37GA.js	Component			
+/main/counselling/staff	staff	chunk-67WU7P4J.js	chunk-TA2V37GA.js	Component			
+/main/customer-support	customer-support	chunk-JCK3KFVC.js	chunk-2FNEJMO3.js	Children			
+/main/customer-support/		chunk-DHHYHL6E.js	chunk-JCK3KFVC.js	Component			
+/main/dashboard	dashboard	chunk-B7OC7JPU.js	chunk-2FNEJMO3.js	Children			
+/main/dashboard/		chunk-GQ56OKJV.js	chunk-B7OC7JPU.js	Component			
+/main/dashboard/global	global	chunk-GQ56OKJV.js	chunk-B7OC7JPU.js	Component			
+/main/dashboard/gradclasses	gradclasses	chunk-GQ56OKJV.js	chunk-B7OC7JPU.js	Component			
+/main/dashboard/myclasses	myclasses	chunk-GQ56OKJV.js	chunk-B7OC7JPU.js	Component			
+/main/dashboard/setup	setup	chunk-NOSTDHLG.js	chunk-B7OC7JPU.js	Component			
+/main/dashboard/welcome	welcome	chunk-ZJUTZUIY.js	chunk-B7OC7JPU.js	Children			
+/main/dashboard/welcome/		chunk-WMN3V6CO.js	chunk-ZJUTZUIY.js	Component			
+/main/dashboard/welcome/admin	admin	chunk-FMYEOK4S.js	chunk-ZJUTZUIY.js	Component	view-admin-dashboard		
+/main/dashboard/welcome/secretary	secretary	chunk-FMYEOK4S.js	chunk-ZJUTZUIY.js	Component	view-secretary-dashboard		
+/main/dashboard/welcome/student	student	chunk-42W3M5KC.js	chunk-ZJUTZUIY.js	Children	view-student-dashboard		
+/main/dashboard/welcome/student/analysis	analysis	chunk-VR2SM6QY.js	chunk-42W3M5KC.js	Component			
+/main/dashboard/welcome/student/behaviour	behaviour	chunk-6W5IWDN4.js	chunk-42W3M5KC.js	Component			
+/main/dashboard/welcome/student/behaviour/application/:applicationId	behaviour/application/:applicationId	chunk-U5AV24B3.js	chunk-42W3M5KC.js	Component			
+/main/dashboard/welcome/student/behaviour/apply	behaviour/apply	chunk-XJGPD2GL.js	chunk-42W3M5KC.js	Component			
+/main/dashboard/welcome/student/behaviour/recommendation/:recommendationId	behaviour/recommendation/:recommendationId	chunk-IQ6JAPK6.js	chunk-42W3M5KC.js	Component			
+/main/dashboard/welcome/student/diary	diary	chunk-TMV5AVOB.js	chunk-42W3M5KC.js	Children			
+/main/dashboard/welcome/student/diary/		chunk-AXTN4ZZF.js	chunk-TMV5AVOB.js	Component			
+/main/dashboard/welcome/student/diary/:noticeId/:noticeType/edit-notice	:noticeId/:noticeType/edit-notice	chunk-BR26WKHT.js	chunk-TMV5AVOB.js	Component			
+/main/dashboard/welcome/student/diary/:noticeType/create-notice	:noticeType/create-notice	chunk-BR26WKHT.js	chunk-TMV5AVOB.js	Component			
+/main/dashboard/welcome/student/diary/assignment	assignment	chunk-ICVGYKTF.js	chunk-TMV5AVOB.js	Component			
+/main/dashboard/welcome/student/diary/general-updates	general-updates	chunk-NR3DTILB.js	chunk-TMV5AVOB.js	Component			
+/main/dashboard/welcome/student/diary/notices	notices	chunk-NR3DTILB.js	chunk-TMV5AVOB.js	Component			
+/main/dashboard/welcome/student/diary/student-diary	student-diary	chunk-CPVBTWUR.js	chunk-TMV5AVOB.js	Component			
+/main/dashboard/welcome/student/messages	messages	chunk-NXBE34TD.js	chunk-42W3M5KC.js	Component			
+/main/dashboard/welcome/student/profile	profile	chunk-CMYQJBJP.js	chunk-42W3M5KC.js	Component			
+/main/dashboard/welcome/teacher	teacher	chunk-FMYEOK4S.js	chunk-ZJUTZUIY.js	Component	view-teacher-dashboard		
+/main/events	events	chunk-HP5SJNTQ.js	chunk-2FNEJMO3.js	Children	access-events		
+/main/events/manage	manage	chunk-QOOVUSGE.js	chunk-HP5SJNTQ.js	Children			
+/main/events/manage/assignments	assignments	chunk-MK6W2KOQ.js	chunk-QOOVUSGE.js	Component			
+/main/events/manage/notices	notices	chunk-PRL4AEBQ.js	chunk-QOOVUSGE.js	Component			
+/main/events/newsletter	newsletter	chunk-L7EPYDSX.js	chunk-HP5SJNTQ.js	Children			
+/main/exam-comment-system	exam-comment-system	chunk-DN3LGZPU.js	chunk-2FNEJMO3.js	Children	access-comments		
+/main/exam-comment-system/categories	categories	chunk-KWYQFKCK.js	chunk-DN3LGZPU.js	Children			
+/main/exam-comment-system/categories/		chunk-GF5PRPWH.js	chunk-KWYQFKCK.js	Component			
+/main/exam-comment-system/categories/exam-group	exam-group	chunk-BGYOQEIL.js	chunk-KWYQFKCK.js	Component			
+/main/exam-comment-system/categories/general/class/:classId	general/class/:classId	chunk-AEMUIZTX.js	chunk-KWYQFKCK.js	Component			
+/main/exam-comment-system/categories/general/principal/:principalId	general/principal/:principalId	chunk-AEMUIZTX.js	chunk-KWYQFKCK.js	Component			
+/main/exam-comment-system/categories/general/residence/:residenceId	general/residence/:residenceId	chunk-AEMUIZTX.js	chunk-KWYQFKCK.js	Component			
+/main/exam-comment-system/categories/general/stream/:streamId	general/stream/:streamId	chunk-AEMUIZTX.js	chunk-KWYQFKCK.js	Component			
+/main/exam-comment-system/categories/student/principal/:principalId	student/principal/:principalId	chunk-4NB267YX.js	chunk-KWYQFKCK.js	Component			
+/main/exam-comment-system/categories/student/residence/:residenceId	student/residence/:residenceId	chunk-4NB267YX.js	chunk-KWYQFKCK.js	Component			
+/main/exam-comment-system/categories/student/stream/:streamId	student/stream/:streamId	chunk-4NB267YX.js	chunk-KWYQFKCK.js	Component			
+/main/exams	exams	chunk-4XKZKDAN.js	chunk-2FNEJMO3.js	Children	access-exams		
+/main/exams/		chunk-2G6NRCR3.js	chunk-4XKZKDAN.js	Component			
+/main/exams/coefficient-system	coefficient-system	chunk-OQSOOENH.js	chunk-4XKZKDAN.js	Children	view-edit-coefficient-system		
+/main/exams/coefficient-system/		chunk-6DZINTFB.js	chunk-OQSOOENH.js	Component			
+/main/exams/create-exam	create-exam	chunk-SUORZNHD.js	chunk-4XKZKDAN.js	Children	create-edit-exam		
+/main/exams/create-exam/		chunk-HTDCN6NT.js	chunk-SUORZNHD.js	Component			
+/main/exams/deleted-exams	deleted-exams	chunk-KXQEY3XB.js	chunk-4XKZKDAN.js	Children	can-delete-exam-permanently		
+/main/exams/deleted-exams/		chunk-XEHRIES4.js	chunk-KXQEY3XB.js	Component			
+/main/exams/grading-systems	grading-systems	chunk-I3OADQPL.js	chunk-4XKZKDAN.js	Children	view-edit-grading-system		
+/main/exams/grading-systems/		chunk-MVYTLLA5.js	chunk-I3OADQPL.js	Component			
+/main/exams/majors	majors	chunk-QEWIPVZJ.js	chunk-4XKZKDAN.js	Children	manage-exams		
+/main/exams/majors/		chunk-JMU4NR4X.js	chunk-QEWIPVZJ.js	Component			
+/main/exams/majors/		chunk-QICVWUHW.js	chunk-QEWIPVZJ.js	Component			
+/main/exams/manage	manage	chunk-EG4LPDBH.js	chunk-4XKZKDAN.js	Children	manage-exams		
+/main/exams/manage/		chunk-372RFQAZ.js	chunk-EG4LPDBH.js	Component	manage-exams		
+/main/exams/manage/:termIndex/:examIndex	:termIndex/:examIndex	chunk-372RFQAZ.js	chunk-EG4LPDBH.js	Component	manage-exams		
+/main/exams/manage/analysis	analysis	chunk-4FQDDP7Z.js	chunk-EG4LPDBH.js	Children			
+/main/exams/manage/analysis/:examId	:examId	chunk-CBO5BF5X.js	chunk-4FQDDP7Z.js	Component	manage-exams		
+/main/exams/manage/analysis/:examId/:intakeId	:examId/:intakeId	chunk-CBO5BF5X.js	chunk-4FQDDP7Z.js	Component	manage-exams		
+/main/exams/manage/analysis/:examId/:intakeId/:streamId	:examId/:intakeId/:streamId	chunk-CBO5BF5X.js	chunk-4FQDDP7Z.js	Component	manage-exams		
+/main/exams/manage/analysis/subject	subject	chunk-U7VPYE4W.js	chunk-4FQDDP7Z.js	Children			
+/main/exams/manage/analysis/subject/:examId/:subjectId/:intakeId	:examId/:subjectId/:intakeId	chunk-2AQYUAJW.js	chunk-U7VPYE4W.js	Component	manage-exams		
+/main/exams/manage/analysis/subject/:examId/:subjectId/:intakeId/:streamId	:examId/:subjectId/:intakeId/:streamId	chunk-2AQYUAJW.js	chunk-U7VPYE4W.js	Component	manage-exams		
+/main/exams/manage/analysis/subject/merit-list/:seriesid/:egroupid/:subjectid/:intakeid/:classid	merit-list/:seriesid/:egroupid/:subjectid/:intakeid/:classid	chunk-U5KEYTRA.js	chunk-U7VPYE4W.js	Component	manage-exams		
+/main/exams/manage/coefficient-system/:intakeId/:seriesId/:egroupId/:annualEgroupId	coefficient-system/:intakeId/:seriesId/:egroupId/:annualEgroupId	chunk-E5LNYLTW.js	chunk-EG4LPDBH.js	Component	view-edit-coefficient-system		
+/main/exams/manage/config	config	chunk-HZK2DKEK.js	chunk-EG4LPDBH.js	Children	manage-exams		
+/main/exams/manage/config/:intakeId/:seriesId	:intakeId/:seriesId	chunk-4JGJNUVQ.js	chunk-HZK2DKEK.js	Component	manage-exams		
+/main/exams/manage/publish	publish	chunk-O7IJKLWN.js	chunk-EG4LPDBH.js	Children			
+/main/exams/manage/publish/:intakeId/:examId/:examType	:intakeId/:examId/:examType	chunk-E2VI6NTQ.js	chunk-O7IJKLWN.js	Component	manage-exams		
+/main/exams/manage/publish/cs/:examId/:intakeId/:examType	cs/:examId/:intakeId/:examType	chunk-BFN6HDWJ.js	chunk-O7IJKLWN.js	Component	manage-exams		
+/main/exams/manage/publish/egroup/:intakeId/:examId	egroup/:intakeId/:examId	chunk-KMLF5WYG.js	chunk-O7IJKLWN.js	Component	manage-exams		
+/main/exams/manage/publish/status	status	chunk-7AVAPHND.js	chunk-O7IJKLWN.js	Children			
+/main/exams/manage/publish/status/:streamId/:examId	:streamId/:examId	chunk-RMCHKSBZ.js	chunk-7AVAPHND.js	Component	manage-exams		
+/main/exams/manage/publish/term-average/:intakeId/:examId/:type	term-average/:intakeId/:examId/:type	chunk-QC7NGGJC.js	chunk-O7IJKLWN.js	Component	manage-exams		
+/main/exams/manage/send-results	send-results	chunk-CMAZFW2A.js	chunk-EG4LPDBH.js	Children			
+/main/exams/manage/send-results/:intakeId/:examId	:intakeId/:examId	chunk-JCLYXIFH.js	chunk-CMAZFW2A.js	Component	manage-exams		
+/main/exams/manage/upload/:intakeId/:examId	upload/:intakeId/:examId	chunk-UUTA5GVF.js	chunk-EG4LPDBH.js	Component	manage-exams		
+/main/exams/mentions	mentions	chunk-I3OADQPL.js	chunk-4XKZKDAN.js	Children	manage-exams		
+/main/exams/mentions/		chunk-MVYTLLA5.js	chunk-I3OADQPL.js	Component			
+/main/exams/my-classes	my-classes	chunk-XUCXCXPF.js	chunk-4XKZKDAN.js	Children	view-my-classes		
+/main/exams/my-classes/		chunk-WKIJTDFZ.js	chunk-XUCXCXPF.js	Component	view-my-classes		
+/main/exams/my-classes/:classId	:classId	chunk-KMQIDIRH.js	chunk-XUCXCXPF.js	Component	view-my-classes		
+/main/exams/my-classes/assessments	assessments	chunk-2EMZKOFF.js	chunk-XUCXCXPF.js	Children			
+/main/exams/my-classes/assessments/		chunk-GBKYDUKL.js	chunk-2EMZKOFF.js	Component			
+/main/exams/my-classes/assessments/:classId	:classId	chunk-MSXRJY6F.js	chunk-2EMZKOFF.js	Component			
+/main/exams/my-classes/assessments/:classId/:assessmentId/results-upload	:classId/:assessmentId/results-upload	chunk-4Q3WYCQ5.js	chunk-2EMZKOFF.js	Component			
+/main/exams/my-classes/assessments/:classId/create	:classId/create	chunk-WP33BDAI.js	chunk-2EMZKOFF.js	Component			
+/main/exams/my-classes/assessments/:classId/results/:assessmentId	:classId/results/:assessmentId	chunk-WA7MCIEK.js	chunk-2EMZKOFF.js	Component			
+/main/exams/my-classes/assessments/assessment-report	assessment-report	chunk-YIQTJ66K.js	chunk-2EMZKOFF.js	Component			
+/main/exams/my-classes/assessments/student-report/:classId/:studentId/:term/:year	student-report/:classId/:studentId/:term/:year	chunk-XDW34GCB.js	chunk-2EMZKOFF.js	Component			
+/main/exams/my-classes/evaluation/publish	evaluation/publish	chunk-BAHAMEJP.js	chunk-XUCXCXPF.js	Component	view-my-classes		
+/main/exams/my-classes/exams	exams	chunk-Y5B77QNC.js	chunk-XUCXCXPF.js	Component	view-my-classes		
+/main/exams/my-classes/publish/results/subject/:classId/:examId	publish/results/subject/:classId/:examId	chunk-AMVB26KM.js	chunk-XUCXCXPF.js	Component	view-my-classes		
+/main/exams/my-classes/upload/results/subject/:classId/:examId	upload/results/subject/:classId/:examId	chunk-AMVB26KM.js	chunk-XUCXCXPF.js	Component	view-my-classes		
+/main/exams/subject-papers	subject-papers	chunk-SOOMPGX4.js	chunk-4XKZKDAN.js	Children	manage-exams		
+/main/exams/subject-papers/		chunk-3UGHT4WH.js	chunk-SOOMPGX4.js	Component			
+/main/finance	finance	chunk-5F4VHNOC.js	chunk-2FNEJMO3.js	Children	manage-finance		STUDENT
+/main/finance/		chunk-KKKQ5P7D.js	chunk-5F4VHNOC.js	Component			
+/main/finance/balances	balances	chunk-P6QO2YX2.js	chunk-5F4VHNOC.js	Children			
+/main/finance/balances/		chunk-4EKRGNUX.js	chunk-P6QO2YX2.js	Component			
+/main/finance/balances/balance-list	balance-list	chunk-ZK56UJXB.js	chunk-P6QO2YX2.js	Component			
+/main/finance/balances/balance-list/:streamId	balance-list/:streamId	chunk-ZK56UJXB.js	chunk-P6QO2YX2.js	Component			
+/main/finance/fee-str	fee-str	chunk-BXKIECT2.js	chunk-5F4VHNOC.js	Component			
+/main/finance/fee-str/:feeStructureId	fee-str/:feeStructureId	chunk-VBFGN2MV.js	chunk-5F4VHNOC.js	Component			
+/main/finance/pledges	pledges	chunk-PK3B6RTT.js	chunk-5F4VHNOC.js	Children			
+/main/finance/pledges/		chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main/finance/pledges/:studentId	:studentId	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main/finance/pledges/**	**	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main/finance/pledges/add	add	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main/finance/pledges/add/:pledgeId	add/:pledgeId	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main/finance/pledges/list	list	chunk-HVKNEUZ5.js	chunk-PK3B6RTT.js	Component			
+/main/finance/sch-fin	sch-fin	chunk-5OPFSVXW.js	chunk-5F4VHNOC.js	Component			
+/main/finance/student	student	chunk-IGRF2DW5.js	chunk-5F4VHNOC.js	Children			
+/main/finance/student/		chunk-MFM5KIUR.js	chunk-IGRF2DW5.js	Component			
+/main/finance/student/**	**	chunk-AGCEL5P7.js	chunk-IGRF2DW5.js	Component			
+/main/finance/student/dashboard	dashboard	chunk-AGCEL5P7.js	chunk-IGRF2DW5.js	Component			
+/main/finance/student/dashboard	dashboard	chunk-J2ISOZNP.js	chunk-IGRF2DW5.js	Component			
+/main/finance/student/dashboard/pay	dashboard/pay	chunk-MFHS5V6K.js	chunk-IGRF2DW5.js	Component			
+/main/finance/student/finance-details	finance-details	chunk-UGOGZ6F2.js	chunk-IGRF2DW5.js	Component			
+/main/finance/student/mobile	mobile	chunk-SSLHKQBJ.js	chunk-IGRF2DW5.js	Component			
+/main/finance/teacher-loans	teacher-loans	chunk-6DIFJAL4.js	chunk-5F4VHNOC.js	Children			
+/main/finance/teacher-loans/		chunk-VEVZVIMZ.js	chunk-6DIFJAL4.js	Component			
+/main/finance/teacher-loans/		chunk-GOGLLH6Z.js	chunk-6DIFJAL4.js	Component			
+/main/finance/teacher-loans/application-details	application-details	chunk-NH2G2EM7.js	chunk-6DIFJAL4.js	Component			
+/main/finance/teacher-loans/start-application	start-application	chunk-G3IQZW2Y.js	chunk-6DIFJAL4.js	Component			
+/main/linked-accounts	linked-accounts	chunk-A3JSP2DT.js	chunk-2FNEJMO3.js	Component			
+/main/medical	medical	chunk-JNJI6AOG.js	chunk-2FNEJMO3.js	Children	view-medical		
+/main/medical/		chunk-HMR4C5KW.js	chunk-JNJI6AOG.js	Component			
+/main/medical/clinic-details	clinic-details	chunk-E32MHKDP.js	chunk-JNJI6AOG.js	Component			
+/main/medical/clinic-details/:id	clinic-details/:id	chunk-NMSABUJU.js	chunk-JNJI6AOG.js	Component			
+/main/medical/clinic-details/new	clinic-details/new	chunk-OYQY5L35.js	chunk-JNJI6AOG.js	Component	create-medical-incident-report		
+/main/medical/clinical-visits	clinical-visits	chunk-VMA2ZJ3F.js	chunk-JNJI6AOG.js	Component	manage-clinic-visits		
+/main/medical/clinical-visits/:id	clinical-visits/:id	chunk-MXCD4DIW.js	chunk-JNJI6AOG.js	Component	manage-clinic-visits		
+/main/medical/clinical-visits/:id/follow-up/new	clinical-visits/:id/follow-up/new	chunk-Q4NWHOF6.js	chunk-JNJI6AOG.js	Component	manage-medical-followups		
+/main/medical/clinical-visits/:id/resume	clinical-visits/:id/resume	chunk-DBP5OFME.js	chunk-JNJI6AOG.js	Component	manage-clinic-visits		
+/main/medical/clinical-visits/staff	clinical-visits/staff	chunk-RQJM77FL.js	chunk-JNJI6AOG.js	Component	manage-clinic-visits		
+/main/medical/dispensing	dispensing	chunk-MEALIQKC.js	chunk-JNJI6AOG.js	Component	manage-medical-dispensing		
+/main/medical/dosing-slots	dosing-slots	chunk-ZME7FC6L.js	chunk-JNJI6AOG.js	Component	manage-medical-dispensing		
+/main/medical/history	history	chunk-PFQHWF3L.js	chunk-JNJI6AOG.js	Component	manage-clinic-visits		
+/main/medical/incident-reports/:id	incident-reports/:id	chunk-NMSABUJU.js	chunk-JNJI6AOG.js	Component	manage-medical-incident-reports		
+/main/medical/inventory	inventory	chunk-RU72XEEJ.js	chunk-JNJI6AOG.js	Component			
+/main/medical/inventory/:id	inventory/:id	chunk-VAFZATYK.js	chunk-JNJI6AOG.js	Component			
+/main/medical/inventory/add	inventory/add	chunk-HCEEJIQQ.js	chunk-JNJI6AOG.js	Component			
+/main/medical/medication-history	medication-history	chunk-4CEYLJXS.js	chunk-JNJI6AOG.js	Component	manage-medical-dispensing		
+/main/medical/new	new	chunk-DBP5OFME.js	chunk-JNJI6AOG.js	Component	manage-clinic-visits		
+/main/medical/reports	reports	chunk-RDKLGR5S.js	chunk-JNJI6AOG.js	Component	view-medical-reports		
+/main/medical/restrictions	restrictions	chunk-NUCOOYWS.js	chunk-JNJI6AOG.js	Component			
+/main/medical/restrictions/:studentId	restrictions/:studentId	chunk-KOWCZ32D.js	chunk-JNJI6AOG.js	Component			
+/main/messages	messages	chunk-M5SZJUTK.js	chunk-2FNEJMO3.js	Children	access-messages		
+/main/messages/		chunk-XF5XTFOS.js	chunk-M5SZJUTK.js	Component			
+/main/messages/buy	buy	chunk-XF5XTFOS.js	chunk-M5SZJUTK.js	Component	purchase-sms		
+/main/messages/compose	compose	chunk-53TTHA3L.js	chunk-M5SZJUTK.js	Children	compose-send-sms		
+/main/messages/compose/		chunk-4K4S5TZH.js	chunk-53TTHA3L.js	Component	compose-send-sms		
+/main/messages/inbox	inbox	chunk-T4VTSQEL.js	chunk-M5SZJUTK.js	Children	access-messages		
+/main/messages/inbox/		chunk-PDMOGYFK.js	chunk-T4VTSQEL.js	Component			
+/main/messages/inbox/		chunk-QKG3PDSQ.js	chunk-T4VTSQEL.js	Component	access-messages		
+/main/messages/inbox/read/:id	read/:id	chunk-XG6NTL2W.js	chunk-T4VTSQEL.js	Component	access-messages		
+/main/messages/opt-outs	opt-outs	chunk-XF5XTFOS.js	chunk-M5SZJUTK.js	Component	compose-send-sms		
+/main/messages/receipt/:id	receipt/:id	chunk-XF5XTFOS.js	chunk-M5SZJUTK.js	Component	purchase-sms		
+/main/messages/track	track	chunk-XF5XTFOS.js	chunk-M5SZJUTK.js	Component	track-sms-usage		
+/main/messages/track/msggroup/:id	track/msggroup/:id	chunk-XF5XTFOS.js	chunk-M5SZJUTK.js	Component	track-sms-usage		
+/main/no-access	no-access	chunk-QR6RXDCM.js	chunk-2FNEJMO3.js	Component			
+/main/opportunities	opportunities	chunk-RRKHYSRI.js	chunk-2FNEJMO3.js	Children	access-opportunities		
+/main/opportunities/		chunk-JW4XWALZ.js	chunk-RRKHYSRI.js	Component			
+/main/opportunities/swap	swap	chunk-JCCUCYUS.js	chunk-RRKHYSRI.js	Component			
+/main/opportunities/vac	vac	chunk-PK6AD32O.js	chunk-RRKHYSRI.js	Component			
+/main/parent	parent	chunk-QYWFELYY.js	chunk-2FNEJMO3.js	Component			
+/main/printouts	printouts	chunk-ZKI5U7YF.js	chunk-2FNEJMO3.js	Children	access-printouts		
+/main/printouts/		chunk-F3GDH7VJ.js	chunk-ZKI5U7YF.js	Component			
+/main/printouts/analysis-report	analysis-report	chunk-Q4FKRZWB.js	chunk-ZKI5U7YF.js	Component	access-printouts		
+/main/printouts/assessment-report	assessment-report	chunk-5NUMDZ45.js	chunk-ZKI5U7YF.js	Component	view-assessments		
+/main/printouts/attendance-report	attendance-report	chunk-B7P2LSFM.js	chunk-ZKI5U7YF.js	Component	access-printouts		
+/main/printouts/class-list	class-list	chunk-A44RTHIO.js	chunk-ZKI5U7YF.js	Component	view-class-list		
+/main/printouts/house-list	house-list	chunk-LUFKXTCF.js	chunk-ZKI5U7YF.js	Component	view-class-list		
+/main/printouts/leaving-certificate	leaving-certificate	chunk-MPB6PNNR.js	chunk-ZKI5U7YF.js	Component	access-printouts		
+/main/printouts/mark-list	mark-list	chunk-Z2GYXG2A.js	chunk-ZKI5U7YF.js	Component	view-mark-list		
+/main/printouts/merit-list	merit-list	chunk-FRJZU4QD.js	chunk-ZKI5U7YF.js	Component	view-merit-list		
+/main/printouts/olevels/evaluation-report	olevels/evaluation-report	chunk-IEPWWMP3.js	chunk-ZKI5U7YF.js	Component	view-evaluation-report		
+/main/printouts/olevels/transcripts	olevels/transcripts	chunk-EQLEZHW7.js	chunk-ZKI5U7YF.js	Component	view-transcripts		
+/main/printouts/report-forms	report-forms	chunk-GE7RWLIH.js	chunk-ZKI5U7YF.js	Component	view-report-forms		
+/main/printouts/score-sheet	score-sheet	chunk-EPGDOQAP.js	chunk-ZKI5U7YF.js	Component	view-class-list		
+/main/printouts/transcripts	transcripts	chunk-67MEQ2KN.js	chunk-ZKI5U7YF.js	Component	view-transcripts		
+/main/settings	settings	chunk-DTRKVYAB.js	chunk-2FNEJMO3.js	Children	access-settings		
+/main/settings/		chunk-3KBYUFQ5.js	chunk-DTRKVYAB.js	Component			
+/main/settings/other-settings	other-settings	chunk-2SRJW73H.js	chunk-DTRKVYAB.js	Children		view-medical-conditions,view-leave-out-types	
+/main/settings/other-settings/		chunk-APLZNWOE.js	chunk-2SRJW73H.js	Component			
+/main/settings/printout-settings	printout-settings	chunk-3BQQUXWQ.js	chunk-DTRKVYAB.js	Children	edit-printout-settings		
+/main/settings/printout-settings/		chunk-SE2XWZXV.js	chunk-3BQQUXWQ.js	Component			
+/main/settings/profile	profile	chunk-LFJPZAKQ.js	chunk-DTRKVYAB.js	Children			
+/main/settings/profile/		chunk-JQBZ2RJT.js	chunk-LFJPZAKQ.js	Component			
+/main/settings/profile/active-sessions	active-sessions	chunk-JQBZ2RJT.js	chunk-LFJPZAKQ.js	Component			
+/main/settings/profile/change-password	change-password	chunk-EPZDFROB.js	chunk-LFJPZAKQ.js	Component			
+/main/settings/profile/linked-accounts	linked-accounts	chunk-JQBZ2RJT.js	chunk-LFJPZAKQ.js	Component			
+/main/settings/profile/my-prof	my-prof	chunk-JQBZ2RJT.js	chunk-LFJPZAKQ.js	Component			
+/main/settings/school-opt	school-opt	chunk-3KBYUFQ5.js	chunk-DTRKVYAB.js	Component	view-school-options		
+/main/settings/school-prof	school-prof	chunk-3KBYUFQ5.js	chunk-DTRKVYAB.js	Component	view-school-profile		
+/main/settings/section-heads	section-heads	chunk-LCF7DTFL.js	chunk-DTRKVYAB.js	Children	view-user-roles		
+/main/settings/section-heads/		chunk-POC2O2ZL.js	chunk-LCF7DTFL.js	Component			
+/main/settings/term-dates	term-dates	chunk-VLPVUV4M.js	chunk-DTRKVYAB.js	Children	view-term-dates		
+/main/settings/term-dates/		chunk-SNKHB2ET.js	chunk-VLPVUV4M.js	Component			
+/main/settings/usr-roles	usr-roles	chunk-MSO4SBB7.js	chunk-DTRKVYAB.js	Children	view-user-roles		
+/main/settings/usr-roles/		chunk-XOUYY76Z.js	chunk-MSO4SBB7.js	Component			
+/main/settings/usr-roles/add-user-role	add-user-role	chunk-XOUYY76Z.js	chunk-MSO4SBB7.js	Component	edit-user-roles		
+/main/settings/usr-roles/role/:roleId	role/:roleId	chunk-XOUYY76Z.js	chunk-MSO4SBB7.js	Component	view-user-roles		
+/main/settings/usr-roles/role/:roleId/user/:userId	role/:roleId/user/:userId	chunk-XOUYY76Z.js	chunk-MSO4SBB7.js	Component	can-manage-user-permissions		
+/main/staff/:staffType	staff/:staffType	chunk-SYXMRVDO.js	chunk-2FNEJMO3.js	Children		access-teachers,access-staff-bom-pa,edit-duty-rota,merge-bom-pa-schools,merge-teacher-schools	
+/main/staff/:staffType/		chunk-PEUVMIQ7.js	chunk-SYXMRVDO.js	Component			
+/main/staff/:staffType/:staffId	:staffId	chunk-SS4L6RRJ.js	chunk-SYXMRVDO.js	Children		add-teachers,add-staff-bom-pa	
+/main/staff/:staffType/:staffId/		chunk-5HFXAVQB.js	chunk-SS4L6RRJ.js	Component			
+/main/staff/:staffType/:staffId/classes	classes	chunk-VV4PTQX5.js	chunk-SS4L6RRJ.js	Component			
+/main/staff/:staffType/:staffId/edit	edit	chunk-I55WY5NV.js	chunk-SS4L6RRJ.js	Component			
+/main/staff/:staffType/:staffId/schools	schools	chunk-FOAYLXQM.js	chunk-SS4L6RRJ.js	Component			
+/main/staff/:staffType/add	add	chunk-LK4IDXY4.js	chunk-SYXMRVDO.js	Component		add-teachers,add-staff-bom-pa	
+/main/staff/:staffType/add-to-merged-schools	add-to-merged-schools	chunk-WE5G7JVL.js	chunk-SYXMRVDO.js	Component		add-teachers,add-staff-bom-pa	
+/main/staff/:staffType/duty-roster	duty-roster	chunk-YMCPYGBD.js	chunk-SYXMRVDO.js	Children		edit-duty-rota	
+/main/staff/:staffType/duty-roster/		chunk-QYOB2YRU.js	chunk-YMCPYGBD.js	Component			
+/main/staff/:staffType/duty-roster/:termWeekId/add-teachers	:termWeekId/add-teachers	chunk-7UPH2SYW.js	chunk-YMCPYGBD.js	Component			
+/main/staff/:staffType/duty-roster/:termWeekId/details	:termWeekId/details	chunk-VM5Q2VZM.js	chunk-YMCPYGBD.js	Component			
+/main/staff/:staffType/duty-roster/summary	summary	chunk-J2WTRUF5.js	chunk-YMCPYGBD.js	Component			
+/main/staff/:staffType/groups	groups	chunk-WBMAEWNC.js	chunk-SYXMRVDO.js	Component		add-edit-teacher-groups,add-edit-staff-bom-pa-groups	
+/main/staff/:staffType/manage	manage	chunk-AROQXNN2.js	chunk-SYXMRVDO.js	Component		view-teacher-list,view-staff-bom-pa-list	
+/main/student	student	chunk-RTA7QSFS.js	chunk-2FNEJMO3.js	Component			
+/main/students	students	chunk-JRKH2QNK.js	chunk-2FNEJMO3.js	Children			
+/main/students/		chunk-Y4W7CO3H.js	chunk-JRKH2QNK.js	Component			
+/main/students/assessments	assessments	chunk-VX3NHVSF.js	chunk-JRKH2QNK.js	Children			
+/main/students/assessments/		chunk-HK5TVO6P.js	chunk-VX3NHVSF.js	Component			
+/main/students/assessments/analysis	analysis	chunk-AMLAMZFA.js	chunk-VX3NHVSF.js	Component			
+/main/students/assessments/assignments	assignments	chunk-WZLMOPC5.js	chunk-VX3NHVSF.js	Component			
+/main/students/assessments/reports	reports	chunk-WZLMOPC5.js	chunk-VX3NHVSF.js	Component			
+/main/students/groups	groups	chunk-ZN3G7ZJY.js	chunk-JRKH2QNK.js	Children	edit-student-groups		
+/main/students/groups/		chunk-CNTKA74Q.js	chunk-ZN3G7ZJY.js	Component			
+/main/students/groups/		chunk-N6ZR3CIT.js	chunk-ZN3G7ZJY.js	Component			
+/main/students/groups/:studentGroupId/manage	:studentGroupId/manage	chunk-N6ZR3CIT.js	chunk-ZN3G7ZJY.js	Component			
+/main/students/groups/:studentGroupId/student-addition	:studentGroupId/student-addition	chunk-N6ZR3CIT.js	chunk-ZN3G7ZJY.js	Component			
+/main/students/mvSt	mvSt	chunk-Y4W7CO3H.js	chunk-JRKH2QNK.js	Component	move-students		
+/main/students/new	new	chunk-Y4W7CO3H.js	chunk-JRKH2QNK.js	Component	add-students		
+/main/students/prof/:id	prof/:id	chunk-4GMC4GP6.js	chunk-JRKH2QNK.js	Children			
+/main/students/prof/:id/		chunk-PWZ4MAIH.js	chunk-4GMC4GP6.js	Component			
+/main/students/prof/:id/analytics	analytics	chunk-P55HMAPS.js	chunk-4GMC4GP6.js	Component	view-student-analysis		STUDENT
+/main/students/prof/:id/analytics/:subjectid/:seriesid/:egroupid	analytics/:subjectid/:seriesid/:egroupid	chunk-P5TY6KC2.js	chunk-4GMC4GP6.js	Component	view-student-analysis		STUDENT
+/main/students/prof/:id/behaviour	behaviour	chunk-6W5IWDN4.js	chunk-4GMC4GP6.js	Component	access-behavior		STUDENT
+/main/students/prof/:id/diary	diary	chunk-TMV5AVOB.js	chunk-4GMC4GP6.js	Children			
+/main/students/prof/:id/diary/		chunk-AXTN4ZZF.js	chunk-TMV5AVOB.js	Component			
+/main/students/prof/:id/diary/:noticeId/:noticeType/edit-notice	:noticeId/:noticeType/edit-notice	chunk-BR26WKHT.js	chunk-TMV5AVOB.js	Component			
+/main/students/prof/:id/diary/:noticeType/create-notice	:noticeType/create-notice	chunk-BR26WKHT.js	chunk-TMV5AVOB.js	Component			
+/main/students/prof/:id/diary/assignment	assignment	chunk-ICVGYKTF.js	chunk-TMV5AVOB.js	Component			
+/main/students/prof/:id/diary/general-updates	general-updates	chunk-NR3DTILB.js	chunk-TMV5AVOB.js	Component			
+/main/students/prof/:id/diary/notices	notices	chunk-NR3DTILB.js	chunk-TMV5AVOB.js	Component			
+/main/students/prof/:id/diary/student-diary	student-diary	chunk-CPVBTWUR.js	chunk-TMV5AVOB.js	Component			
+/main/students/prof/:id/inbox	inbox	chunk-CLRWCSYG.js	chunk-4GMC4GP6.js	Component	access-messages		
+/main/students/prof/:id/linked-accounts	linked-accounts	chunk-PDK4VSPS.js	chunk-4GMC4GP6.js	Component			
+/main/students/prof/:id/notes	notes	chunk-YCWZA77H.js	chunk-4GMC4GP6.js	Children			
+/main/students/prof/:id/notes/		chunk-ML3XY6X5.js	chunk-YCWZA77H.js	Component			
+/main/students/prof/:id/notes/activities	activities	chunk-5WFWXXQ5.js	chunk-YCWZA77H.js	Component			
+/main/students/prof/:id/notes/discipline	discipline	chunk-F5PIGXWZ.js	chunk-YCWZA77H.js	Component			
+/main/students/prof/:id/pathways	pathways	chunk-ZYC2WJ5H.js	chunk-4GMC4GP6.js	Component			
+/main/students/prof/:id/profile	profile	chunk-7YWNPGAP.js	chunk-4GMC4GP6.js	Component	view-student-profile		STUDENT
+/main/students/search	search	chunk-Y4W7CO3H.js	chunk-JRKH2QNK.js	Component	search-student		
+/main/students/stRes	stRes	chunk-CRYVQTVF.js	chunk-JRKH2QNK.js	Children	add-edit-student-residences		
+/main/students/stRes/		chunk-SO4V3ETF.js	chunk-CRYVQTVF.js	Component			
+/main/students/stRes/:id	:id	chunk-SO4V3ETF.js	chunk-CRYVQTVF.js	Component			
+/main/students/uDp	uDp	chunk-Y4W7CO3H.js	chunk-JRKH2QNK.js	Component	edit-update-student-photo		
+/main/students/upFeeStmts	upFeeStmts	chunk-Y4W7CO3H.js	chunk-JRKH2QNK.js	Component	upload-students-fee-balances		
+/main/students/uPrf	uPrf	chunk-Y4W7CO3H.js	chunk-JRKH2QNK.js	Component	edit-student-profile		
+/main/students/upStGrades	upStGrades	chunk-Y4W7CO3H.js	chunk-JRKH2QNK.js	Component	add-target-grades		
+/main/subjects	subjects	chunk-SHI3KDNF.js	chunk-2FNEJMO3.js	Children	access-subjects		
+/main/subjects/		chunk-KQZOZIO2.js	chunk-SHI3KDNF.js	Component			
+/main/subjects/categories	categories	chunk-JKXHUPWQ.js	chunk-SHI3KDNF.js	Children	view-edit-categories		
+/main/subjects/categories/		chunk-5SXC7ATB.js	chunk-JKXHUPWQ.js	Component			
+/main/subjects/categories/list	list	chunk-UDYHF6SX.js	chunk-JKXHUPWQ.js	Component	view-edit-categories		
+/main/subjects/categories/manage	manage	chunk-TKBGDO6U.js	chunk-JKXHUPWQ.js	Component	view-edit-categories		
+/main/subjects/combinations	combinations	chunk-3XUGH6KG.js	chunk-SHI3KDNF.js	Children	view-edit-combinations		
+/main/subjects/combinations/		chunk-7Z6SW2IB.js	chunk-3XUGH6KG.js	Component	view-edit-combinations		
+/main/subjects/combinations/add	add	chunk-7Z6SW2IB.js	chunk-3XUGH6KG.js	Component	view-edit-combinations		
+/main/subjects/compulsory	compulsory	chunk-HA44T2KP.js	chunk-SHI3KDNF.js	Children	view-edit-compulsory-subjects		
+/main/subjects/compulsory/		chunk-RLXWCJXY.js	chunk-HA44T2KP.js	Component	view-edit-compulsory-subjects		
+/main/subjects/compulsory/add	add	chunk-RLXWCJXY.js	chunk-HA44T2KP.js	Component	view-edit-compulsory-subjects		
+/main/subjects/compulsory/update/:form	update/:form	chunk-RLXWCJXY.js	chunk-HA44T2KP.js	Component	view-edit-compulsory-subjects		
+/main/subjects/departments	departments	chunk-CTIYWHX3.js	chunk-SHI3KDNF.js	Children			
+/main/subjects/departments/		chunk-6FYOUG76.js	chunk-CTIYWHX3.js	Component			
+/main/subjects/departments/add	add	chunk-5UTJR77L.js	chunk-CTIYWHX3.js	Component			
+/main/subjects/departments/details/:departmentId	details/:departmentId	chunk-ZOFAQS53.js	chunk-CTIYWHX3.js	Component			
+/main/subjects/departments/edit/:departmentId	edit/:departmentId	chunk-5UTJR77L.js	chunk-CTIYWHX3.js	Component			
+/main/subjects/manage	manage	chunk-UMTK4ACR.js	chunk-SHI3KDNF.js	Children	view-edit-strands-topics		
+/main/subjects/manage/		chunk-2AUIH2RE.js	chunk-UMTK4ACR.js	Component			
+/main/subjects/manage/topics	topics	chunk-3VLCHCR6.js	chunk-UMTK4ACR.js	Children			
+/main/subjects/manage/topics/		chunk-RA4NF3HN.js	chunk-3VLCHCR6.js	Component	view-edit-strands-topics		
+/main/subjects/pathways	pathways	chunk-FVL3LDMU.js	chunk-SHI3KDNF.js	Children	view-edit-categories		
+/main/subjects/pathways/		chunk-2GKBM3Q6.js	chunk-FVL3LDMU.js	Component			
+/main/subjects/pathways/add/:pathwayId	add/:pathwayId	chunk-PMOHMEPB.js	chunk-FVL3LDMU.js	Component			
+/main/subjects/pathways/details/:pathwayId	details/:pathwayId	chunk-SHYASM35.js	chunk-FVL3LDMU.js	Component			
+/main/subjects/subject-groupings	subject-groupings	chunk-47X74RUV.js	chunk-SHI3KDNF.js	Children			
+/main/subjects/subject-groupings/		chunk-DELSPVBJ.js	chunk-47X74RUV.js	Component			
+/main/subjects/subject-groupings/add	add	chunk-GD6KEJ6O.js	chunk-47X74RUV.js	Component			
+/main/subjects/subject-groupings/update/:groupId	update/:groupId	chunk-GD6KEJ6O.js	chunk-47X74RUV.js	Component			
+/main/switching-school	switching-school	chunk-35K6UA25.js	chunk-2FNEJMO3.js	Component			
+/main/timetable	timetable	chunk-TV3LFQA3.js	chunk-2FNEJMO3.js	Children			
+/main/timetable/		chunk-6MGJTQXK.js	chunk-TV3LFQA3.js	Component			
+/main/timetable/class	class	chunk-6LT5YPDP.js	chunk-TV3LFQA3.js	Component			
+/main/timetable/dashboard	dashboard	chunk-SB7MJO2Y.js	chunk-TV3LFQA3.js	Component			
+/main/timetable/teacher	teacher	chunk-OXYAHTLY.js	chunk-TV3LFQA3.js	Component			
+/main/wallet	wallet	chunk-G5QPCOPR.js	chunk-2FNEJMO3.js	Children	manage-finance		STUDENT
+/main/wallet/		chunk-VHGL4GKF.js	chunk-G5QPCOPR.js	Component			
+/main/wallet/auth	auth	chunk-AILP4TAZ.js	chunk-G5QPCOPR.js	Children			
+/main/wallet/auth/		chunk-J3EBDUJH.js	chunk-AILP4TAZ.js	Component			
+/main/wallet/auth/**	**	chunk-VCOSVWFW.js	chunk-AILP4TAZ.js	Component			
+/main/wallet/auth/login	login	chunk-VCOSVWFW.js	chunk-AILP4TAZ.js	Component			
+/main/wallet/auth/signup	signup	chunk-5G656X3L.js	chunk-AILP4TAZ.js	Component			
+/main/wallet/created	created	chunk-5B6E2C2J.js	chunk-G5QPCOPR.js	Component			
+/main/wallet/dashboard	dashboard	chunk-QRLO5OK7.js	chunk-G5QPCOPR.js	Component			
+/main/wallet/pay-fees	pay-fees	chunk-MGJGNQVM.js	chunk-G5QPCOPR.js	Component			
+/main/wallet/save-to-wallet	save-to-wallet	chunk-WI3BURHR.js	chunk-G5QPCOPR.js	Component			
+/main/wallet/statements/:admNo	statements/:admNo	chunk-4H67GGU7.js	chunk-G5QPCOPR.js	Component			
+/main/wallet/welcome	welcome	chunk-AV7TAAPG.js	chunk-G5QPCOPR.js	Component			
+/school	school	chunk-5SMWDMIY.js	main-WD43ENPP.js	Children			
+/school/		chunk-6HAIVLK2.js	chunk-5SMWDMIY.js	Component			
+/school/no-accounts	no-accounts	chunk-GDRD6R4Z.js	chunk-5SMWDMIY.js	Component			
+/setup	setup	chunk-X5P4OAAR.js	main-WD43ENPP.js	Children			
+/setup/		chunk-3NZD4AVX.js	chunk-X5P4OAAR.js	Component			
+/setup/add	add	chunk-3NZD4AVX.js	chunk-X5P4OAAR.js	Component			
+/setup/school-redirect	school-redirect	chunk-3NZD4AVX.js	chunk-X5P4OAAR.js	Component			
+/setup/welcome	welcome	chunk-3NZD4AVX.js	chunk-X5P4OAAR.js	Component			
