@@ -966,7 +966,56 @@ export async function getStudentDirectory(
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
   throwIfAborted(options.signal);
-  return normalizeStudentDirectory(data);
+  const rows = normalizeStudentDirectory(data);
+  const residenceRows = await getStudentResidenceTransport(undefined, options);
+  const byStudent = new Map(residenceRows.map((row) => [row.student_id, row]));
+  return rows.map((row) => ({ ...row, ...(byStudent.get(row.student_id) ?? EMPTY_STUDENT_RESIDENCE_TRANSPORT(row.student_id)) }));
+}
+
+const EMPTY_STUDENT_RESIDENCE_TRANSPORT = (student_id: string): StudentResidenceTransport => ({
+  student_id, residence_type: null, transport_mode: null, transport_route_id: null,
+  transport_route_name: null, other_transport_details: null,
+});
+
+export async function getStudentResidenceTransport(
+  studentId?: string,
+  options: RequestOptions = {}
+): Promise<StudentResidenceTransport[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('get_student_residence_transport', { p_student_id: studentId ?? null })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return (Array.isArray(data) ? data : []).map((raw: Record<string, unknown>) => ({
+    student_id: String(raw.student_id ?? ''),
+    residence_type: raw.residence_type === 'day_scholar' || raw.residence_type === 'boarder' ? raw.residence_type : null,
+    transport_mode: ['school_transport', 'parent_guardian', 'public_transport', 'walking', 'other'].includes(String(raw.transport_mode)) ? raw.transport_mode as StudentResidenceTransport['transport_mode'] : null,
+    transport_route_id: raw.transport_route_id ? String(raw.transport_route_id) : null,
+    transport_route_name: raw.transport_route_name ? String(raw.transport_route_name) : null,
+    other_transport_details: raw.other_transport_details ? String(raw.other_transport_details) : null,
+  }));
+}
+
+export async function saveStudentResidenceTransport(
+  studentId: string,
+  residenceType: StudentResidenceType,
+  transportMode?: StudentTransportMode | null,
+  routeId?: string | null,
+  otherDetails?: string | null,
+  options: RequestOptions = {}
+): Promise<boolean> {
+  const supabase = createClient();
+  const { data, error } = await supabase.rpc('set_student_residence_transport', {
+    p_student_id: studentId,
+    p_residence_type: residenceType,
+    p_transport_mode: residenceType === 'boarder' ? null : transportMode ?? null,
+    p_transport_route_id: residenceType === 'boarder' ? null : routeId ?? null,
+    p_other_transport_details: residenceType === 'boarder' ? null : otherDetails ?? null,
+  }).abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return Boolean(data);
 }
 
 export async function getStudentProfile(
@@ -979,7 +1028,10 @@ export async function getStudentProfile(
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
   throwIfAborted(options.signal);
-  return normalizeStudentProfile(data);
+  const profile = normalizeStudentProfile(data);
+  const residenceRows = await getStudentResidenceTransport(studentId, options);
+  const residence = residenceRows[0] ?? EMPTY_STUDENT_RESIDENCE_TRANSPORT(studentId);
+  return { ...profile, ...residence };
 }
 
 export async function createStudent(
