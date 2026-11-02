@@ -20,8 +20,11 @@ BEGIN
     ALTER TABLE public.students ADD CONSTRAINT students_residence_transport_consistency_check
       CHECK (
         (residence_type IS DISTINCT FROM 'boarder' OR (transport_mode IS NULL AND transport_route_id IS NULL AND other_transport_details IS NULL))
-        AND (transport_mode IS DISTINCT FROM 'school_transport' OR (residence_type = 'day_scholar' AND transport_route_id IS NOT NULL))
+        AND (transport_mode IS NULL OR residence_type = 'day_scholar')
+        AND (transport_mode IS DISTINCT FROM 'school_transport' OR transport_route_id IS NOT NULL)
+        AND (transport_mode = 'school_transport' OR transport_route_id IS NULL)
         AND (transport_mode IS DISTINCT FROM 'other' OR nullif(btrim(other_transport_details), '') IS NOT NULL)
+        AND (transport_mode = 'other' OR other_transport_details IS NULL)
       );
   END IF;
 END $$;
