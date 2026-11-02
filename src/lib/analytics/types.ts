@@ -327,6 +327,18 @@ export interface TeacherSubjectClassPerformanceRow {
   pass_rate: number;
 }
 
+export type StudentResidenceType = 'day_scholar' | 'boarder';
+export type StudentTransportMode = 'school_transport' | 'parent_guardian' | 'public_transport' | 'walking' | 'other';
+
+export interface StudentResidenceTransport {
+  student_id: string;
+  residence_type: StudentResidenceType | null;
+  transport_mode: StudentTransportMode | null;
+  transport_route_id: string | null;
+  transport_route_name: string | null;
+  other_transport_details: string | null;
+}
+
 export interface StudentDirectoryRow {
   student_id: string;
   admission_no: string;
@@ -339,6 +351,11 @@ export interface StudentDirectoryRow {
   academic_year: number | null;
   pathway_name: string | null;
   in_school_status: string | null;
+  residence_type: StudentResidenceType | null;
+  transport_mode: StudentTransportMode | null;
+  transport_route_id: string | null;
+  transport_route_name: string | null;
+  other_transport_details: string | null;
   created_at: string;
 }
 
@@ -350,6 +367,11 @@ export interface StudentProfileData {
   class_id: string | null;
   stream_id: string | null;
   pathway: string | null;
+  residence_type: StudentResidenceType | null;
+  transport_mode: StudentTransportMode | null;
+  transport_route_id: string | null;
+  transport_route_name: string | null;
+  other_transport_details: string | null;
   created_at: string;
   enrollments: Array<{
     academic_year: number | null;
