@@ -192,9 +192,8 @@ export default function StudentDirectoryPage() {
                   <th scope="col" className="px-4 py-3">
                     Class / Stream
                   </th>
-                  <th scope="col" className="px-4 py-3">
-                    Pathway
-                  </th>
+                  <th scope="col" className="px-4 py-3">Pathway</th>
+                  <th scope="col" className="px-4 py-3">Residence / Transport</th>
                   <th scope="col" className="px-4 py-3 text-right">
                     Actions
                   </th>
@@ -214,6 +213,7 @@ export default function StudentDirectoryPage() {
                       {[s.class_name, s.stream_name].filter(Boolean).join(' · ') || '—'}
                     </td>
                     <td className="px-4 py-2.5 text-gray-600">{s.pathway_name || '—'}</td>
+                    <td className="px-4 py-2.5 text-gray-600">{s.residence_type === 'boarder' ? 'Boarder' : s.residence_type === 'day_scholar' ? `Day Scholar${s.transport_mode ? ` · ${({ school_transport: 'School Transport', parent_guardian: 'Parent/Guardian', public_transport: 'Public Transport', walking: 'Walking', other: 'Other' } as const)[s.transport_mode]}` : ''}${s.transport_route_name ? ` · ${s.transport_route_name}` : ''}${s.other_transport_details ? ` · ${s.other_transport_details}` : ''}` : 'Not set'}</td>
                     <td className="px-4 py-2.5 text-right">
                       <div className="inline-flex items-center gap-2 text-xs">
                         <Link
