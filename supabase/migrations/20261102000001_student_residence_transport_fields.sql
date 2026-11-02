@@ -26,7 +26,11 @@ BEGIN
   END IF;
 END $$;
 
-DO $$
+-- Composite FK requires a matching unique key on routes; add it without altering route data.
+CREATE UNIQUE INDEX IF NOT EXISTS transport_routes_id_tenant_uidx
+  ON public.transport_routes (id, tenant_id);
+
+DO $
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'students_transport_route_tenant_fk') THEN
     ALTER TABLE public.students ADD CONSTRAINT students_transport_route_tenant_fk
@@ -34,10 +38,6 @@ BEGIN
       REFERENCES public.transport_routes (id, tenant_id) DEFERRABLE INITIALLY IMMEDIATE;
   END IF;
 END $$;
-
--- Composite FK requires a matching unique key on routes; add it without altering route data.
-CREATE UNIQUE INDEX IF NOT EXISTS transport_routes_id_tenant_uidx
-  ON public.transport_routes (id, tenant_id);
 
 CREATE OR REPLACE FUNCTION public.get_student_residence_transport(p_student_id uuid DEFAULT NULL)
 RETURNS TABLE (
