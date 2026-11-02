@@ -433,6 +433,11 @@ export function normalizeStudentDirectory(data: unknown): StudentDirectoryRow[] 
       academic_year: asNullableNumber(raw.academic_year, 'academic_year'),
       pathway_name: asNullableString(raw.pathway_name, 'pathway_name'),
       in_school_status: asNullableString(raw.in_school_status, 'in_school_status'),
+      residence_type: raw.residence_type === 'day_scholar' || raw.residence_type === 'boarder' ? raw.residence_type : null,
+      transport_mode: ['school_transport', 'parent_guardian', 'public_transport', 'walking', 'other'].includes(String(raw.transport_mode)) ? raw.transport_mode as StudentDirectoryRow['transport_mode'] : null,
+      transport_route_id: asNullableString(raw.transport_route_id, 'transport_route_id'),
+      transport_route_name: asNullableString(raw.transport_route_name, 'transport_route_name'),
+      other_transport_details: asNullableString(raw.other_transport_details, 'other_transport_details'),
       created_at: asString(raw.created_at, 'created_at'),
     };
   });
@@ -448,6 +453,11 @@ export function normalizeStudentProfile(data: unknown): StudentProfileData {
     class_id: asNullableString(data.class_id, 'class_id'),
     stream_id: asNullableString(data.stream_id, 'stream_id'),
     pathway: asNullableString(data.pathway, 'pathway'),
+    residence_type: data.residence_type === 'day_scholar' || data.residence_type === 'boarder' ? data.residence_type : null,
+    transport_mode: ['school_transport', 'parent_guardian', 'public_transport', 'walking', 'other'].includes(String(data.transport_mode)) ? data.transport_mode as StudentProfileData['transport_mode'] : null,
+    transport_route_id: asNullableString(data.transport_route_id, 'transport_route_id'),
+    transport_route_name: asNullableString(data.transport_route_name, 'transport_route_name'),
+    other_transport_details: asNullableString(data.other_transport_details, 'other_transport_details'),
     created_at: asString(data.created_at, 'created_at'),
     enrollments: asArray(data.enrollments ?? [], 'enrollments').map((raw, index) => {
       if (!isRow(raw)) throw new AnalyticsContractError(`enrollment row ${index}`);
