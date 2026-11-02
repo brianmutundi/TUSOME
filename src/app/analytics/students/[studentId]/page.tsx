@@ -3,15 +3,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { Alert, Badge, Button, Card, CardHeader, EmptyState, LoadingPanel } from '@/components/ui';
+import { Alert, Badge, Button, Card, CardHeader, EmptyState, LoadingPanel, SelectField, TextField } from '@/components/ui';
 import {
   describeAnalyticsError,
   getStudentExamHistory,
   getStudentProfile,
+  getTransportRoutes,
+  saveStudentResidenceTransport,
+  describeAnalyticsError,
   isAbortError,
 } from '@/lib/analytics/api';
 import { isUuid } from '@/lib/analytics/guards';
-import type { StudentProfileData } from '@/lib/analytics/types';
+import type { StudentProfileData, StudentResidenceType, StudentTransportMode, TransportRoute } from '@/lib/analytics/types';
 
 function decodeParam(raw: string | string[] | undefined): string {
   const value = Array.isArray(raw) ? raw[0] : raw;
@@ -48,6 +51,14 @@ export default function StudentProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
+  const [editingResidence, setEditingResidence] = useState(false);
+  const [savingResidence, setSavingResidence] = useState(false);
+  const [residenceError, setResidenceError] = useState<string | null>(null);
+  const [routes, setRoutes] = useState<TransportRoute[]>([]);
+  const [residenceType, setResidenceType] = useState<StudentResidenceType>('day_scholar');
+  const [transportMode, setTransportMode] = useState<StudentTransportMode>('school_transport');
+  const [routeId, setRouteId] = useState('');
+  const [otherTransportDetails, setOtherTransportDetails] = useState('');
 
   useEffect(() => {
     if (!validStudentId) {
@@ -85,6 +96,34 @@ export default function StudentProfilePage() {
   }, [studentId, validStudentId, reloadToken]);
 
   const refresh = useCallback(() => setReloadToken((v) => v + 1), []);
+
+  const beginResidenceEdit = async () => {
+    if (!profile) return;
+    setResidenceType(profile.residence_type ?? 'day_scholar');
+    setTransportMode(profile.transport_mode ?? 'school_transport');
+    setRouteId(profile.transport_route_id ?? '');
+    setOtherTransportDetails(profile.other_transport_details ?? '');
+    setResidenceError(null);
+    try {
+      const availableRoutes = await getTransportRoutes();
+      setRoutes(availableRoutes.filter((route) => route.is_active));
+      setEditingResidence(true);
+    } catch (caught) {
+      setResidenceError(describeAnalyticsError(caught, 'Could not load configured transport routes.'));
+    }
+  };
+
+  const saveResidence = async () => {
+    setSavingResidence(true); setResidenceError(null);
+    try {
+      await saveStudentResidenceTransport(studentId, residenceType, residenceType === 'boarder' ? null : transportMode,
+        residenceType === 'day_scholar' && transportMode === 'school_transport' ? routeId : null,
+        residenceType === 'day_scholar' && transportMode === 'other' ? otherTransportDetails : null);
+      setEditingResidence(false); refresh();
+    } catch (caught) {
+      setResidenceError(describeAnalyticsError(caught, 'Could not save residence and transport details.'));
+    } finally { setSavingResidence(false); }
+  };
 
   const latestEnrollment = useMemo(() => {
     if (!profile || profile.enrollments.length === 0) return null;
@@ -173,7 +212,7 @@ export default function StudentProfilePage() {
         <div className="space-y-6">
           {/* Basic info */}
           <Card>
-            <CardHeader title="Student Details" />
+            <div className="flex items-center justify-between gap-3 px-5 pt-5"><h2 className="text-base font-semibold text-gray-900">Student Details</h2><Button variant="secondary" onClick={beginResidenceEdit}>Edit Residence / Transport</Button></div>
             <div className="grid gap-4 p-5 text-sm sm:grid-cols-2 lg:grid-cols-4">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -250,6 +289,20 @@ export default function StudentProfilePage() {
             </div>
           </Card>
 
+          {residenceError && <Alert tone="error" title="Residence update failed">{residenceError}</Alert>}
+          {editingResidence && <Card><CardHeader title="Edit Residence / Boarding Status" /><div className="space-y-4 p-5">
+            <SelectField id="edit-residence-type" label="Residence" value={residenceType} onChange={(e) => { const value = e.target.value as StudentResidenceType; setResidenceType(value); if (value === 'boarder') { setRouteId(''); setOtherTransportDetails(''); } }}>
+              <option value="day_scholar">Day Scholar</option><option value="boarder">Boarder</option>
+            </SelectField>
+            {residenceType === 'day_scholar' && <>
+              <SelectField id="edit-transport-mode" label="Means of Transport" value={transportMode} onChange={(e) => { setTransportMode(e.target.value as StudentTransportMode); setRouteId(''); setOtherTransportDetails(''); }}>
+                <option value="school_transport">School Transport</option><option value="parent_guardian">Parent / Guardian</option><option value="public_transport">Public Transport</option><option value="walking">Walking</option><option value="other">Other</option>
+              </SelectField>
+              {transportMode === 'school_transport' && <SelectField id="edit-transport-route" label="Configured Route" required value={routeId} onChange={(e) => setRouteId(e.target.value)}><option value="">Select existing route</option>{routes.map((route) => <option key={route.route_id} value={route.route_id}>{route.name}</option>)}</SelectField>}
+              {transportMode === 'other' && <TextField id="edit-other-transport" label="Other Transport Details" required value={otherTransportDetails} onChange={(e) => setOtherTransportDetails(e.target.value)} />}
+            </>}
+            <div className="flex gap-2"><Button onClick={saveResidence} disabled={savingResidence || (residenceType === 'day_scholar' && transportMode === 'school_transport' && !routeId) || (residenceType === 'day_scholar' && transportMode === 'other' && !otherTransportDetails.trim())}>{savingResidence ? 'Saving…' : 'Save Residence'}</Button><Button variant="secondary" onClick={() => setEditingResidence(false)}>Cancel</Button></div>
+          </div></Card>}
           {/* Enrollment history */}
           {profile.enrollments.length > 0 && (
             <Card>
