@@ -226,6 +226,16 @@ export default function StudentProfilePage() {
                 </p>
               </div>
               <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Residence</p>
+                <p className="mt-1 text-gray-800">{profile.residence_type === 'boarder' ? 'Boarder' : profile.residence_type === 'day_scholar' ? 'Day Scholar' : 'Not set'}</p>
+              </div>
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Transport</p>
+                <p className="mt-1 text-gray-800">{profile.residence_type === 'boarder' ? 'Not applicable' : profile.transport_mode ? ({ school_transport: 'School Transport', parent_guardian: 'Parent/Guardian', public_transport: 'Public Transport', walking: 'Walking', other: 'Other' } as const)[profile.transport_mode] : 'Not set'}</p>
+                {profile.transport_route_name && <p className="mt-1 text-xs text-gray-500">Route: {profile.transport_route_name}</p>}
+                {profile.other_transport_details && <p className="mt-1 text-xs text-gray-500">{profile.other_transport_details}</p>}
+              </div>
+              <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                   Registered
                 </p>
