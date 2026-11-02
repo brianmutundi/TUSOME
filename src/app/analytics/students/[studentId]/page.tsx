@@ -10,7 +10,6 @@ import {
   getStudentProfile,
   getTransportRoutes,
   saveStudentResidenceTransport,
-  describeAnalyticsError,
   isAbortError,
 } from '@/lib/analytics/api';
 import { isUuid } from '@/lib/analytics/guards';
