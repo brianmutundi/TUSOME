@@ -99,8 +99,8 @@ BEGIN
     RAISE EXCEPTION 'Missing tenant claim';
   END IF;
   IF v_role IS DISTINCT FROM 'service_role'
-     AND NOT public.user_has_permission(auth.uid(), v_tenant, 'edit-student-profile') THEN
-    RAISE EXCEPTION 'Access denied: edit-student-profile permission required';
+     AND NOT (public.user_has_permission(auth.uid(), v_tenant, 'edit-student-profile') OR public.user_has_permission(auth.uid(), v_tenant, 'add-students')) THEN
+    RAISE EXCEPTION 'Access denied: student residence permission required';
   END IF;
   IF p_residence_type NOT IN ('day_scholar', 'boarder') THEN
     RAISE EXCEPTION 'Invalid residence type';
