@@ -102,9 +102,7 @@ export default function StudentDirectoryPage() {
             enrollment history, and exam analytics.
           </p>
         </div>
-        <Button variant="secondary" onClick={refresh} disabled={loading}>
-          Refresh
-        </Button>
+        <div className="flex gap-2"><Link href="/analytics/students/new" className="rounded-lg bg-blue-700 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-800">+ Add Student</Link><Button variant="secondary" onClick={refresh} disabled={loading}>Refresh</Button></div>
       </div>
 
       {error && (
