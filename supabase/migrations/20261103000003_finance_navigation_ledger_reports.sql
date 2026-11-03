@@ -110,7 +110,7 @@ begin
     and (p_class_id is null or s.class_id = p_class_id)
     and (
       coalesce((select sum(fs.amount) from public.fee_structures fs where fs.class_id = s.class_id and fs.is_active = true and (p_academic_year is null or fs.academic_year = p_academic_year) and (p_term is null or fs.term = p_term)), 0)
-      - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id = s.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0)
+      - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id = s.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0) - coalesce((select sum(fw.amount) from public.fee_waivers fw where fw.student_id = s.id and fw.tenant_id = s.tenant_id and fw.status = 'approved' and fw.applied_at is not null), 0)
     ) = 0;
 
   select count(*) into v_in_arrears
@@ -119,7 +119,7 @@ begin
     and (p_class_id is null or s.class_id = p_class_id)
     and (
       coalesce((select sum(fs.amount) from public.fee_structures fs where fs.class_id = s.class_id and fs.is_active = true and (p_academic_year is null or fs.academic_year = p_academic_year) and (p_term is null or fs.term = p_term)), 0)
-      - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id = s.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0)
+      - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id = s.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0) - coalesce((select sum(fw.amount) from public.fee_waivers fw where fw.student_id = s.id and fw.tenant_id = s.tenant_id and fw.status = 'approved' and fw.applied_at is not null), 0)
     ) > 0;
 
   select count(*) into v_in_credit
@@ -128,7 +128,7 @@ begin
     and (p_class_id is null or s.class_id = p_class_id)
     and (
       coalesce((select sum(fs.amount) from public.fee_structures fs where fs.class_id = s.class_id and fs.is_active = true and (p_academic_year is null or fs.academic_year = p_academic_year) and (p_term is null or fs.term = p_term)), 0)
-      - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id = s.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0)
+      - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id = s.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0) - coalesce((select sum(fw.amount) from public.fee_waivers fw where fw.student_id = s.id and fw.tenant_id = s.tenant_id and fw.status = 'approved' and fw.applied_at is not null), 0)
     ) < 0;
 
   select count(*) into v_receipts_unmatched
@@ -244,7 +244,7 @@ begin
   from (
     select s.id as student_id, s.full_name as student_name, s.admission_no, c.name as class_name,
       (coalesce((select sum(fs.amount) from public.fee_structures fs where fs.class_id = s.class_id and fs.is_active = true and (p_academic_year is null or fs.academic_year = p_academic_year) and (p_term is null or fs.term = p_term)), 0)
-       - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id = s.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0)) as balance
+       - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id = s.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0) - coalesce((select sum(fw.amount) from public.fee_waivers fw where fw.student_id = s.id and fw.tenant_id = s.tenant_id and fw.status = 'approved' and fw.applied_at is not null), 0)) as balance
     from public.students s
     left join public.classes c on c.id = s.class_id
     where (v_role = 'service_role' or s.tenant_id = v_caller_tenant)
