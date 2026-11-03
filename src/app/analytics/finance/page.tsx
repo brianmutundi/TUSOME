@@ -269,13 +269,13 @@ export default function FinancePage() {
               tab === t ? 'border-blue-600 text-blue-700' : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
-            {t}
+            {t === 'overview' ? 'Overview' : t === 'structures' ? 'Fee Structures' : t === 'reports' ? 'Reports' : t === 'payments' ? 'Payments' : 'Balances'}
           </button>
         ))}
       </div>
 
-      {/* Summary Tab */}
-      {tab === 'summary' && financeSummary && (
+      {/* Overview Tab */}
+      {tab === 'overview' && financeSummary && (
         <div className="space-y-6">
           {/* KPI row */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -290,7 +290,7 @@ export default function FinancePage() {
               <div className="p-5">
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Collected</p>
                 <p className="mt-1 text-2xl font-bold text-emerald-700">KES {Number(financeSummary.collected ?? 0).toLocaleString()}</p>
-                <p className="mt-1 text-xs text-gray-500">Valid payments received</p>
+                <p className="mt-1 text-xs text-gray-500">Net payments after reversals</p>
               </div>
             </Card>
             <Card>
