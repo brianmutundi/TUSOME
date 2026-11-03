@@ -376,3 +376,134 @@ $function$;
 
 revoke all on function public.get_fee_ledger_report(uuid, integer) from public, anon;
 grant execute on function public.get_fee_ledger_report(uuid, integer) to authenticated, service_role;
+
+-- Keep student pledges tenant-bound and permission-checked when surfaced in
+-- the selected student's finance workflow.
+create or replace function public.get_fee_pledges(p_student_id uuid default null)
+returns table (
+  pledge_id uuid,
+  student_id uuid,
+  student_name text,
+  admission_no text,
+  pledged_amount numeric,
+  paid_amount numeric,
+  remaining_amount numeric,
+  due_date date,
+  status text,
+  notes text,
+  created_at timestamptz
+)
+language plpgsql
+stable
+set search_path = ''
+as $function$
+declare
+  v_caller_tenant uuid;
+  v_role text;
+begin
+  v_role := auth.role();
+  if v_role is distinct from 'service_role' then
+    begin
+      v_caller_tenant := (auth.jwt() ->> 'tenant_id')::uuid;
+    exception when others then
+      v_caller_tenant := null;
+    end;
+    if v_caller_tenant is null then
+      raise exception 'Missing tenant claim';
+    end if;
+    if not (
+      public.user_has_permission(auth.uid(), v_caller_tenant, 'view-fees')
+      or public.user_has_permission(auth.uid(), v_caller_tenant, 'manage-fees')
+    ) then
+      raise exception 'Access denied: finance permission required' using errcode = '42501';
+    end if;
+  end if;
+
+  return query
+  select
+    fp.id,
+    fp.student_id,
+    st.full_name,
+    st.admission_no,
+    fp.pledged_amount,
+    fp.paid_amount,
+    fp.pledged_amount - fp.paid_amount,
+    fp.due_date,
+    fp.status,
+    fp.notes,
+    fp.created_at
+  from public.fee_pledges fp
+  join public.students st on st.id = fp.student_id and st.tenant_id = fp.tenant_id
+  where (v_role = 'service_role' or fp.tenant_id = v_caller_tenant)
+    and (p_student_id is null or fp.student_id = p_student_id)
+  order by fp.created_at desc;
+end;
+$function$;
+
+create or replace function public.create_fee_pledge(
+  p_student_id uuid,
+  p_pledged_amount numeric,
+  p_due_date date default null,
+  p_notes text default null
+)
+returns uuid
+language plpgsql
+volatile
+set search_path = ''
+as $function$
+declare
+  v_caller_tenant uuid;
+  v_student_tenant uuid;
+  v_tenant_id uuid;
+  v_role text;
+  v_pledge_id uuid;
+begin
+  v_role := auth.role();
+  if v_role is distinct from 'service_role' then
+    begin
+      v_caller_tenant := (auth.jwt() ->> 'tenant_id')::uuid;
+    exception when others then
+      v_caller_tenant := null;
+    end;
+    if v_caller_tenant is null then
+      raise exception 'Missing tenant claim';
+    end if;
+    if not public.user_has_permission(auth.uid(), v_caller_tenant, 'manage-fees') then
+      raise exception 'Access denied: manage-fees permission required' using errcode = '42501';
+    end if;
+  end if;
+
+  select st.tenant_id into v_student_tenant
+  from public.students st
+  where st.id = p_student_id;
+
+  if v_student_tenant is null then
+    raise exception 'Student not found';
+  end if;
+  if v_role is distinct from 'service_role' and v_student_tenant <> v_caller_tenant then
+    raise exception 'Access denied: student from different tenant' using errcode = '42501';
+  end if;
+  if p_pledged_amount is null or p_pledged_amount <= 0 then
+    raise exception 'Pledged amount must be positive';
+  end if;
+
+  v_tenant_id := coalesce(v_caller_tenant, v_student_tenant);
+  insert into public.fee_pledges (tenant_id, student_id, pledged_amount, due_date, notes, created_by)
+  values (
+    v_tenant_id,
+    p_student_id,
+    p_pledged_amount,
+    p_due_date,
+    nullif(btrim(coalesce(p_notes, '')), ''),
+    case when v_role is distinct from 'service_role' then auth.uid() else null end
+  )
+  returning id into v_pledge_id;
+
+  return v_pledge_id;
+end;
+$function$;
+
+revoke all on function public.get_fee_pledges(uuid) from public, anon;
+revoke all on function public.create_fee_pledge(uuid, numeric, date, text) from public, anon;
+grant execute on function public.get_fee_pledges(uuid) to authenticated, service_role;
+grant execute on function public.create_fee_pledge(uuid, numeric, date, text) to authenticated, service_role;
