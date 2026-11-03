@@ -19,7 +19,8 @@
     "local:reset": "node local/reset.mjs",
     "local:doctor": "node local/doctor.mjs",
     "local:verify": "node local/verify.mjs",
-    "local:test": "powershell -NoProfile -ExecutionPolicy Bypass -File local/test.ps1"
+    "local:test": "powershell -NoProfile -ExecutionPolicy Bypass -File local/test.ps1",
+    "db:check-definers": "node scripts/check-definers.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
