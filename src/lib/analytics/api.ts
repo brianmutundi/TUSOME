@@ -1897,6 +1897,7 @@ export async function recordFeePayment(
       p_academic_year: academicYear ?? null,
       p_term: term ?? null,
       p_notes: notes ?? null,
+      p_idempotency_key: idempotencyKey ?? null,
     })
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
