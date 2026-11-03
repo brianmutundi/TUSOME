@@ -39,6 +39,7 @@ export default function FinancePage() {
   const [voteHeads, setVoteHeads] = useState<VoteHead[]>([]);
   const [collections, setCollections] = useState<FeeCollection[]>([]);
   const [financeSummary, setFinanceSummary] = useState<Record<string, unknown> | null>(null);
+  const [financeRefreshKey, setFinanceRefreshKey] = useState(0);
 
   // Balances table state
   const [balanceData, setBalanceData] = useState<any>(null);
@@ -109,12 +110,12 @@ export default function FinancePage() {
         setInvoices(inv);
         setReceipts(rec);
         setCanManageFees((me?.permissions ?? []).some((p) => p === 'manage-fees' || p === 'view-fees'));
-        if (s.length > 0) setSelectedStudent(s[0].student_id);
+        if (s.length > 0) setSelectedStudent((current) => current || s[0].student_id);
       })
       .catch((caught) => { if (!active || isAbortError(caught)) return; setError(describeAnalyticsError(caught, 'Could not load finance data.')); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; controller.abort(); };
-  }, []);
+  }, [financeRefreshKey]);
 
   useEffect(() => {
     setBalancePage(1);
@@ -143,7 +144,7 @@ export default function FinancePage() {
       .then((data) => { if (active) { setBalanceData(data); setBalanceLoading(false); } })
       .catch((caught) => { if (active) { setBalanceError(caught instanceof Error ? caught.message : 'Could not load balances.'); setBalanceLoading(false); } });
     return () => { active = false; controller.abort(); };
-  }, [tab, balanceSearch, balanceClass, balanceTerm, balanceYear, balanceFilter, balanceMin, balanceMax, balanceSortBy, balanceSortDir, balancePage]);
+  }, [tab, balanceSearch, balanceClass, balanceTerm, balanceYear, balanceFilter, balanceMin, balanceMax, balanceSortBy, balanceSortDir, balancePage, financeRefreshKey]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -151,7 +152,7 @@ export default function FinancePage() {
       .then((data) => setCollections(data))
       .catch(() => {});
     return () => controller.abort();
-  }, [collectionClass, collectionSort]);
+  }, [collectionClass, collectionSort, financeRefreshKey]);
 
   useEffect(() => {
     if (!selectedStudent) { setBalance(null); setPayments([]); setPledges([]); return; }
@@ -170,7 +171,7 @@ export default function FinancePage() {
       })
       .catch((caught) => { if (!active || isAbortError(caught)) return; setActionError(describeAnalyticsError(caught, 'Could not load student finance.')); });
     return () => { active = false; controller.abort(); };
-  }, [selectedStudent]);
+  }, [selectedStudent, financeRefreshKey]);
 
   const handleRecordPayment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -200,7 +201,8 @@ export default function FinancePage() {
       setPayAmount(''); setPayRef(''); setPayNotes('');
       setShowPaymentModal(false);
       setPaymentIdempotencyKey(null);
-      // Refresh balances
+      // Refresh all finance views from the committed ledger transaction.
+      setFinanceRefreshKey((current) => current + 1);
       setBalancePage(1);
     } catch (caught) {
       setActionError(describeAnalyticsError(caught, 'Could not record payment.'));
