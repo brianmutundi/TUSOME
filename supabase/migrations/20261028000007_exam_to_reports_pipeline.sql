@@ -492,6 +492,13 @@ BEGIN
     IF v_exam_tenant <> v_caller_tenant OR v_subj_tenant <> v_caller_tenant THEN
       RAISE EXCEPTION 'Access denied to exam or subject from different tenant';
     END IF;
+
+    -- Teacher allocation check (deny by default for non-admin)
+    IF v_role IS DISTINCT FROM 'service_role' AND NOT public.user_has_permission(auth.uid(), v_caller_tenant, 'manage-exams') THEN
+      IF NOT public.teacher_has_allocation(auth.uid(), COALESCE(p_class_id, v_exam_tenant), p_subject_id) THEN
+        RAISE EXCEPTION 'Access denied: not allocated to this class/subject';
+      END IF;
+    END IF;
   END IF;
 
   SELECT EXISTS (
