@@ -154,6 +154,11 @@ BEGIN
     IF v_caller_tenant <> v_tenant_id THEN
       RAISE EXCEPTION 'Access denied to exam from different tenant';
     END IF;
+
+    -- Parent denial: parents use dedicated linked-child RPCs only
+    IF public.is_parent() THEN
+      RAISE EXCEPTION 'Access denied: parents use dedicated child RPCs' using errcode = '42501';
+    END IF;
   END IF;
 
   RETURN QUERY
@@ -248,6 +253,11 @@ BEGIN
 
     IF v_caller_tenant <> v_tenant_id THEN
       RAISE EXCEPTION 'Access denied to exam from different tenant';
+    END IF;
+
+    -- Parent denial: parents use dedicated linked-child RPCs only
+    IF public.is_parent() THEN
+      RAISE EXCEPTION 'Access denied: parents use dedicated child RPCs' using errcode = '42501';
     END IF;
   END IF;
   
@@ -438,6 +448,11 @@ BEGIN
 
     IF v_caller_tenant <> v_tenant_id THEN
       RAISE EXCEPTION 'Access denied to exam from different tenant';
+    END IF;
+
+    -- Parent denial: parents use dedicated linked-child RPCs only
+    IF public.is_parent() THEN
+      RAISE EXCEPTION 'Access denied: parents use dedicated child RPCs' using errcode = '42501';
     END IF;
   END IF;
   
