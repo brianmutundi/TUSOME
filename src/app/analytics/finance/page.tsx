@@ -7,6 +7,7 @@ import { exportToExcel } from '@/lib/analytics/excel';
 import {
   describeAnalyticsError,
   getFeeLedgerReport,
+  getFeeCollections,
   getFeePledges,
   createFeePledge,
   getFeeBalances,
@@ -21,7 +22,7 @@ import {
   recordFeePayment,
   upsertFeeStructure,
 } from '@/lib/analytics/api';
-import type { FeeBalance, FeeLedgerEntry, FeePledge, FeeStructure, Receipt, StudentDirectoryRow, VoteHead } from '@/lib/analytics/types';
+import type { FeeBalance, FeeCollection, FeeLedgerEntry, FeePledge, FeeStructure, Receipt, StudentDirectoryRow, VoteHead } from '@/lib/analytics/types';
 
 export default function FinancePage() {
   const [tab, setTab] = useState<'overview' | 'balances' | 'structures' | 'payments' | 'reports'>('overview');
@@ -31,6 +32,7 @@ export default function FinancePage() {
   const [pledges, setPledges] = useState<FeePledge[]>([]);
   const [voteHeads, setVoteHeads] = useState<VoteHead[]>([]);
   const [ledgerPayments, setLedgerPayments] = useState<FeeLedgerEntry[]>([]);
+  const [legacyCollections, setLegacyCollections] = useState<FeeCollection[]>([]);
   const [reportSearch, setReportSearch] = useState('');
   const [showVoteHeadSettings, setShowVoteHeadSettings] = useState(false);
   const [pledgeAmount, setPledgeAmount] = useState('');
@@ -97,16 +99,18 @@ export default function FinancePage() {
       getFeeStructures(undefined, undefined, { signal: controller.signal }),
       getVoteHeads({ signal: controller.signal }),
       getFeeLedgerReport(undefined, 500, { signal: controller.signal }),
+      getFeeCollections(undefined, undefined, undefined, undefined, undefined, undefined, 'collected_at', 'desc', 500, { signal: controller.signal }),
       getFinanceOverview(undefined, undefined, undefined, { signal: controller.signal }),
       getReceipts(undefined, { signal: controller.signal }),
       getMyPermissions({ signal: controller.signal }),
     ])
-      .then(([s, st, vh, ledger, summary, rec, me]) => {
+      .then(([s, st, vh, ledger, legacy, summary, rec, me]) => {
         if (!active) return;
         setStudents(s);
         setStructures(st);
         setVoteHeads(vh);
         setLedgerPayments(ledger);
+        setLegacyCollections(legacy);
         setFinanceSummary(summary);
         setReceipts(rec);
         const permissions = me?.permissions ?? [];
@@ -947,6 +951,42 @@ export default function FinancePage() {
               </div>
             )}
           </Card>
+          <Card>
+            <div className="border-b border-gray-100 p-5">
+              <h2 className="text-base font-semibold text-gray-900">Historical collections archive</h2>
+              <p className="mt-1 text-sm text-gray-600">Legacy fee_collections records are preserved here for reference. They are deliberately excluded from current ledger totals to prevent double-counting; reconcile them against fee_payments before any backfill.</p>
+            </div>
+            {legacyCollections.length === 0 ? (
+              <p className="p-5 text-sm text-gray-500">No legacy collection rows returned.</p>
+            ) : (
+              <>
+                <div className="px-5 py-2 text-xs text-gray-500">Showing up to {legacyCollections.length} latest legacy collection records.</div>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
+                    <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
+                      <tr><th className="px-4 py-3">Date</th><th className="px-4 py-3">Admission No.</th><th className="px-4 py-3">Student</th><th className="px-4 py-3">Class</th><th className="px-4 py-3">Type</th><th className="px-4 py-3 text-right">Amount (KES)</th><th className="px-4 py-3">Method</th><th className="px-4 py-3">Reference</th></tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 bg-white">
+                      {legacyCollections.map((collection) => (
+                        <tr key={collection.collection_id}>
+                          <td className="px-4 py-2.5 text-gray-600">{new Date(collection.collected_at).toLocaleDateString('en-GB')}</td>
+                          <td className="px-4 py-2.5 font-mono text-xs text-gray-700">{collection.admission_no}</td>
+                          <td className="px-4 py-2.5 font-medium text-gray-900">{collection.student_name || '—'}</td>
+                          <td className="px-4 py-2.5 text-gray-700">{collection.class_name || '—'}</td>
+                          <td className="px-4 py-2.5 text-gray-700">{collection.collection_type}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums">{Number(collection.amount).toLocaleString()}</td>
+                          <td className="px-4 py-2.5 capitalize text-gray-700">{collection.payment_method || '—'}</td>
+                          <td className="px-4 py-2.5 text-gray-600">{collection.reference_number || '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </Card>
+
+
         </div>
       )}
 
