@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Alert, Badge, Button, Card, CardHeader, EmptyState, LoadingPanel, SelectField, TextField } from '@/components/ui';
 import { exportToExcel } from '@/lib/analytics/excel';
@@ -8,19 +8,17 @@ import {
   describeAnalyticsError,
   getFeePayments,
   getFeePledges,
+  createFeePledge,
   getFeeBalances,
-  getFeeCollections,
   getFinanceOverview,
   getMyPermissions,
   getFinanceSummary,
-  getInvoices,
   getReceipts,
   getFeeStructures,
   getReversalReasons,
   getStudentVoteHeadBalances,
   getVoteHeadCategories,
   getVoteHeads,
-  recordFeeCollection,
   upsertVoteHead,
   getStudentDirectory,
   getStudentFeeBalance,
@@ -28,16 +26,22 @@ import {
   recordFeePayment,
   upsertFeeStructure,
 } from '@/lib/analytics/api';
-import type { FeeBalance, FeeCollection, FeePayment, FeePledge, FeeStructure, Invoice, Receipt, ReversalReason, StudentDirectoryRow, StudentVoteHeadBalance, VoteHead, VoteHeadCategory } from '@/lib/analytics/types';
+import type { FeeBalance, FeePayment, FeePledge, FeeStructure, Receipt, ReversalReason, StudentDirectoryRow, StudentVoteHeadBalance, VoteHead } from '@/lib/analytics/types';
 
 export default function FinancePage() {
-  const [tab, setTab] = useState<'summary' | 'balances' | 'structures' | 'payments' | 'pledges' | 'voteheads' | 'collections' | 'invoices' | 'receipts'>('summary');
+  const [tab, setTab] = useState<'overview' | 'balances' | 'structures' | 'payments' | 'reports'>('overview');
   const [students, setStudents] = useState<StudentDirectoryRow[]>([]);
   const [structures, setStructures] = useState<FeeStructure[]>([]);
   const [payments, setPayments] = useState<FeePayment[]>([]);
   const [pledges, setPledges] = useState<FeePledge[]>([]);
   const [voteHeads, setVoteHeads] = useState<VoteHead[]>([]);
-  const [collections, setCollections] = useState<FeeCollection[]>([]);
+  const [ledgerPayments, setLedgerPayments] = useState<FeePayment[]>([]);
+  const [reportSearch, setReportSearch] = useState('');
+  const [showVoteHeadSettings, setShowVoteHeadSettings] = useState(false);
+  const [pledgeAmount, setPledgeAmount] = useState('');
+  const [pledgeDueDate, setPledgeDueDate] = useState('');
+  const [pledgeNotes, setPledgeNotes] = useState('');
+  const [savingPledge, setSavingPledge] = useState(false);
   const [financeSummary, setFinanceSummary] = useState<Record<string, unknown> | null>(null);
   const [financeRefreshKey, setFinanceRefreshKey] = useState(0);
 
@@ -60,9 +64,6 @@ export default function FinancePage() {
   const [allocations, setAllocations] = useState<Record<string, string>>({});
   const [canViewFees, setCanViewFees] = useState(false);
   const [canManageFees, setCanManageFees] = useState(false);
-  const [collectionClass, setCollectionClass] = useState('');
-  const [collectionSort, setCollectionSort] = useState('collected_at');
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [reversalReasons, setReversalReasons] = useState<ReversalReason[]>([]);
   const [voteHeadBalances, setVoteHeadBalances] = useState<StudentVoteHeadBalance[]>([]);
@@ -95,20 +96,18 @@ export default function FinancePage() {
       getStudentDirectory(undefined, undefined, undefined, undefined, { signal: controller.signal }),
       getFeeStructures(undefined, undefined, { signal: controller.signal }),
       getVoteHeads({ signal: controller.signal }),
-      getFeeCollections(undefined, undefined, undefined, undefined, undefined, undefined, 'collected_at', 'desc', 50, { signal: controller.signal }),
+      getFeePayments(undefined, 500, { signal: controller.signal }),
       getFinanceOverview(undefined, undefined, undefined, { signal: controller.signal }),
-      getInvoices(undefined, { signal: controller.signal }),
       getReceipts(undefined, { signal: controller.signal }),
       getMyPermissions({ signal: controller.signal }),
     ])
-      .then(([s, st, vh, col, summary, inv, rec, me]) => {
+      .then(([s, st, vh, ledger, summary, rec, me]) => {
         if (!active) return;
         setStudents(s);
         setStructures(st);
         setVoteHeads(vh);
-        setCollections(col);
+        setLedgerPayments(ledger);
         setFinanceSummary(summary);
-        setInvoices(inv);
         setReceipts(rec);
         const permissions = me?.permissions ?? [];
         setCanViewFees(permissions.includes('view-fees') || permissions.includes('manage-fees'));
@@ -149,13 +148,6 @@ export default function FinancePage() {
     return () => { active = false; controller.abort(); };
   }, [tab, balanceSearch, balanceClass, balanceTerm, balanceYear, balanceFilter, balanceMin, balanceMax, balanceSortBy, balanceSortDir, balancePage, financeRefreshKey]);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    getFeeCollections(undefined, collectionClass || undefined, undefined, undefined, undefined, undefined, collectionSort, 'desc', 50, { signal: controller.signal })
-      .then((data) => setCollections(data))
-      .catch(() => {});
-    return () => controller.abort();
-  }, [collectionClass, collectionSort, financeRefreshKey]);
 
   useEffect(() => {
     if (!selectedStudent) { setBalance(null); setPayments([]); setPledges([]); return; }
@@ -260,7 +252,7 @@ export default function FinancePage() {
             <Link href="/analytics" className="text-blue-700 hover:underline">Analytics</Link> / Finance
           </p>
           <h1 className="mt-1 text-2xl font-bold text-gray-900 sm:text-3xl">Finance & Fees</h1>
-          <p className="mt-1 max-w-2xl text-sm text-gray-600">Manage fee structures, record payments, track balances, and pledges.</p>
+          <p className="mt-1 max-w-2xl text-sm text-gray-600">Track fee liabilities, receive payments, manage fee structures and review ledger-based reports.</p>
         </div>
       </div>
 
@@ -269,7 +261,7 @@ export default function FinancePage() {
 
       {/* Tabs */}
       <div className="mb-6 flex gap-2 border-b border-gray-200">
-        {(['summary', 'balances', 'structures', 'payments', 'pledges', 'voteheads', 'collections', 'invoices', 'receipts'] as const).map((t) => (
+        {(['overview', 'balances', 'payments', 'structures', 'reports'] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
