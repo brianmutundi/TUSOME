@@ -81,6 +81,7 @@ begin
       c.name as class_name,
       coalesce((select sum(fs.amount) from public.fee_structures fs where fs.class_id=s.class_id and fs.is_active=true and (p_academic_year is null or fs.academic_year=p_academic_year) and (p_term is null or fs.term=p_term)),0) as total_fees,
       coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id=s.id and (p_academic_year is null or fp.academic_year=p_academic_year) and (p_term is null or fp.term=p_term)),0) as total_paid,
+      coalesce((select sum(fw.amount) from public.fee_waivers fw where fw.student_id=s.id and fw.tenant_id=s.tenant_id and fw.status='approved' and fw.applied_at is not null),0) as total_waived,
       (coalesce((select sum(fs.amount) from public.fee_structures fs where fs.class_id=s.class_id and fs.is_active=true and (p_academic_year is null or fs.academic_year=p_academic_year) and (p_term is null or fs.term=p_term)),0) - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id=s.id and (p_academic_year is null or fp.academic_year=p_academic_year) and (p_term is null or fp.term=p_term)),0) - coalesce((select sum(fw.amount) from public.fee_waivers fw where fw.student_id=s.id and fw.tenant_id=s.tenant_id and fw.status='approved' and fw.applied_at is not null),0)) as balance
     from public.students s
     left join public.classes c on c.id = s.class_id
@@ -130,6 +131,7 @@ begin
     'summary', jsonb_build_object(
       'total_fees', coalesce((select sum(fs.amount) from public.fee_structures fs join public.students s on s.class_id=fs.class_id where (v_role='service_role' or fs.tenant_id=v_caller_tenant) and fs.is_active=true and (p_class_id is null or s.class_id=p_class_id) and (p_academic_year is null or fs.academic_year=p_academic_year) and (p_term is null or fs.term=p_term)),0),
       'total_paid', coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp join public.students s on s.id=fp.student_id where (v_role='service_role' or fp.tenant_id=v_caller_tenant) and (p_class_id is null or s.class_id=p_class_id) and (p_academic_year is null or fp.academic_year=p_academic_year) and (p_term is null or fp.term=p_term)),0),
+      'total_waived', coalesce((select sum(fw.amount) from public.fee_waivers fw join public.students sw on sw.id=fw.student_id and sw.tenant_id=fw.tenant_id where (v_role='service_role' or fw.tenant_id=v_caller_tenant) and fw.status='approved' and fw.applied_at is not null and (p_class_id is null or sw.class_id=p_class_id)),0),
       'outstanding', coalesce((select sum(fs.amount) from public.fee_structures fs join public.students s on s.class_id=fs.class_id where (v_role='service_role' or fs.tenant_id=v_caller_tenant) and fs.is_active=true and (p_class_id is null or s.class_id=p_class_id) and (p_academic_year is null or fs.academic_year=p_academic_year) and (p_term is null or fs.term=p_term)),0) - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp join public.students s on s.id=fp.student_id where (v_role='service_role' or fp.tenant_id=v_caller_tenant) and (p_class_id is null or s.class_id=p_class_id) and (p_academic_year is null or fp.academic_year=p_academic_year) and (p_term is null or fp.term=p_term)),0) - coalesce((select sum(fw.amount) from public.fee_waivers fw join public.students sw on sw.id=fw.student_id and sw.tenant_id=fw.tenant_id where (v_role='service_role' or fw.tenant_id=v_caller_tenant) and fw.status='approved' and fw.applied_at is not null and (p_class_id is null or sw.class_id=p_class_id)),0),
       'total_learners', v_total
     )
@@ -213,6 +215,7 @@ begin
     'admission_no', v_admission_no,
     'total_fees', v_total_fees,
     'total_paid', v_total_paid,
+    'total_waived', v_total_waivers,
     'balance', v_balance
   );
 end;
