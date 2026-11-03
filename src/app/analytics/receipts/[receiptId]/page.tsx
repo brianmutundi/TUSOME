@@ -64,6 +64,7 @@ export default function ReceiptPage() {
       a.download = `receipt-${receipt?.receipt_number || receiptId}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
+      await logAuditEvent('reprint', 'receipt', receiptId, undefined, undefined, 'PDF download');
     } catch (caught) {
       setError(describeAnalyticsError(caught, 'Could not download PDF.'));
     } finally {
