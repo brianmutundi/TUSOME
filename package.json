@@ -13,7 +13,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "db:test": "node supabase/tests/disposable/run.mjs",
+    "db:check-rpcs": "node scripts/check-rpcs.mjs",
     "local:start": "powershell -NoProfile -ExecutionPolicy Bypass -File local/start.ps1",
     "local:stop": "powershell -NoProfile -ExecutionPolicy Bypass -File local/stop.ps1",
     "local:reset": "node local/reset.mjs",
