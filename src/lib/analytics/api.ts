@@ -1885,6 +1885,8 @@ export async function recordFeePayment(
   term?: string,
   notes?: string,
   idempotencyKey?: string,
+  paymentDate?: string,
+  allocations?: { vote_head_id?: string; fee_structure_id?: string; amount: number }[],
   options: RequestOptions = {}
 ): Promise<string> {
   const supabase = createClient();
@@ -1898,6 +1900,8 @@ export async function recordFeePayment(
       p_term: term ?? null,
       p_notes: notes ?? null,
       p_idempotency_key: idempotencyKey ?? null,
+      p_payment_date: paymentDate ?? null,
+      p_allocations: allocations ? JSON.stringify(allocations) : null,
     })
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
