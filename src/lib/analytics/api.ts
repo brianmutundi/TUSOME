@@ -2978,6 +2978,25 @@ export async function recordFeeCollection(
   return String(data);
 }
 
+export async function getFinanceOverview(
+  academicYear?: number,
+  term?: string,
+  classId?: string,
+  options: RequestOptions = {}
+): Promise<Record<string, unknown>> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('get_finance_overview', {
+      p_academic_year: academicYear ?? null,
+      p_term: term ?? null,
+      p_class_id: classId ?? null,
+    })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return (data ?? {}) as Record<string, unknown>;
+}
+
 export async function getFinanceSummary(
   classId?: string,
   academicYear?: number,

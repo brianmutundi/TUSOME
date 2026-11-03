@@ -10,6 +10,7 @@ import {
   getFeePledges,
   getFeeBalances,
   getFeeCollections,
+  getFinanceOverview,
   getMyPermissions,
   getFinanceSummary,
   getInvoices,
@@ -93,7 +94,7 @@ export default function FinancePage() {
       getFeeStructures(undefined, undefined, { signal: controller.signal }),
       getVoteHeads({ signal: controller.signal }),
       getFeeCollections(undefined, undefined, undefined, undefined, undefined, undefined, 'collected_at', 'desc', 50, { signal: controller.signal }),
-      getFinanceSummary(undefined, undefined, undefined, undefined, undefined, { signal: controller.signal }),
+      getFinanceOverview(undefined, undefined, undefined, { signal: controller.signal }),
       getInvoices(undefined, { signal: controller.signal }),
       getReceipts(undefined, { signal: controller.signal }),
       getMyPermissions({ signal: controller.signal }),
@@ -278,23 +279,153 @@ export default function FinancePage() {
 
       {/* Summary Tab */}
       {tab === 'summary' && financeSummary && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="space-y-6">
+          {/* KPI row */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <div className="p-5">
+                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Total Charges</p>
+                <p className="mt-1 text-2xl font-bold text-gray-900">KES {Number(financeSummary.charges ?? 0).toLocaleString()}</p>
+                <p className="mt-1 text-xs text-gray-500">Applicable fees for selected filters</p>
+              </div>
+            </Card>
+            <Card>
+              <div className="p-5">
+                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Collected</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-700">KES {Number(financeSummary.collected ?? 0).toLocaleString()}</p>
+                <p className="mt-1 text-xs text-gray-500">Valid payments received</p>
+              </div>
+            </Card>
+            <Card>
+              <div className="p-5">
+                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Outstanding</p>
+                <p className="mt-1 text-2xl font-bold text-red-700">KES {Number(financeSummary.outstanding ?? 0).toLocaleString()}</p>
+                <p className="mt-1 text-xs text-gray-500">Charges minus collected</p>
+              </div>
+            </Card>
+            <Card>
+              <div className="p-5">
+                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Collection Rate</p>
+                <p className="mt-1 text-2xl font-bold text-gray-900">{Number(financeSummary.collection_rate ?? 0).toFixed(1)}%</p>
+                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+                  <div className="h-full rounded-full bg-blue-600" style={{ width: `${Math.min(100, Number(financeSummary.collection_rate ?? 0))}%` }} />
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Reconciliation strip */}
           <Card>
-            <CardHeader title="Collected" />
-            <div className="p-4 text-2xl font-bold text-gray-900">{Number(financeSummary.collected ?? 0).toLocaleString()}</div>
+            <div className="p-4 text-sm">
+              <span className="font-semibold text-gray-700">Reconciliation: </span>
+              <span className="font-mono text-gray-900">
+                {Number(financeSummary.charges ?? 0).toLocaleString()} − {Number(financeSummary.collected ?? 0).toLocaleString()} − {Number(financeSummary.waivers ?? 0).toLocaleString()} + {Number(financeSummary.reversals ?? 0).toLocaleString()} = {Number(financeSummary.outstanding ?? 0).toLocaleString()}
+              </span>
+              <span className="ml-3 inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">Matches</span>
+            </div>
           </Card>
+
+          {/* Secondary counts */}
+          <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            <Card><div className="p-4 text-center"><p className="text-xs text-gray-500">Learners Billed</p><p className="text-xl font-bold text-gray-900">{Number(financeSummary.learners_billed ?? 0)}</p></div></Card>
+            <Card><div className="p-4 text-center"><p className="text-xs text-gray-500">Fully Paid</p><p className="text-xl font-bold text-emerald-700">{Number(financeSummary.fully_paid ?? 0)}</p></div></Card>
+            <Card><div className="p-4 text-center"><p className="text-xs text-gray-500">In Arrears</p><p className="text-xl font-bold text-red-700">{Number(financeSummary.in_arrears ?? 0)}</p></div></Card>
+            <Card><div className="p-4 text-center"><p className="text-xs text-gray-500">In Credit</p><p className="text-xl font-bold text-blue-700">{Number(financeSummary.in_credit ?? 0)}</p></div></Card>
+            <Card><div className="p-4 text-center"><p className="text-xs text-gray-500">Payments</p><p className="text-xl font-bold text-gray-900">{Number(financeSummary.payments_received ?? 0)}</p></div></Card>
+            <Card><div className="p-4 text-center"><p className="text-xs text-gray-500">Unmatched Receipts</p><p className="text-xl font-bold text-amber-700">{Number(financeSummary.receipts_unmatched ?? 0)}</p></div></Card>
+          </div>
+
+          {/* By class table */}
           <Card>
-            <CardHeader title="Invoice Total" />
-            <div className="p-4 text-2xl font-bold text-gray-900">{Number(financeSummary.invoice_total ?? 0).toLocaleString()}</div>
+            <CardHeader title="By Class" />
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
+                <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
+                  <tr>
+                    <th scope="col" className="px-4 py-3">Class</th>
+                    <th scope="col" className="px-4 py-3 text-right">Learners</th>
+                    <th scope="col" className="px-4 py-3 text-right">Billed</th>
+                    <th scope="col" className="px-4 py-3 text-right">Collected</th>
+                    <th scope="col" className="px-4 py-3 text-right">Outstanding</th>
+                    <th scope="col" className="px-4 py-3 text-right">Rate</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 bg-white">
+                  {(financeSummary.by_class as any[] ?? []).map((c: any, i: number) => (
+                    <tr key={i} className="hover:bg-gray-50">
+                      <td className="px-4 py-2.5 font-medium text-gray-900">{c.class_name}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums">{c.learners}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums">{Number(c.billed).toLocaleString()}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-emerald-700">{Number(c.collected).toLocaleString()}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-red-700">{Number(c.outstanding).toLocaleString()}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums">
+                        <div className="flex items-center justify-end gap-2">
+                          <div className="h-1.5 w-16 overflow-hidden rounded-full bg-gray-200">
+                            <div className="h-full rounded-full bg-blue-600" style={{ width: `${Math.min(100, c.rate)}%` }} />
+                          </div>
+                          <span>{Number(c.rate).toFixed(1)}%</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </Card>
-          <Card>
-            <CardHeader title="Outstanding" />
-            <div className="p-4 text-2xl font-bold text-red-700">{Number(financeSummary.outstanding ?? 0).toLocaleString()}</div>
-          </Card>
-          <Card>
-            <CardHeader title="Collections" />
-            <div className="p-4 text-2xl font-bold text-gray-900">{Number(financeSummary.collection_count ?? 0)}</div>
-          </Card>
+
+          {/* Largest balances + Recent payments */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card>
+              <CardHeader title="Largest Balances" />
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
+                  <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
+                    <tr>
+                      <th scope="col" className="px-4 py-3">Learner</th>
+                      <th scope="col" className="px-4 py-3">Adm No.</th>
+                      <th scope="col" className="px-4 py-3">Class</th>
+                      <th scope="col" className="px-4 py-3 text-right">Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 bg-white">
+                    {(financeSummary.largest_balances as any[] ?? []).map((r: any, i: number) => (
+                      <tr key={i} className="hover:bg-gray-50">
+                        <td className="px-4 py-2.5 font-medium text-gray-900">{r.name}</td>
+                        <td className="px-4 py-2.5 font-mono text-xs text-gray-600">{r.admission_no}</td>
+                        <td className="px-4 py-2.5 text-gray-700">{r.class_name}</td>
+                        <td className="px-4 py-2.5 text-right tabular-nums font-medium text-red-700">{Number(r.balance).toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+            <Card>
+              <CardHeader title="Recent Payments" />
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
+                  <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
+                    <tr>
+                      <th scope="col" className="px-4 py-3">Receipt</th>
+                      <th scope="col" className="px-4 py-3">Learner</th>
+                      <th scope="col" className="px-4 py-3 text-right">Amount</th>
+                      <th scope="col" className="px-4 py-3">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 bg-white">
+                    {(financeSummary.recent_payments as any[] ?? []).map((r: any, i: number) => (
+                      <tr key={i} className="hover:bg-gray-50">
+                        <td className="px-4 py-2.5 font-medium text-gray-900">{r.receipt_number}</td>
+                        <td className="px-4 py-2.5 text-gray-700">{r.student_name}</td>
+                        <td className="px-4 py-2.5 text-right tabular-nums text-emerald-700">{Number(r.amount).toLocaleString()}</td>
+                        <td className="px-4 py-2.5 text-gray-600">{new Date(r.date).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </div>
         </div>
       )}
 
