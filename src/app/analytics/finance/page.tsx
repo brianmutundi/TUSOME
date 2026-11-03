@@ -193,7 +193,7 @@ export default function FinancePage() {
     try {
       await recordFeePayment(selectedStudent, Number(payAmount), payMethod, payRef || undefined, undefined, undefined, payNotes || undefined, paymentIdempotencyKey ?? undefined, undefined, allocEntries.length > 0 ? allocEntries : undefined);
       setActionSuccess('Payment recorded.');
-      setPayAmount(''); setPayRef(''); setPayNotes('');
+      setPayAmount(''); setPayRef(''); setPayNotes(''); setAllocations({});
       setShowPaymentModal(false);
       setPaymentIdempotencyKey(null);
       // Refresh all finance views from the committed ledger transaction.
@@ -318,7 +318,7 @@ export default function FinancePage() {
               <span className="font-mono text-gray-900">
                 {Number(financeSummary.charges ?? 0).toLocaleString()} − {Number(financeSummary.collected ?? 0).toLocaleString()} − {Number(financeSummary.waivers ?? 0).toLocaleString()} = {Number(financeSummary.outstanding ?? 0).toLocaleString()}
               </span>
-              <span className="ml-3 inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">Matches</span>
+              <span className="ml-3 inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Net ledger basis</span>
             </div>
           </Card>
 
@@ -452,6 +452,16 @@ export default function FinancePage() {
               )}
             </div>
           </Card>
+
+          {selectedStudent && (
+            <Card>
+              <div className="grid gap-4 p-5 sm:grid-cols-3">
+                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Total fees</p><p className="mt-1 text-xl font-semibold text-gray-900">KES {Number(balance?.total_fees ?? 0).toLocaleString()}</p></div>
+                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Net paid</p><p className="mt-1 text-xl font-semibold text-emerald-700">KES {Number(balance?.total_paid ?? 0).toLocaleString()}</p></div>
+                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Outstanding / credit</p><p className={`mt-1 text-xl font-semibold ${Number(balance?.balance ?? 0) > 0 ? 'text-red-700' : 'text-blue-700'}`}>KES {Number(balance?.balance ?? 0).toLocaleString()}</p></div>
+              </div>
+            </Card>
+          )}
 
           {selectedStudent && (
             <Card>
