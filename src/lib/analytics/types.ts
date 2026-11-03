@@ -566,6 +566,13 @@ export interface FeePayment {
   paid_at: string;
 }
 
+export interface FeeLedgerEntry extends FeePayment {
+  entry_type: 'payment' | 'reversal';
+  reversal_reason: string | null;
+  receipt_id: string | null;
+  receipt_number: string | null;
+}
+
 export interface FeeBalance {
   student_id: string;
   student_name: string | null;
