@@ -99,9 +99,9 @@ export default function FinancePage() {
       getFeeStructures(undefined, undefined, { signal: controller.signal }),
       getVoteHeads({ signal: controller.signal }),
       getFeeLedgerReport(undefined, 500, { signal: controller.signal }),
-      getFeeCollections(undefined, undefined, undefined, undefined, undefined, undefined, 'collected_at', 'desc', 500, { signal: controller.signal }),
+      getFeeCollections(undefined, undefined, undefined, undefined, undefined, undefined, 'collected_at', 'desc', 500, { signal: controller.signal }).catch(() => []),
       getFinanceOverview(undefined, undefined, undefined, { signal: controller.signal }),
-      getReceipts(undefined, { signal: controller.signal }),
+      getReceipts(undefined, { signal: controller.signal }).catch(() => []),
       getMyPermissions({ signal: controller.signal }),
     ])
       .then(([s, st, vh, ledger, legacy, summary, rec, me]) => {
