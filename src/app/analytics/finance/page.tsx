@@ -479,7 +479,6 @@ export default function FinancePage() {
                         <th className="px-4 py-3">Amount</th>
                         <th className="px-4 py-3">Method</th>
                         <th className="px-4 py-3">Reference</th>
-                        <th className="px-4 py-3">Status</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 bg-white">
@@ -489,7 +488,6 @@ export default function FinancePage() {
                           <td className="px-4 py-2.5 font-medium text-gray-900">KES {Number(payment.amount).toLocaleString()}</td>
                           <td className="px-4 py-2.5 text-gray-700 capitalize">{payment.payment_method || '—'}</td>
                           <td className="px-4 py-2.5 text-gray-600">{payment.reference_number || '—'}</td>
-                          <td className="px-4 py-2.5 text-gray-600 capitalize">{payment.status || 'Recorded'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -658,14 +656,6 @@ export default function FinancePage() {
           </Card>
           )}
 
-                  <div className="flex justify-end gap-2">
-                    <Button variant="secondary" onClick={() => setShowPaymentModal(false)}>Cancel</Button>
-                    <Button type="submit" disabled={saving}>{saving ? 'Recording…' : 'Record Payment'}</Button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
         </>
       )}
 
