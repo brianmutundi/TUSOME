@@ -58,6 +58,7 @@ export default function FinancePage() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentIdempotencyKey, setPaymentIdempotencyKey] = useState<string | null>(null);
   const [allocations, setAllocations] = useState<Record<string, string>>({});
+  const [canViewFees, setCanViewFees] = useState(false);
   const [canManageFees, setCanManageFees] = useState(false);
   const [collectionClass, setCollectionClass] = useState('');
   const [collectionSort, setCollectionSort] = useState('collected_at');
@@ -109,7 +110,9 @@ export default function FinancePage() {
         setFinanceSummary(summary);
         setInvoices(inv);
         setReceipts(rec);
-        setCanManageFees((me?.permissions ?? []).some((p) => p === 'manage-fees' || p === 'view-fees'));
+        const permissions = me?.permissions ?? [];
+        setCanViewFees(permissions.includes('view-fees') || permissions.includes('manage-fees'));
+        setCanManageFees(permissions.includes('manage-fees'));
         if (s.length > 0) setSelectedStudent((current) => current || s[0].student_id);
       })
       .catch((caught) => { if (!active || isAbortError(caught)) return; setError(describeAnalyticsError(caught, 'Could not load finance data.')); })
@@ -233,7 +236,7 @@ export default function FinancePage() {
 
   if (loading) return <LoadingPanel label="Loading finance…" />;
 
-  if (!canManageFees && !loading) {
+  if (!canViewFees && !loading) {
     return (
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <Alert tone="error" title="Access denied">You do not have permission to view finance data.</Alert>
