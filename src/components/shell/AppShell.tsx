@@ -433,6 +433,7 @@ export function AppShell({
   fullName,
   role,
   isAdmin,
+  permissions,
   onSignOut,
 }: {
   children: ReactNode;
@@ -440,11 +441,12 @@ export function AppShell({
   fullName?: string | null;
   role?: string | null;
   isAdmin?: boolean;
+  permissions?: string[] | null;
   onSignOut: () => void;
 }) {
   const pathname = usePathname();
   const active = useMemo(() => findActiveNav(pathname), [pathname]);
-  const groups = useMemo(() => navGroupsForRole(role), [role]);
+  const groups = useMemo(() => navGroupsForRole(role, permissions), [role, permissions]);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [sheet, setSheet] = useState<string | null>(null);
 

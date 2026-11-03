@@ -162,17 +162,21 @@ export const NAV_GROUPS: NavGroup[] = [
   },
 ];
 
-/** Role-aware navigation: platform super admins only manage schools. */
-export function navGroupsForRole(role: string | null | undefined): NavGroup[] {
-  if (role !== 'super admin') return NAV_GROUPS;
-  const admin = NAV_GROUPS.find((group) => group.id === 'admin');
-  if (!admin) return [];
-  return [
-    {
-      ...admin,
-      items: admin.items.filter((item) => item.href === '/analytics/schools'),
-    },
-  ];
+/** Role-aware navigation: platform super admins only manage schools; finance hidden without view-fees. */
+export function navGroupsForRole(role: string | null | undefined, permissions?: string[] | null): NavGroup[] {
+  if (role === 'super admin') {
+    const admin = NAV_GROUPS.find((group) => group.id === 'admin');
+    if (!admin) return [];
+    return [
+      {
+        ...admin,
+        items: admin.items.filter((item) => item.href === '/analytics/schools'),
+      },
+    ];
+  }
+  const hasFinance = (permissions ?? []).some((p) => p === 'view-fees' || p === 'manage-fees' || p === 'manage-fees');
+  if (hasFinance) return NAV_GROUPS;
+  return NAV_GROUPS.filter((g) => g.id !== 'finance');
 }
 
 export function searchEntriesForRole(role: string | null | undefined): SearchEntry[] {

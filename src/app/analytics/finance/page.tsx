@@ -10,6 +10,7 @@ import {
   getFeePledges,
   getFeeBalances,
   getFeeCollections,
+  getMyPermissions,
   getFinanceSummary,
   getInvoices,
   getReceipts,
@@ -51,6 +52,7 @@ export default function FinancePage() {
   const [balanceSortDir, setBalanceSortDir] = useState('asc');
   const [balancePage, setBalancePage] = useState(1);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [canManageFees, setCanManageFees] = useState(false);
   const [collectionClass, setCollectionClass] = useState('');
   const [collectionSort, setCollectionSort] = useState('collected_at');
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -90,8 +92,9 @@ export default function FinancePage() {
       getFinanceSummary(undefined, undefined, undefined, undefined, undefined, { signal: controller.signal }),
       getInvoices(undefined, { signal: controller.signal }),
       getReceipts(undefined, { signal: controller.signal }),
+      getMyPermissions({ signal: controller.signal }),
     ])
-      .then(([s, st, vh, col, summary, inv, rec]) => {
+      .then(([s, st, vh, col, summary, inv, rec, me]) => {
         if (!active) return;
         setStudents(s);
         setStructures(st);
@@ -100,6 +103,7 @@ export default function FinancePage() {
         setFinanceSummary(summary);
         setInvoices(inv);
         setReceipts(rec);
+        setCanManageFees((me?.permissions ?? []).some((p) => p === 'manage-fees' || p === 'view-fees'));
         if (s.length > 0) setSelectedStudent(s[0].student_id);
       })
       .catch((caught) => { if (!active || isAbortError(caught)) return; setError(describeAnalyticsError(caught, 'Could not load finance data.')); })
@@ -345,7 +349,7 @@ export default function FinancePage() {
                       <td className="px-4 py-2.5 text-right tabular-nums text-emerald-700">{Number(row.total_paid).toLocaleString()}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums font-medium text-red-700">{Number(row.balance).toLocaleString()}</td>
                       <td className="px-4 py-2.5">
-                        {selectedStudent === row.student_id && (
+                        {canManageFees && selectedStudent === row.student_id && (
                           <Button size="sm" onClick={() => setShowPaymentModal(true)}>Record Payment</Button>
                         )}
                       </td>

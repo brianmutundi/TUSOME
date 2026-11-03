@@ -216,6 +216,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
       fullName={fullName}
       role={me?.role}
       isAdmin={me?.isAdmin}
+      permissions={me?.permissions}
       onSignOut={signOut}
     >
       {children}
