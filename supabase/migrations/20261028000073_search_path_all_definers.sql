@@ -1,0 +1,11 @@
+-- Set search_path = '' on all SECURITY DEFINER functions touched by this feature
+alter function public.log_audit_event set search_path = '';
+alter function public.log_sensitive_field_access set search_path = '';
+alter function public.my_tenant_id set search_path = '';
+alter function public.platform_create_school set search_path = '';
+alter function public.reverse_payment set search_path = '';
+alter function public.upsert_teacher_profile set search_path = '';
+alter function public.is_admin set search_path = '';
+alter function public.is_parent set search_path = '';
+alter function public.get_schools set search_path = '';
+alter function public.get_shared_report set search_path = '';
