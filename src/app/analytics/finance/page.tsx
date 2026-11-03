@@ -207,6 +207,14 @@ export default function FinancePage() {
 
   if (loading) return <LoadingPanel label="Loading finance…" />;
 
+  if (!canManageFees && !loading) {
+    return (
+      <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+        <Alert tone="error" title="Access denied">You do not have permission to view finance data.</Alert>
+      </main>
+    );
+  }
+
   if (error) {
     return (
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
