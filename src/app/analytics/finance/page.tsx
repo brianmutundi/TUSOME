@@ -434,6 +434,115 @@ export default function FinancePage() {
         </div>
       )}
 
+      {/* Payments Tab */}
+      {tab === 'payments' && (
+        <div className="space-y-5">
+          <Card>
+            <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-end sm:justify-between">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg font-semibold text-gray-900">Payment register</h2>
+                <p className="mt-1 text-sm text-gray-600">Select a learner to review their payment history or record a new payment.</p>
+                <div className="mt-4 max-w-md">
+                  <SelectField id="payment-student" label="Student" value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)}>
+                    <option value="">Select a student</option>
+                    {students.map((student) => (
+                      <option key={student.student_id} value={student.student_id}>
+                        {student.admission_no ? `${student.admission_no} — ` : ''}{student.student_name}
+                      </option>
+                    ))}
+                  </SelectField>
+                </div>
+              </div>
+              {canManageFees && (
+                <Button
+                  variant="primary"
+                  disabled={!selectedStudent}
+                  onClick={() => { setPaymentIdempotencyKey(crypto.randomUUID()); setShowPaymentModal(true); }}
+                >
+                  Record Payment
+                </Button>
+              )}
+            </div>
+          </Card>
+
+          {selectedStudent && (
+            <Card>
+              <CardHeader title="Payment history" />
+              {payments.length === 0 ? (
+                <EmptyState title="No payments recorded" description="Payments for this learner will appear here after they are recorded." />
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
+                    <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
+                      <tr>
+                        <th className="px-4 py-3">Date</th>
+                        <th className="px-4 py-3">Amount</th>
+                        <th className="px-4 py-3">Method</th>
+                        <th className="px-4 py-3">Reference</th>
+                        <th className="px-4 py-3">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 bg-white">
+                      {payments.map((payment) => (
+                        <tr key={payment.payment_id}>
+                          <td className="px-4 py-2.5 text-gray-600">{new Date(payment.paid_at).toLocaleDateString('en-GB')}</td>
+                          <td className="px-4 py-2.5 font-medium text-gray-900">KES {Number(payment.amount).toLocaleString()}</td>
+                          <td className="px-4 py-2.5 text-gray-700 capitalize">{payment.payment_method || '—'}</td>
+                          <td className="px-4 py-2.5 text-gray-600">{payment.reference_number || '—'}</td>
+                          <td className="px-4 py-2.5 text-gray-600 capitalize">{payment.status || 'Recorded'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </Card>
+          )}
+
+          {showPaymentModal && selectedStudent && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+              <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                <h2 className="mb-4 text-lg font-bold text-gray-900">Record Payment</h2>
+                <form onSubmit={handleRecordPayment} className="space-y-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <TextField id="pay-amount" label="Amount (KES)" type="number" required value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
+                    <div>
+                      <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Method</label>
+                      <select value={payMethod} onChange={(e) => setPayMethod(e.target.value)} className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900">
+                        <option value="cash">Cash</option>
+                        <option value="mpesa">M-Pesa</option>
+                        <option value="bank">Bank</option>
+                        <option value="cheque">Cheque</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                    <TextField id="pay-ref" label="Reference No." value={payRef} onChange={(e) => setPayRef(e.target.value)} />
+                    <TextField id="pay-notes" label="Notes" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} />
+                  </div>
+                  {voteHeads.length > 0 && (
+                    <div>
+                      <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Allocations (must sum to amount)</label>
+                      <div className="space-y-2">
+                        {voteHeads.map((voteHead) => (
+                          <div key={voteHead.vote_head_id} className="flex items-center gap-2">
+                            <span className="flex-1 text-sm text-gray-700">{voteHead.name}</span>
+                            <input type="number" min="0" step="0.01" value={allocations[voteHead.vote_head_id] ?? ''} onChange={(e) => setAllocations((prev) => ({ ...prev, [voteHead.vote_head_id]: e.target.value }))} className="w-28 rounded-lg border border-gray-300 bg-white px-2 py-1 text-right text-sm" placeholder="0" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex justify-end gap-2">
+                    <Button variant="secondary" onClick={() => setShowPaymentModal(false)}>Cancel</Button>
+                    <Button type="submit" disabled={saving}>{saving ? 'Recording…' : 'Record Payment'}</Button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Balances Tab */}
       {tab === 'balances' && (
         <>
@@ -511,7 +620,6 @@ export default function FinancePage() {
                     <th scope="col" className="px-4 py-3 text-right cursor-pointer" onClick={() => { setBalanceSortBy('total_fees'); setBalanceSortDir(balanceSortDir === 'asc' ? 'desc' : 'asc'); }}>Total Fees</th>
                     <th scope="col" className="px-4 py-3 text-right cursor-pointer" onClick={() => { setBalanceSortBy('total_paid'); setBalanceSortDir(balanceSortDir === 'asc' ? 'desc' : 'asc'); }}>Fees Paid</th>
                     <th scope="col" className="px-4 py-3 text-right cursor-pointer" onClick={() => { setBalanceSortBy('balance'); setBalanceSortDir(balanceSortDir === 'asc' ? 'desc' : 'asc'); }}>Balance</th>
-                    <th scope="col" className="px-4 py-3">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 bg-white">
@@ -531,11 +639,6 @@ export default function FinancePage() {
                       <td className="px-4 py-2.5 text-right tabular-nums">{Number(row.total_fees).toLocaleString()}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-emerald-700">{Number(row.total_paid).toLocaleString()}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums font-medium text-red-700">{Number(row.balance).toLocaleString()}</td>
-                      <td className="px-4 py-2.5">
-                        {canManageFees && selectedStudent === row.student_id && (
-                          <Button size="sm" onClick={() => { setPaymentIdempotencyKey(crypto.randomUUID()); setShowPaymentModal(true); }}>Record Payment</Button>
-                        )}
-                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -555,48 +658,6 @@ export default function FinancePage() {
           </Card>
           )}
 
-          {/* Record Payment Modal */}
-          {showPaymentModal && selectedStudent && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-              <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
-                <h2 className="text-lg font-bold text-gray-900 mb-4">Record Payment</h2>
-                <form onSubmit={handleRecordPayment} className="space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <TextField id="pay-amount" label="Amount" type="number" required value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
-                    <div>
-                      <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Method</label>
-                      <select value={payMethod} onChange={(e) => setPayMethod(e.target.value)} className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900">
-                        <option value="cash">Cash</option>
-                        <option value="mpesa">M-Pesa</option>
-                        <option value="bank">Bank</option>
-                        <option value="cheque">Cheque</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-                    <TextField id="pay-ref" label="Reference No." value={payRef} onChange={(e) => setPayRef(e.target.value)} />
-                    <TextField id="pay-notes" label="Notes" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} />
-                  </div>
-                  {voteHeads.length > 0 && (
-                    <div>
-                      <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Allocations (must sum to amount)</label>
-                      <div className="space-y-2">
-                        {voteHeads.map((vh) => (
-                          <div key={vh.vote_head_id} className="flex items-center gap-2">
-                            <span className="flex-1 text-sm text-gray-700">{vh.name}</span>
-                            <input
-                              type="number"
-                              min="0"
-                              step="0.01"
-                              value={allocations[vh.vote_head_id] ?? ''}
-                              onChange={(e) => setAllocations((prev) => ({ ...prev, [vh.vote_head_id]: e.target.value }))}
-                              className="w-28 rounded-lg border border-gray-300 bg-white px-2 py-1 text-sm text-right"
-                              placeholder="0"
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                   <div className="flex justify-end gap-2">
                     <Button variant="secondary" onClick={() => setShowPaymentModal(false)}>Cancel</Button>
                     <Button type="submit" disabled={saving}>{saving ? 'Recording…' : 'Record Payment'}</Button>
