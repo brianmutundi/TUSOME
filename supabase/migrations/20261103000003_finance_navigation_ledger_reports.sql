@@ -151,16 +151,65 @@ begin
     select
       c.name as class_name,
       count(distinct s.id) as learners,
-      coalesce(sum(distinct fs.amount * (select count(*) from public.students s2 where s2.class_id = c.id)), 0) as billed,
-      coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp join public.students s2 on s2.id = fp.student_id where s2.class_id = c.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0) as collected,
-      0::numeric as waivers,
-      coalesce(sum(distinct fs.amount * (select count(*) from public.students s2 where s2.class_id = c.id)), 0) - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp join public.students s2 on s2.id = fp.student_id where s2.class_id = c.id and (p_academic_year is null or fp.academic_year = p_academic_year) and (p_term is null or fp.term = p_term)), 0) as outstanding
+      coalesce((
+        select sum(fs.amount)
+        from public.fee_structures fs
+        where fs.class_id = c.id
+          and fs.tenant_id = c.tenant_id
+          and fs.is_active = true
+          and (p_academic_year is null or fs.academic_year = p_academic_year)
+          and (p_term is null or fs.term = p_term)
+      ), 0) * count(distinct s.id) as billed,
+      coalesce((
+        select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end)
+        from public.fee_payments fp
+        join public.students s2 on s2.id = fp.student_id and s2.tenant_id = fp.tenant_id
+        where s2.class_id = c.id
+          and fp.tenant_id = c.tenant_id
+          and (p_academic_year is null or fp.academic_year = p_academic_year)
+          and (p_term is null or fp.term = p_term)
+      ), 0) as collected,
+      coalesce((
+        select sum(fw.amount)
+        from public.fee_waivers fw
+        join public.students sw on sw.id = fw.student_id and sw.tenant_id = fw.tenant_id
+        where sw.class_id = c.id
+          and fw.tenant_id = c.tenant_id
+          and fw.status = 'approved'
+          and fw.applied_at is not null
+      ), 0) as waivers,
+      (
+        coalesce((
+          select sum(fs.amount)
+          from public.fee_structures fs
+          where fs.class_id = c.id
+            and fs.tenant_id = c.tenant_id
+            and fs.is_active = true
+            and (p_academic_year is null or fs.academic_year = p_academic_year)
+            and (p_term is null or fs.term = p_term)
+        ), 0) * count(distinct s.id)
+      ) - coalesce((
+        select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end)
+        from public.fee_payments fp
+        join public.students s2 on s2.id = fp.student_id and s2.tenant_id = fp.tenant_id
+        where s2.class_id = c.id
+          and fp.tenant_id = c.tenant_id
+          and (p_academic_year is null or fp.academic_year = p_academic_year)
+          and (p_term is null or fp.term = p_term)
+      ), 0) - coalesce((
+        select sum(fw.amount)
+        from public.fee_waivers fw
+        join public.students sw on sw.id = fw.student_id and sw.tenant_id = fw.tenant_id
+        where sw.class_id = c.id
+          and fw.tenant_id = c.tenant_id
+          and fw.status = 'approved'
+          and fw.applied_at is not null
+      ), 0) as outstanding
     from public.classes c
-    join public.students s on s.class_id = c.id
-    left join public.fee_structures fs on fs.class_id = c.id and fs.is_active = true and (p_academic_year is null or fs.academic_year = p_academic_year) and (p_term is null or fs.term = p_term)
+    join public.students s on s.class_id = c.id and s.tenant_id = c.tenant_id
     where (v_role = 'service_role' or c.tenant_id = v_caller_tenant)
       and (p_class_id is null or c.id = p_class_id)
-    group by c.id, c.name
+    group by c.id, c.name, c.tenant_id
   ) x;
 
   select coalesce(jsonb_agg(jsonb_build_object('month', month, 'total', total) order by month), '[]'::jsonb)
