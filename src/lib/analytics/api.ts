@@ -164,7 +164,7 @@ import type {
   WalletTransaction,
   TermDateRow,
   UserPermissionProfile,
-} from './types';
+, FeeLedgerEntry} from './types';
 
 export interface RequestOptions {
   signal?: AbortSignal;
@@ -1921,6 +1921,40 @@ export async function getFeePayments(
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
   throwIfAborted(options.signal);
   return normalizeFeePayments(data);
+}
+
+export async function getFeeLedgerReport(
+  studentId?: string,
+  limit = 500,
+  options: RequestOptions = {}
+): Promise<FeeLedgerEntry[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('get_fee_ledger_report', {
+      p_student_id: studentId ?? null,
+      p_limit: limit,
+    })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return (Array.isArray(data) ? data : []).map((raw: Record<string, unknown>) => ({
+    payment_id: String(raw.payment_id ?? ''),
+    student_id: String(raw.student_id ?? ''),
+    student_name: raw.student_name ? String(raw.student_name) : null,
+    admission_no: String(raw.admission_no ?? ''),
+    amount: Number(raw.amount ?? 0),
+    payment_method: String(raw.payment_method ?? 'cash'),
+    reference_number: raw.reference_number ? String(raw.reference_number) : null,
+    academic_year: raw.academic_year ? Number(raw.academic_year) : null,
+    term: raw.term ? String(raw.term) : null,
+    notes: raw.notes ? String(raw.notes) : null,
+    recorded_by_name: raw.recorded_by_name ? String(raw.recorded_by_name) : null,
+    paid_at: String(raw.paid_at ?? ''),
+    entry_type: raw.entry_type === 'reversal' ? 'reversal' : 'payment',
+    reversal_reason: raw.reversal_reason ? String(raw.reversal_reason) : null,
+    receipt_id: raw.receipt_id ? String(raw.receipt_id) : null,
+    receipt_number: raw.receipt_number ? String(raw.receipt_number) : null,
+  }));
 }
 
 export async function getFeePledges(
