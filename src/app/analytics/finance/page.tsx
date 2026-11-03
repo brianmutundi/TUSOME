@@ -6,36 +6,31 @@ import { Alert, Badge, Button, Card, CardHeader, EmptyState, LoadingPanel, Selec
 import { exportToExcel } from '@/lib/analytics/excel';
 import {
   describeAnalyticsError,
-  getFeePayments,
+  getFeeLedgerReport,
   getFeePledges,
   createFeePledge,
   getFeeBalances,
   getFinanceOverview,
   getMyPermissions,
-  getFinanceSummary,
   getReceipts,
   getFeeStructures,
-  getReversalReasons,
-  getStudentVoteHeadBalances,
-  getVoteHeadCategories,
   getVoteHeads,
-  upsertVoteHead,
   getStudentDirectory,
   getStudentFeeBalance,
   isAbortError,
   recordFeePayment,
   upsertFeeStructure,
 } from '@/lib/analytics/api';
-import type { FeeBalance, FeePayment, FeePledge, FeeStructure, Receipt, ReversalReason, StudentDirectoryRow, StudentVoteHeadBalance, VoteHead } from '@/lib/analytics/types';
+import type { FeeBalance, FeeLedgerEntry, FeePledge, FeeStructure, Receipt, StudentDirectoryRow, VoteHead } from '@/lib/analytics/types';
 
 export default function FinancePage() {
   const [tab, setTab] = useState<'overview' | 'balances' | 'structures' | 'payments' | 'reports'>('overview');
   const [students, setStudents] = useState<StudentDirectoryRow[]>([]);
   const [structures, setStructures] = useState<FeeStructure[]>([]);
-  const [payments, setPayments] = useState<FeePayment[]>([]);
+  const [payments, setPayments] = useState<FeeLedgerEntry[]>([]);
   const [pledges, setPledges] = useState<FeePledge[]>([]);
   const [voteHeads, setVoteHeads] = useState<VoteHead[]>([]);
-  const [ledgerPayments, setLedgerPayments] = useState<FeePayment[]>([]);
+  const [ledgerPayments, setLedgerPayments] = useState<FeeLedgerEntry[]>([]);
   const [reportSearch, setReportSearch] = useState('');
   const [showVoteHeadSettings, setShowVoteHeadSettings] = useState(false);
   const [pledgeAmount, setPledgeAmount] = useState('');
@@ -65,8 +60,6 @@ export default function FinancePage() {
   const [canViewFees, setCanViewFees] = useState(false);
   const [canManageFees, setCanManageFees] = useState(false);
   const [receipts, setReceipts] = useState<Receipt[]>([]);
-  const [reversalReasons, setReversalReasons] = useState<ReversalReason[]>([]);
-  const [voteHeadBalances, setVoteHeadBalances] = useState<StudentVoteHeadBalance[]>([]);
   const [selectedStudent, setSelectedStudent] = useState('');
   const [balance, setBalance] = useState<FeeBalance | null>(null);
   const [loading, setLoading] = useState(true);
@@ -103,7 +96,7 @@ export default function FinancePage() {
       getStudentDirectory(undefined, undefined, undefined, undefined, { signal: controller.signal }),
       getFeeStructures(undefined, undefined, { signal: controller.signal }),
       getVoteHeads({ signal: controller.signal }),
-      getFeePayments(undefined, 500, { signal: controller.signal }),
+      getFeeLedgerReport(undefined, 500, { signal: controller.signal }),
       getFinanceOverview(undefined, undefined, undefined, { signal: controller.signal }),
       getReceipts(undefined, { signal: controller.signal }),
       getMyPermissions({ signal: controller.signal }),
@@ -162,7 +155,7 @@ export default function FinancePage() {
     let active = true;
     Promise.all([
       getStudentFeeBalance(selectedStudent, undefined, undefined, { signal: controller.signal }),
-      getFeePayments(selectedStudent, 50, { signal: controller.signal }),
+      getFeeLedgerReport(selectedStudent, 50, { signal: controller.signal }),
       getFeePledges(selectedStudent, { signal: controller.signal }),
     ])
       .then(([b, p, pl]) => {
@@ -323,7 +316,7 @@ export default function FinancePage() {
             <div className="p-4 text-sm">
               <span className="font-semibold text-gray-700">Reconciliation: </span>
               <span className="font-mono text-gray-900">
-                {Number(financeSummary.charges ?? 0).toLocaleString()} − {Number(financeSummary.collected ?? 0).toLocaleString()} − {Number(financeSummary.waivers ?? 0).toLocaleString()} + {Number(financeSummary.reversals ?? 0).toLocaleString()} = {Number(financeSummary.outstanding ?? 0).toLocaleString()}
+                {Number(financeSummary.charges ?? 0).toLocaleString()} − {Number(financeSummary.collected ?? 0).toLocaleString()} − {Number(financeSummary.waivers ?? 0).toLocaleString()} = {Number(financeSummary.outstanding ?? 0).toLocaleString()}
               </span>
               <span className="ml-3 inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">Matches</span>
             </div>
@@ -475,6 +468,7 @@ export default function FinancePage() {
                     <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
                       <tr>
                         <th className="px-4 py-3">Date</th>
+                        <th className="px-4 py-3">Entry</th>
                         <th className="px-4 py-3">Amount</th>
                         <th className="px-4 py-3">Method</th>
                         <th className="px-4 py-3">Reference</th>
@@ -827,6 +821,7 @@ export default function FinancePage() {
                 <Button variant="secondary" onClick={() => {
                   const rows = filteredLedgerPayments.map((payment) => ({
                     date: new Date(payment.paid_at).toLocaleDateString('en-GB'),
+                    entry: payment.entry_type,
                     admission_no: payment.admission_no,
                     student: payment.student_name ?? '',
                     amount: payment.amount,
@@ -835,7 +830,7 @@ export default function FinancePage() {
                     term: payment.term ?? '',
                     year: payment.academic_year ?? '',
                   }));
-                  const csvRows = [['Date', 'Admission No.', 'Student', 'Amount (KES)', 'Method', 'Reference', 'Term', 'Year'], ...rows.map((row) => [row.date, row.admission_no, row.student, row.amount, row.method, row.reference, row.term, row.year])];
+                  const csvRows = [['Date', 'Entry', 'Admission No.', 'Student', 'Amount (KES)', 'Method', 'Reference', 'Term', 'Year'], ...rows.map((row) => [row.date, row.entry, row.admission_no, row.student, row.amount, row.method, row.reference, row.term, row.year])];
                   const csv = '\uFEFF' + csvRows.map((row) => row.map((value) => '"' + String(value).replace(/"/g, '""') + '"').join(',')).join('\r\n');
                   const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
                   const anchor = document.createElement('a');
@@ -849,6 +844,7 @@ export default function FinancePage() {
                   'Payment Ledger',
                   [
                     { header: 'Date', key: 'date', width: 14 },
+                    { header: 'Entry', key: 'entry', width: 12 },
                     { header: 'Admission No.', key: 'admission_no', width: 18 },
                     { header: 'Student', key: 'student', width: 26 },
                     { header: 'Amount (KES)', key: 'amount', width: 16 },
@@ -861,6 +857,7 @@ export default function FinancePage() {
                   (payment, key) => {
                     switch (key) {
                       case 'date': return new Date(payment.paid_at).toLocaleDateString('en-GB');
+                      case 'entry': return payment.entry_type;
                       case 'admission_no': return payment.admission_no;
                       case 'student': return payment.student_name ?? '';
                       case 'amount': return payment.amount;
@@ -875,7 +872,7 @@ export default function FinancePage() {
               </div>
             </div>
             <div className="border-t border-gray-100 px-5 py-3 text-xs text-gray-500">
-              Showing up to {ledgerPayments.length} latest ledger entries returned by the finance API. Export applies the current search.
+              Showing up to {ledgerPayments.length} latest ledger entries returned by the tenant-scoped finance ledger API. Export applies the current search.
             </div>
             {filteredLedgerPayments.length === 0 ? (
               <EmptyState title="No matching ledger entries" description="Adjust the search or record a payment." />
@@ -885,22 +882,26 @@ export default function FinancePage() {
                   <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
                     <tr>
                       <th className="px-4 py-3">Date</th>
+                      <th className="px-4 py-3">Entry</th>
                       <th className="px-4 py-3">Admission No.</th>
                       <th className="px-4 py-3">Student</th>
                       <th className="px-4 py-3 text-right">Amount (KES)</th>
                       <th className="px-4 py-3">Method</th>
                       <th className="px-4 py-3">Reference</th>
+                      <th className="px-4 py-3">Receipt</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 bg-white">
                     {filteredLedgerPayments.map((payment) => (
                       <tr key={payment.payment_id}>
                         <td className="px-4 py-2.5 text-gray-600">{new Date(payment.paid_at).toLocaleDateString('en-GB')}</td>
+                        <td className="px-4 py-2.5 capitalize text-gray-700">{payment.entry_type}{payment.reversal_reason ? ` · ${payment.reversal_reason}` : ''}</td>
                         <td className="px-4 py-2.5 font-mono text-xs text-gray-700">{payment.admission_no}</td>
                         <td className="px-4 py-2.5 font-medium text-gray-900">{payment.student_name || '—'}</td>
                         <td className="px-4 py-2.5 text-right tabular-nums font-medium">{Number(payment.amount).toLocaleString()}</td>
                         <td className="px-4 py-2.5 capitalize text-gray-700">{payment.payment_method}</td>
                         <td className="px-4 py-2.5 text-gray-600">{payment.reference_number || '—'}</td>
+                        <td className="px-4 py-2.5">{payment.receipt_id ? <Link href={`/analytics/receipts/${payment.receipt_id}`} className="text-blue-700 hover:underline">{payment.receipt_number || 'View receipt'}</Link> : '—'}</td>
                       </tr>
                     ))}
                   </tbody>
