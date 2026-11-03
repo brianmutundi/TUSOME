@@ -579,6 +579,7 @@ export interface FeeBalance {
   admission_no: string;
   total_fees: number;
   total_paid: number;
+  total_waived: number;
   balance: number;
 }
 
