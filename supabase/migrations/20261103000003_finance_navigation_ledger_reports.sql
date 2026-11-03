@@ -135,6 +135,7 @@ begin
   from public.receipts r
   where (v_role = 'service_role' or r.tenant_id = v_caller_tenant)
     and r.invoice_id is null
+    and r.payment_id is null
     and (p_class_id is null or exists (select 1 from public.students s where s.id = (select student_id from public.fee_payments fp where fp.id = r.payment_id) and s.class_id = p_class_id));
 
   select coalesce(jsonb_agg(jsonb_build_object(
