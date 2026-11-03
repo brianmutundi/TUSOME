@@ -432,10 +432,10 @@ export default function FinancePage() {
           <Card>
             <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-end sm:justify-between">
               <div className="min-w-0 flex-1">
-                <h2 className="text-lg font-semibold text-gray-900">Payment register</h2>
-                <p className="mt-1 text-sm text-gray-600">Select a learner to review their payment history or record a new payment.</p>
+                <h2 className="text-lg font-semibold text-gray-900">Payments</h2>
+                <p className="mt-1 text-sm text-gray-600">Select a learner to view their payment ledger, receipt references and payment commitments.</p>
                 <div className="mt-4 max-w-md">
-                  <SelectField id="payment-student" label="Student" value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)}>
+                  <SelectField id="payment-student" label="Student" value={selectedStudent} onChange={(event) => setSelectedStudent(event.target.value)}>
                     <option value="">Select a student</option>
                     {students.map((student) => (
                       <option key={student.student_id} value={student.student_id}>
@@ -446,11 +446,7 @@ export default function FinancePage() {
                 </div>
               </div>
               {canManageFees && (
-                <Button
-                  variant="primary"
-                  disabled={!selectedStudent}
-                  onClick={() => { setPaymentIdempotencyKey(crypto.randomUUID()); setShowPaymentModal(true); }}
-                >
+                <Button variant="primary" disabled={!selectedStudent} onClick={() => { setPaymentIdempotencyKey(crypto.randomUUID()); setShowPaymentModal(true); }}>
                   Record Payment
                 </Button>
               )}
@@ -459,9 +455,9 @@ export default function FinancePage() {
 
           {selectedStudent && (
             <Card>
-              <CardHeader title="Payment history" />
+              <CardHeader title="Student payment ledger" />
               {payments.length === 0 ? (
-                <EmptyState title="No payments recorded" description="Payments for this learner will appear here after they are recorded." />
+                <EmptyState title="No ledger entries" description="Payments and reversals for this learner will appear here." />
               ) : (
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
@@ -469,18 +465,21 @@ export default function FinancePage() {
                       <tr>
                         <th className="px-4 py-3">Date</th>
                         <th className="px-4 py-3">Entry</th>
-                        <th className="px-4 py-3">Amount</th>
+                        <th className="px-4 py-3 text-right">Amount (KES)</th>
                         <th className="px-4 py-3">Method</th>
                         <th className="px-4 py-3">Reference</th>
+                        <th className="px-4 py-3">Receipt</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 bg-white">
                       {payments.map((payment) => (
                         <tr key={payment.payment_id}>
                           <td className="px-4 py-2.5 text-gray-600">{new Date(payment.paid_at).toLocaleDateString('en-GB')}</td>
-                          <td className="px-4 py-2.5 font-medium text-gray-900">KES {Number(payment.amount).toLocaleString()}</td>
-                          <td className="px-4 py-2.5 text-gray-700 capitalize">{payment.payment_method || '—'}</td>
+                          <td className="px-4 py-2.5 capitalize text-gray-700">{payment.entry_type}{payment.reversal_reason ? ` · ${payment.reversal_reason}` : ''}</td>
+                          <td className={`px-4 py-2.5 text-right tabular-nums font-medium ${payment.entry_type === 'reversal' ? 'text-red-700' : 'text-gray-900'}`}>{Number(payment.amount).toLocaleString()}</td>
+                          <td className="px-4 py-2.5 capitalize text-gray-700">{payment.payment_method || '—'}</td>
                           <td className="px-4 py-2.5 text-gray-600">{payment.reference_number || '—'}</td>
+                          <td className="px-4 py-2.5">{payment.receipt_id ? <Link href={`/analytics/receipts/${payment.receipt_id}`} className="text-blue-700 hover:underline">{payment.receipt_number || 'View receipt'}</Link> : '—'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -490,25 +489,85 @@ export default function FinancePage() {
             </Card>
           )}
 
+          {selectedStudent && (
+            <Card>
+              <div className="border-b border-gray-100 p-5">
+                <h2 className="text-base font-semibold text-gray-900">Student payment commitments</h2>
+                <p className="mt-1 text-sm text-gray-600">Pledges are recorded against this learner and are not counted as payments received.</p>
+              </div>
+              <div className="p-5">
+                {canManageFees && (
+                  <form
+                    className="mb-5 grid gap-3 rounded-lg bg-gray-50 p-4 sm:grid-cols-4"
+                    onSubmit={async (event) => {
+                      event.preventDefault();
+                      if (!selectedStudent || !pledgeAmount || Number(pledgeAmount) <= 0) return;
+                      setSavingPledge(true);
+                      setActionError(null);
+                      setActionSuccess(null);
+                      try {
+                        await createFeePledge(selectedStudent, Number(pledgeAmount), pledgeDueDate || undefined, pledgeNotes || undefined);
+                        setPledgeAmount('');
+                        setPledgeDueDate('');
+                        setPledgeNotes('');
+                        setActionSuccess('Student pledge saved.');
+                        setFinanceRefreshKey((current) => current + 1);
+                      } catch (caught) {
+                        setActionError(describeAnalyticsError(caught, 'Could not save student pledge.'));
+                      } finally {
+                        setSavingPledge(false);
+                      }
+                    }}
+                  >
+                    <TextField id="pledge-amount" label="Pledged amount (KES)" type="number" required value={pledgeAmount} onChange={(event) => setPledgeAmount(event.target.value)} />
+                    <TextField id="pledge-due-date" label="Due date" type="date" value={pledgeDueDate} onChange={(event) => setPledgeDueDate(event.target.value)} />
+                    <TextField id="pledge-notes" label="Notes" value={pledgeNotes} onChange={(event) => setPledgeNotes(event.target.value)} />
+                    <div className="flex items-end">
+                      <Button type="submit" disabled={savingPledge}>{savingPledge ? 'Saving…' : 'Add pledge'}</Button>
+                    </div>
+                  </form>
+                )}
+                {pledges.length === 0 ? (
+                  <p className="py-3 text-sm text-gray-500">No payment commitments recorded for this learner.</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
+                      <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
+                        <tr><th className="px-4 py-3">Pledged</th><th className="px-4 py-3">Paid</th><th className="px-4 py-3">Remaining</th><th className="px-4 py-3">Due date</th><th className="px-4 py-3">Status</th></tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100 bg-white">
+                        {pledges.map((pledge) => (
+                          <tr key={pledge.pledge_id}>
+                            <td className="px-4 py-2.5 font-medium text-gray-900">KES {Number(pledge.pledged_amount).toLocaleString()}</td>
+                            <td className="px-4 py-2.5 text-emerald-700">KES {Number(pledge.paid_amount).toLocaleString()}</td>
+                            <td className="px-4 py-2.5 text-red-700">KES {Number(pledge.remaining_amount).toLocaleString()}</td>
+                            <td className="px-4 py-2.5 text-gray-600">{pledge.due_date || '—'}</td>
+                            <td className="px-4 py-2.5"><Badge className={pledge.status === 'fulfilled' ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-amber-200 bg-amber-50 text-amber-800'}>{pledge.status}</Badge></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </Card>
+          )}
+
           {showPaymentModal && selectedStudent && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
               <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
                 <h2 className="mb-4 text-lg font-bold text-gray-900">Record Payment</h2>
                 <form onSubmit={handleRecordPayment} className="space-y-4">
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <TextField id="pay-amount" label="Amount (KES)" type="number" required value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
+                    <TextField id="pay-amount" label="Amount (KES)" type="number" required value={payAmount} onChange={(event) => setPayAmount(event.target.value)} />
                     <div>
                       <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Method</label>
-                      <select value={payMethod} onChange={(e) => setPayMethod(e.target.value)} className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900">
-                        <option value="cash">Cash</option>
-                        <option value="mpesa">M-Pesa</option>
-                        <option value="bank">Bank</option>
-                        <option value="cheque">Cheque</option>
-                        <option value="other">Other</option>
+                      <select value={payMethod} onChange={(event) => setPayMethod(event.target.value)} className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900">
+                        <option value="cash">Cash</option><option value="mpesa">M-Pesa</option><option value="bank">Bank</option><option value="cheque">Cheque</option><option value="other">Other</option>
                       </select>
                     </div>
-                    <TextField id="pay-ref" label="Reference No." value={payRef} onChange={(e) => setPayRef(e.target.value)} />
-                    <TextField id="pay-notes" label="Notes" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} />
+                    <TextField id="pay-ref" label="Reference No." value={payRef} onChange={(event) => setPayRef(event.target.value)} />
+                    <TextField id="pay-notes" label="Notes" value={payNotes} onChange={(event) => setPayNotes(event.target.value)} />
                   </div>
                   {voteHeads.length > 0 && (
                     <div>
@@ -517,7 +576,7 @@ export default function FinancePage() {
                         {voteHeads.map((voteHead) => (
                           <div key={voteHead.vote_head_id} className="flex items-center gap-2">
                             <span className="flex-1 text-sm text-gray-700">{voteHead.name}</span>
-                            <input type="number" min="0" step="0.01" value={allocations[voteHead.vote_head_id] ?? ''} onChange={(e) => setAllocations((prev) => ({ ...prev, [voteHead.vote_head_id]: e.target.value }))} className="w-28 rounded-lg border border-gray-300 bg-white px-2 py-1 text-right text-sm" placeholder="0" />
+                            <input type="number" min="0" step="0.01" value={allocations[voteHead.vote_head_id] ?? ''} onChange={(event) => setAllocations((previous) => ({ ...previous, [voteHead.vote_head_id]: event.target.value }))} className="w-28 rounded-lg border border-gray-300 bg-white px-2 py-1 text-right text-sm" placeholder="0" />
                           </div>
                         ))}
                       </div>
@@ -530,79 +589,9 @@ export default function FinancePage() {
                 </form>
               </div>
             </div>
-          <Card>
-            <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-100 p-5">
-              <div>
-                <h2 className="text-base font-semibold text-gray-900">Student payment commitments</h2>
-                <p className="mt-1 text-sm text-gray-600">Pledges are recorded against this learner and are not counted as payments received.</p>
-              </div>
-            </div>
-            <div className="p-5">
-              {canManageFees && (
-                <form
-                  className="mb-5 grid gap-3 rounded-lg bg-gray-50 p-4 sm:grid-cols-4"
-                  onSubmit={async (event) => {
-                    event.preventDefault();
-                    if (!selectedStudent || !pledgeAmount || Number(pledgeAmount) <= 0) return;
-                    setSavingPledge(true);
-                    setActionError(null);
-                    setActionSuccess(null);
-                    try {
-                      await createFeePledge(selectedStudent, Number(pledgeAmount), pledgeDueDate || undefined, pledgeNotes || undefined);
-                      setPledgeAmount('');
-                      setPledgeDueDate('');
-                      setPledgeNotes('');
-                      setActionSuccess('Student pledge saved.');
-                      setFinanceRefreshKey((current) => current + 1);
-                    } catch (caught) {
-                      setActionError(describeAnalyticsError(caught, 'Could not save student pledge.'));
-                    } finally {
-                      setSavingPledge(false);
-                    }
-                  }}
-                >
-                  <TextField id="pledge-amount" label="Pledged amount (KES)" type="number" required value={pledgeAmount} onChange={(event) => setPledgeAmount(event.target.value)} />
-                  <TextField id="pledge-due-date" label="Due date" type="date" value={pledgeDueDate} onChange={(event) => setPledgeDueDate(event.target.value)} />
-                  <TextField id="pledge-notes" label="Notes" value={pledgeNotes} onChange={(event) => setPledgeNotes(event.target.value)} />
-                  <div className="flex items-end">
-                    <Button type="submit" disabled={savingPledge || !selectedStudent}>{savingPledge ? 'Saving…' : 'Add pledge'}</Button>
-                  </div>
-                </form>
-              )}
-              {pledges.length === 0 ? (
-                <p className="py-3 text-sm text-gray-500">No payment commitments recorded for this learner.</p>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
-                    <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
-                      <tr>
-                        <th className="px-4 py-3">Pledged</th>
-                        <th className="px-4 py-3">Paid</th>
-                        <th className="px-4 py-3">Remaining</th>
-                        <th className="px-4 py-3">Due date</th>
-                        <th className="px-4 py-3">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 bg-white">
-                      {pledges.map((pledge) => (
-                        <tr key={pledge.pledge_id}>
-                          <td className="px-4 py-2.5 font-medium text-gray-900">KES {Number(pledge.pledged_amount).toLocaleString()}</td>
-                          <td className="px-4 py-2.5 text-emerald-700">KES {Number(pledge.paid_amount).toLocaleString()}</td>
-                          <td className="px-4 py-2.5 text-red-700">KES {Number(pledge.remaining_amount).toLocaleString()}</td>
-                          <td className="px-4 py-2.5 text-gray-600">{pledge.due_date || '—'}</td>
-                          <td className="px-4 py-2.5"><Badge className={pledge.status === 'fulfilled' ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-amber-200 bg-amber-50 text-amber-800'}>{pledge.status}</Badge></td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          </Card>
           )}
         </div>
       )}
-
       {/* Balances Tab */}
       {tab === 'balances' && (
         <>
