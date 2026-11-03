@@ -164,7 +164,8 @@ import type {
   WalletTransaction,
   TermDateRow,
   UserPermissionProfile,
-, FeeLedgerEntry} from './types';
+  FeeLedgerEntry,
+} from './types';
 
 export interface RequestOptions {
   signal?: AbortSignal;
