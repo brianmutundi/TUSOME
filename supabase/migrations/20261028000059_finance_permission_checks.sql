@@ -39,7 +39,7 @@ begin
     if v_caller_tenant is null then
       raise exception 'Missing tenant claim';
     end if;
-    if not public.user_has_permission(auth.uid(), v_caller_tenant, 'manage-fees') then
+    if not (public.user_has_permission(auth.uid(), v_caller_tenant, 'view-fees') or public.user_has_permission(auth.uid(), v_caller_tenant, 'manage-fees')) then
       raise exception 'Access denied: finance permission required' using errcode = '42501';
     end if;
   end if;
@@ -166,6 +166,9 @@ begin
     end;
     if v_caller_tenant is null then
       raise exception 'Missing tenant claim';
+    end if;
+    if not (public.user_has_permission(auth.uid(), v_caller_tenant, 'view-fees') or public.user_has_permission(auth.uid(), v_caller_tenant, 'manage-fees')) then
+      raise exception 'Access denied: finance permission required' using errcode = '42501';
     end if;
     if not public.user_has_permission(auth.uid(), v_caller_tenant, 'manage-fees') then
       raise exception 'Access denied: finance permission required' using errcode = '42501';
