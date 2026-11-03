@@ -41,6 +41,8 @@ export default function FinancePage() {
 
   // Balances table state
   const [balanceData, setBalanceData] = useState<any>(null);
+  const [balanceLoading, setBalanceLoading] = useState(false);
+  const [balanceError, setBalanceError] = useState<string | null>(null);
   const [balanceSearch, setBalanceSearch] = useState('');
   const [balanceClass, setBalanceClass] = useState('');
   const [balanceTerm, setBalanceTerm] = useState('');
@@ -121,6 +123,8 @@ export default function FinancePage() {
     if (tab !== 'balances') return;
     const controller = new AbortController();
     let active = true;
+    setBalanceLoading(true);
+    setBalanceError(null);
     getFeeBalances(
       balanceSearch || undefined,
       balanceClass || undefined,
@@ -135,8 +139,8 @@ export default function FinancePage() {
       25,
       { signal: controller.signal }
     )
-      .then((data) => { if (active) setBalanceData(data); })
-      .catch(() => {});
+      .then((data) => { if (active) { setBalanceData(data); setBalanceLoading(false); } })
+      .catch((caught) => { if (active) { setBalanceError(caught instanceof Error ? caught.message : 'Could not load balances.'); setBalanceLoading(false); } });
     return () => { active = false; controller.abort(); };
   }, [tab, balanceSearch, balanceClass, balanceTerm, balanceYear, balanceFilter, balanceMin, balanceMax, balanceSortBy, balanceSortDir, balancePage]);
 
@@ -344,6 +348,22 @@ export default function FinancePage() {
           )}
 
           {/* Table */}
+          {balanceLoading && <LoadingPanel label="Loading balances…" />}
+
+          {balanceError && (
+            <Alert tone="error" title="Could not load balances">
+              {balanceError}
+              <div className="mt-2">
+                <Button variant="secondary" size="sm" onClick={() => setBalancePage(1)}>Retry</Button>
+              </div>
+            </Alert>
+          )}
+
+          {!balanceLoading && !balanceError && (balanceData?.rows ?? []).length === 0 && (
+            <EmptyState title="No learners match" description="Try adjusting your filters." action={<Button variant="secondary" onClick={() => { setBalanceSearch(''); setBalanceClass(''); setBalanceTerm(''); setBalanceYear(''); setBalanceFilter('all'); setBalanceMin(''); setBalanceMax(''); }}>Reset filters</Button>} />
+          )}
+
+          {!balanceLoading && !balanceError && (balanceData?.rows ?? []).length > 0 && (
           <Card>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
@@ -397,6 +417,7 @@ export default function FinancePage() {
               </div>
             </div>
           </Card>
+          )}
 
           {/* Record Payment Modal */}
           {showPaymentModal && selectedStudent && (
