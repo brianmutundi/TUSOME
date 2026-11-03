@@ -7,6 +7,7 @@ import {
   PiggyBank, Medal, ShieldCheck,
   type LucideIcon,
 } from 'lucide-react';
+import { canAccessRoute } from '@/lib/analytics/routePermissions';
 
 export interface NavItem {
   href: string;
@@ -175,18 +176,24 @@ export function navGroupsForRole(role: string | null | undefined, permissions?: 
     ];
   }
   const hasFinance = (permissions ?? []).some((p) => p === 'view-fees' || p === 'manage-fees' || p === 'manage-fees');
-  if (hasFinance) return NAV_GROUPS;
-  return NAV_GROUPS.filter((g) => g.id !== 'finance');
+  const groups = hasFinance ? NAV_GROUPS : NAV_GROUPS.filter((g) => g.id !== 'finance');
+  // Filter individual nav items by route permission.
+  return groups
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => canAccessRoute(permissions ?? null, item.href)),
+    }))
+    .filter((group) => group.items.length > 0);
 }
 
-export function searchEntriesForRole(role: string | null | undefined): SearchEntry[] {
-  const allowed = new Set(navGroupsForRole(role).flatMap((group) => group.items.map((item) => item.href)));
+export function searchEntriesForRole(role: string | null | undefined, permissions?: string[] | null): SearchEntry[] {
+  const allowed = new Set(navGroupsForRole(role, permissions).flatMap((group) => group.items.map((item) => item.href)));
   allowed.add(HOME_ITEM.href);
   return SEARCH_ENTRIES.filter((entry) => allowed.has(entry.href));
 }
 
-export function searchNavForRole(query: string, role: string | null | undefined): SearchEntry[] {
-  const entries = searchEntriesForRole(role);
+export function searchNavForRole(query: string, role: string | null | undefined, permissions?: string[] | null): SearchEntry[] {
+  const entries = searchEntriesForRole(role, permissions);
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   if (words.length === 0) return entries;
   return entries.filter((entry) => {

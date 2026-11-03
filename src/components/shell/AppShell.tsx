@@ -281,12 +281,12 @@ function NavSheet({
   );
 }
 
-function CommandPalette({ open, onClose, role }: { open: boolean; onClose: () => void; role?: string | null }) {
+function CommandPalette({ open, onClose, role, permissions }: { open: boolean; onClose: () => void; role?: string | null; permissions?: string[] | null }) {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
   const listRef = useRef<HTMLUListElement>(null);
-  const results = useMemo(() => searchNavForRole(query, role).slice(0, 40), [query, role]);
+  const results = useMemo(() => searchNavForRole(query, role, permissions).slice(0, 40), [query, role, permissions]);
 
   useEffect(() => {
     if (open) {
@@ -556,7 +556,7 @@ export function AppShell({
         onClose={() => setSheet(null)}
         onSearch={() => setPaletteOpen(true)}
       />
-      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} role={role} />
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} role={role} permissions={permissions} />
     </div>
   );
 }

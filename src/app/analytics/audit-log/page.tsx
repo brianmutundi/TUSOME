@@ -60,6 +60,14 @@ export default function AuditLogPage() {
             <option value="journal_entry">Journal Entry</option>
             <option value="cash_book_entry">Cash Book Entry</option>
             <option value="wallet_transaction">Wallet Transaction</option>
+            <option value="school">School</option>
+            <option value="tenant">Tenant</option>
+            <option value="account">Account</option>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+            <option value="class">Class</option>
+            <option value="exam">Exam</option>
+            <option value="purge_school">Purge School</option>
           </SelectField>
         </div>
       </Card>
