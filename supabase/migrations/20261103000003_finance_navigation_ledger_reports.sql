@@ -71,9 +71,14 @@ begin
     and (p_academic_year is null or fp.academic_year = p_academic_year)
     and (p_term is null or fp.term = p_term);
 
-  -- Credit allocations are unapplied payment balances, not fee waivers.
-  -- Do not subtract them from charges a second time.
-  v_waivers := 0;
+  -- Only approved and applied fee waivers reduce the outstanding liability.
+  select coalesce(sum(fw.amount), 0) into v_waivers
+  from public.fee_waivers fw
+  left join public.students s on s.id = fw.student_id and s.tenant_id = fw.tenant_id
+  where (v_role = 'service_role' or fw.tenant_id = v_caller_tenant)
+    and fw.status = 'approved'
+    and fw.applied_at is not null
+    and (p_class_id is null or s.class_id = p_class_id);
 
   select coalesce(sum(fp.amount), 0) into v_reversals
   from public.fee_payments fp
