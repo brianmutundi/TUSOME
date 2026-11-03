@@ -53,6 +53,7 @@ export default function FinancePage() {
   const [balancePage, setBalancePage] = useState(1);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentIdempotencyKey, setPaymentIdempotencyKey] = useState<string | null>(null);
+  const [allocations, setAllocations] = useState<Record<string, string>>({});
   const [canManageFees, setCanManageFees] = useState(false);
   const [collectionClass, setCollectionClass] = useState('');
   const [collectionSort, setCollectionSort] = useState('collected_at');
@@ -169,11 +170,27 @@ export default function FinancePage() {
   const handleRecordPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedStudent || !payAmount) return;
+    const allocEntries = Object.entries(allocations)
+      .filter(([, v]) => v && Number(v) > 0)
+      .map(([k, v]) => ({ vote_head_id: k, amount: Number(v) }));
+    const allocTotal = allocEntries.reduce((s, a) => s + a.amount, 0);
+    if (allocEntries.length > 0 && Math.abs(allocTotal - Number(payAmount)) > 0.001) {
+      setActionError('Allocations must sum to the payment amount.');
+      return;
+    }
+    // Overpayment confirmation
+    const bal = balanceData?.rows?.find((r: any) => r.student_id === selectedStudent);
+    const outstanding = bal ? Number(bal.balance ?? 0) : 0;
+    if (Number(payAmount) > outstanding && outstanding > 0) {
+      if (!window.confirm(`Amount exceeds outstanding balance (KES ${outstanding.toLocaleString()}). This will create a credit. Continue?`)) {
+        return;
+      }
+    }
     setSaving(true);
     setActionError(null);
     setActionSuccess(null);
     try {
-      await recordFeePayment(selectedStudent, Number(payAmount), payMethod, payRef || undefined, undefined, undefined, payNotes || undefined, paymentIdempotencyKey ?? undefined);
+      await recordFeePayment(selectedStudent, Number(payAmount), payMethod, payRef || undefined, undefined, undefined, payNotes || undefined, paymentIdempotencyKey ?? undefined, undefined, allocEntries.length > 0 ? allocEntries : undefined);
       setActionSuccess('Payment recorded.');
       setPayAmount(''); setPayRef(''); setPayNotes('');
       setShowPaymentModal(false);
@@ -402,6 +419,27 @@ export default function FinancePage() {
                     <TextField id="pay-ref" label="Reference No." value={payRef} onChange={(e) => setPayRef(e.target.value)} />
                     <TextField id="pay-notes" label="Notes" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} />
                   </div>
+                  {voteHeads.length > 0 && (
+                    <div>
+                      <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Allocations (must sum to amount)</label>
+                      <div className="space-y-2">
+                        {voteHeads.map((vh) => (
+                          <div key={vh.vote_head_id} className="flex items-center gap-2">
+                            <span className="flex-1 text-sm text-gray-700">{vh.name}</span>
+                            <input
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              value={allocations[vh.vote_head_id] ?? ''}
+                              onChange={(e) => setAllocations((prev) => ({ ...prev, [vh.vote_head_id]: e.target.value }))}
+                              className="w-28 rounded-lg border border-gray-300 bg-white px-2 py-1 text-sm text-right"
+                              placeholder="0"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   <div className="flex justify-end gap-2">
                     <Button variant="secondary" onClick={() => setShowPaymentModal(false)}>Cancel</Button>
                     <Button type="submit" disabled={saving}>{saving ? 'Recording…' : 'Record Payment'}</Button>
