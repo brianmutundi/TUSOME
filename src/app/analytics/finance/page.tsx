@@ -52,6 +52,7 @@ export default function FinancePage() {
   const [balanceSortDir, setBalanceSortDir] = useState('asc');
   const [balancePage, setBalancePage] = useState(1);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentIdempotencyKey, setPaymentIdempotencyKey] = useState<string | null>(null);
   const [canManageFees, setCanManageFees] = useState(false);
   const [collectionClass, setCollectionClass] = useState('');
   const [collectionSort, setCollectionSort] = useState('collected_at');
@@ -172,10 +173,11 @@ export default function FinancePage() {
     setActionError(null);
     setActionSuccess(null);
     try {
-      await recordFeePayment(selectedStudent, Number(payAmount), payMethod, payRef || undefined, undefined, undefined, payNotes || undefined);
+      await recordFeePayment(selectedStudent, Number(payAmount), payMethod, payRef || undefined, undefined, undefined, payNotes || undefined, paymentIdempotencyKey ?? undefined);
       setActionSuccess('Payment recorded.');
       setPayAmount(''); setPayRef(''); setPayNotes('');
       setShowPaymentModal(false);
+      setPaymentIdempotencyKey(null);
       // Refresh balances
       setBalancePage(1);
     } catch (caught) {
@@ -358,7 +360,7 @@ export default function FinancePage() {
                       <td className="px-4 py-2.5 text-right tabular-nums font-medium text-red-700">{Number(row.balance).toLocaleString()}</td>
                       <td className="px-4 py-2.5">
                         {canManageFees && selectedStudent === row.student_id && (
-                          <Button size="sm" onClick={() => setShowPaymentModal(true)}>Record Payment</Button>
+                          <Button size="sm" onClick={() => { setPaymentIdempotencyKey(crypto.randomUUID()); setShowPaymentModal(true); }}>Record Payment</Button>
                         )}
                       </td>
                     </tr>
