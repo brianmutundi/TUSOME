@@ -17,7 +17,7 @@ returns uuid
 language plpgsql
 volatile
 security definer
-set search_path = public
+set search_path = ''
 as $function$
 declare
   v_caller_tenant uuid;
@@ -213,4 +213,3 @@ $function$;
 
 revoke all on function public.record_fee_payment(uuid, numeric, text, text, integer, text, text, uuid, date, jsonb) from public, anon;
 grant execute on function public.record_fee_payment(uuid, numeric, text, text, integer, text, text, uuid, date, jsonb) to authenticated, service_role;
-alter table public.receipts add column if not exists payment_id uuid references public.fee_payments (id) on delete set null;
