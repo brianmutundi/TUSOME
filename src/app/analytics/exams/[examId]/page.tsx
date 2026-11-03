@@ -706,7 +706,7 @@ export default function ExamWorkspacePage() {
 
           <form onSubmit={handleSaveMarks}>
             <Card>
-                 title="Student mark entry sheet"
+             <CardHeader title="Student mark entry sheet" />
 
 
 

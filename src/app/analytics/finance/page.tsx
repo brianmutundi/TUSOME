@@ -92,7 +92,7 @@ export default function FinancePage() {
       getStudentDirectory(undefined, undefined, undefined, undefined, { signal: controller.signal }),
       getFeeStructures(undefined, undefined, { signal: controller.signal }),
       getVoteHeads({ signal: controller.signal }),
-      getFeeCollections(undefined, collectionClass || undefined, undefined, undefined, undefined, undefined, collectionSort, 'desc', 50, { signal: controller.signal }),
+      getFeeCollections(undefined, undefined, undefined, undefined, undefined, undefined, 'collected_at', 'desc', 50, { signal: controller.signal }),
       getFinanceSummary(undefined, undefined, undefined, undefined, undefined, { signal: controller.signal }),
       getInvoices(undefined, { signal: controller.signal }),
       getReceipts(undefined, { signal: controller.signal }),

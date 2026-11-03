@@ -135,7 +135,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
       })
       .catch(() => {});
     return () => controller.abort();
-  }, [state, router]);
+  }, [state, router, pathname]);
 
   const signOut = async () => {
     try {

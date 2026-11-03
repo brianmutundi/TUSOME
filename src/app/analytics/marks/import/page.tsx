@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { Alert, Button, Card, CardHeader, EmptyState, LoadingPanel, SelectField } from '@/components/ui';
 import {
@@ -106,7 +106,7 @@ export default function MarksImportPage() {
     return subjects;
   }, [subjects, subjectId]);
 
-  const loadRoster = async () => {
+  const loadRoster = useCallback(async () => {
     if (!examId || !classId) return;
     try {
       const data = await getExamMarkEntryRoster(examId, classId, streamId || undefined, subjectId || undefined);
@@ -115,9 +115,9 @@ export default function MarksImportPage() {
     } catch (e) {
       setError('Could not load roster.');
     }
-  };
+  }, [examId, classId, streamId, subjectId]);
 
-  useEffect(() => { loadRoster(); }, [examId, classId, streamId, subjectId]);
+  useEffect(() => { loadRoster(); }, [loadRoster]);
 
   const handleDownload = () => {
     const students = roster.map((r) => ({ admission_no: r.admission_no, full_name: r.full_name }));

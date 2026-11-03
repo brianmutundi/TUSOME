@@ -71,6 +71,7 @@ export function SelectField({
   const value = props.value !== undefined ? String(props.value) : inner;
   const selected = options.find((o) => o.value === value) ?? options[0];
   const valueId = useId();
+  const listboxId = useId();
 
   const choose = (next: string) => {
     const native = nativeRef.current;
@@ -122,6 +123,8 @@ export function SelectField({
             role="combobox"
             aria-label={`${label}: ${selected?.label ?? 'none'}`}
             aria-haspopup="listbox"
+            aria-expanded={open}
+            aria-controls={listboxId}
             disabled={props.disabled}
             data-open={open || undefined}
             className="flex min-h-[2.5rem] w-full items-center justify-between gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-left text-sm text-gray-900 transition-colors hover:border-gray-400 focus-visible:border-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-200 data-[open]:border-blue-500 data-[open]:ring-2 data-[open]:ring-blue-200 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
@@ -138,6 +141,7 @@ export function SelectField({
       >
         {({ close }) => (
           <Listbox
+            id={listboxId}
             options={options}
             value={value}
             label={label}
@@ -154,11 +158,13 @@ export function SelectField({
 }
 
 function Listbox({
+  id,
   options,
   value,
   label,
   onPick,
 }: {
+  id?: string;
   options: Opt[];
   value: string;
   label: string;
@@ -240,7 +246,7 @@ function Listbox({
       )}
       <ul
         ref={listRef}
-        id={`${baseId}-list`}
+        id={id ?? `${baseId}-list`}
         role="presentation"
         className="max-h-64 overflow-y-auto p-1"
       >
