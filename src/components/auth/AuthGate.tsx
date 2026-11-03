@@ -6,6 +6,7 @@ import { Alert, Skeleton } from '@/components/ui';
 import { AppShell } from '@/components/shell/AppShell';
 import { createClient } from '@/lib/supabase/client';
 import { describeAnalyticsError, getMyPermissions } from '@/lib/analytics/api';
+import { canAccessRoute } from '@/lib/analytics/routePermissions';
 import type { MyPermissions } from '@/lib/analytics/api';
 import { roleKey } from '@/lib/analytics/accounts';
 import type { Session } from '@supabase/supabase-js';
@@ -107,6 +108,13 @@ export function AuthGate({ children }: { children: ReactNode }) {
         if (roleKey(permissions.role) === 'parent') router.replace('/parent');
         if (roleKey(permissions.role) === 'super admin' && pathname !== '/analytics/schools') {
           router.replace('/analytics/schools');
+        }
+        // Route guard: redirect if user lacks permission for this page.
+        if (
+          roleKey(permissions.role) !== 'super admin' &&
+          !canAccessRoute(permissions.permissions, pathname)
+        ) {
+          router.replace('/analytics');
         }
         // Subscription gate for school users (platform super admins bypass).
         if (roleKey(permissions.role) !== 'super admin') {
