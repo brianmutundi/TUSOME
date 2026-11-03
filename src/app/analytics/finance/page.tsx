@@ -700,7 +700,7 @@ export default function FinancePage() {
                         <button
                           type="button"
                           className="font-medium text-blue-700 hover:underline"
-                          onClick={() => setSelectedStudent(row.student_id)}
+                          onClick={() => { setSelectedStudent(row.student_id); setTab('payments'); }}
                         >
                           {row.student_name || '—'}
                         </button>
