@@ -185,7 +185,7 @@ begin
   end if;
 
   -- create receipt using atomic numbering
-  v_receipt_number := public.next_receipt_number(coalesce(v_caller_tenant, v_student_tenant));
+  v_receipt_number := public.next_receipt_number(coalesce(v_caller_tenant, v_student_tenant), extract(year from v_payment_date)::smallint);
   insert into public.receipts (tenant_id, payment_id, receipt_number, amount_paid, payment_method, reference_number, paid_at, recorded_by)
   values (
     coalesce(v_caller_tenant, v_student_tenant),
