@@ -1,0 +1,246 @@
+table,rls_enabled,policy_name,command,permissive_or_restrictive,checks_tenant,checks_role_or_ownership,parent_access,justification_if_no_tenant
+attendance_records,Y,attendance_tenant,all,permissive,Y,N,allowed,
+attendance_records,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+audit_events,Y,audit_events_tenant_select,select,permissive,Y,N,allowed,
+audit_events,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+bank_statement_lines,Y,bank_statement_lines_tenant,all,permissive,Y,N,allowed,
+bank_statement_lines,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+bank_statements,Y,bank_statements_tenant,all,permissive,Y,N,allowed,
+bank_statements,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+behaviour_records,Y,behaviour_tenant,all,permissive,Y,N,allowed,
+behaviour_records,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+boarding_roll_call_entries,Y,boarding_roll_call_entries_tenant,all,permissive,Y,N,allowed,
+boarding_roll_call_entries,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+boarding_roll_calls,Y,boarding_roll_calls_tenant,all,permissive,Y,N,allowed,
+boarding_roll_calls,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+book_loans,Y,book_loans_tenant,all,permissive,Y,N,allowed,
+book_loans,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+budget_lines,Y,budget_lines_tenant,all,permissive,Y,N,allowed,
+budget_lines,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+budget_versions,Y,budget_versions_tenant,all,permissive,Y,N,allowed,
+budget_versions,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+budgets,Y,budgets_tenant,all,permissive,Y,N,allowed,
+budgets,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+cash_book_entries,Y,cash_book_entries_tenant,all,permissive,Y,N,allowed,
+cash_book_entries,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+cbc_assessments,Y,cbc_assessments_tenant,all,permissive,Y,N,allowed,
+cbc_assessments,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+chart_of_accounts,Y,coa_tenant,all,permissive,Y,N,allowed,
+chart_of_accounts,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+class_supervisor_assignments,Y,class_supervisor_assignments_tenant,all,permissive,Y,N,allowed,
+class_supervisor_assignments,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+class_teacher_assignments,Y,class_teacher_assignments_tenant,all,permissive,Y,N,allowed,
+class_teacher_assignments,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+classes,Y,classes_tenant,select,permissive,Y,N,allowed,
+classes,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+comment_categories,Y,comment_categories_tenant,all,permissive,Y,N,allowed,
+comment_categories,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+counselling_referrals,Y,counselling_referrals_tenant,all,permissive,Y,N,allowed,
+counselling_referrals,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+counselling_sessions,Y,counselling_sessions_tenant,all,permissive,Y,N,allowed,
+counselling_sessions,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+credit_applications,Y,credit_applications_tenant,all,permissive,Y,N,allowed,
+curriculum_coverage,Y,curriculum_coverage_tenant,all,permissive,Y,N,allowed,
+curriculum_coverage,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+daily_attendance,Y,daily_attendance_tenant,all,permissive,Y,N,allowed,
+daily_attendance,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+data_retention_policies,Y,data_retention_policies_tenant,all,permissive,Y,N,allowed,
+data_retention_policies,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+duty_assignments,Y,duty_assignments_tenant,all,permissive,Y,N,allowed,
+duty_assignments,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+duty_rosters,Y,duty_rosters_tenant,all,permissive,Y,N,allowed,
+duty_rosters,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+emergency_contacts,Y,emergency_contacts_tenant,all,permissive,Y,N,allowed,
+emergency_contacts,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+employee_salaries,Y,employee_salaries_tenant,all,permissive,Y,N,allowed,
+employee_salaries,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+employee_salary_components,Y,employee_salary_components_tenant,all,permissive,Y,N,allowed,
+employee_salary_components,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+events,Y,events_tenant,all,permissive,Y,N,allowed,
+events,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+exam_classes,Y,exam_classes_admin_write,all,permissive,Y,Y,allowed,
+exam_classes,Y,exam_classes_tenant,select,permissive,Y,N,allowed,
+exam_classes,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+exam_comments,Y,exam_comments_tenant,all,permissive,Y,N,allowed,
+exam_comments,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+exams,Y,exams_admin_write,all,permissive,Y,Y,allowed,
+exams,Y,exams_tenant,select,permissive,Y,N,allowed,
+exams,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+fee_collections,Y,fee_collections_tenant,all,permissive,Y,N,allowed,
+fee_collections,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+fee_payments,Y,fee_payments_tenant,all,permissive,Y,N,allowed,
+fee_payments,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+fee_pledges,Y,fee_pledges_tenant,all,permissive,Y,N,allowed,
+fee_pledges,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+fee_statements,Y,fee_statements_tenant,all,permissive,Y,N,allowed,
+fee_statements,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+fee_structure_groups,Y,fee_structure_groups_tenant,all,permissive,Y,N,allowed,
+fee_structure_groups,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+fee_structure_items,Y,fee_structure_items_tenant,all,permissive,Y,N,allowed,
+fee_structure_items,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+fee_structures,Y,fee_structures_tenant,all,permissive,Y,N,allowed,
+fee_structures,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+fee_waivers,Y,fee_waivers_tenant,all,permissive,Y,N,allowed,
+fee_waivers,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+fiscal_periods,Y,fiscal_periods_tenant,all,permissive,Y,N,allowed,
+fiscal_periods,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+grading_configuration_levels,Y,grading_configuration_levels_tenant,select,permissive,Y,N,allowed,
+grading_configuration_levels,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+grading_configurations,Y,grading_configurations_tenant,select,permissive,Y,N,allowed,
+grading_configurations,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+invoice_items,Y,invoice_items_tenant,all,permissive,Y,N,allowed,
+invoice_items,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+invoices,Y,invoices_tenant,all,permissive,Y,N,allowed,
+invoices,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+journal_entries,Y,journal_entries_tenant,all,permissive,Y,N,allowed,
+journal_entries,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+journal_lines,Y,journal_lines_tenant,all,permissive,Y,N,allowed,
+journal_lines,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+leave_requests,Y,leave_requests_tenant,all,permissive,Y,N,allowed,
+leave_requests,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+leave_types,Y,leave_types_tenant,all,permissive,Y,N,allowed,
+leave_types,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+lesson_plans,Y,lesson_plans_tenant,all,permissive,Y,N,allowed,
+lesson_plans,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+library_books,Y,library_books_tenant,all,permissive,Y,N,allowed,
+library_books,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+marks,Y,marks_select_scoped,select,permissive,Y,N,allowed,
+marks,Y,marks_staff_write,all,permissive,Y,Y,allowed,
+marks,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+meal_attendance,Y,meal_attendance_tenant,all,permissive,Y,N,allowed,
+meal_attendance,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+meal_plans,Y,meal_plans_tenant,all,permissive,Y,N,allowed,
+meal_plans,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+medical_alerts,Y,medical_alerts_tenant,all,permissive,Y,N,allowed,
+medical_alerts,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+medical_inventory,Y,medical_inventory_tenant,all,permissive,Y,N,allowed,
+medical_inventory,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+medical_visits,Y,medical_visits_tenant,all,permissive,Y,N,allowed,
+medical_visits,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+message_log,Y,message_log_tenant,all,permissive,Y,N,allowed,
+message_log,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+notices,Y,notices_tenant,all,permissive,Y,N,allowed,
+notices,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+opportunities,Y,opportunities_tenant,all,permissive,Y,N,allowed,
+opportunities,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+opportunity_applications,Y,opportunity_applications_tenant,all,permissive,Y,N,allowed,
+opportunity_applications,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+parent_student_links,Y,parent_block_select,select,permissive,N,Y,blocked,Parents may read only their own link/profile row (parent_id/id = auth.uid()); tenant scoping via permissive tenant policy.
+parent_student_links,Y,parent_block_write,all,permissive,N,Y,blocked,Restrictive parent deny for writes; tenant scoping via permissive tenant policy.
+parent_student_links,Y,parent_student_links_tenant,all,permissive,Y,N,allowed,
+pathways,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+pathways,Y,pathways_tenant,all,permissive,Y,N,allowed,
+payment_allocations,Y,payment_allocations_tenant,all,permissive,Y,N,allowed,
+payroll_entries,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+payroll_entries,Y,payroll_entries_tenant,all,permissive,Y,N,allowed,
+payroll_entry_details,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+payroll_entry_details,Y,payroll_entry_details_tenant,all,permissive,Y,N,allowed,
+payroll_periods,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+payroll_periods,Y,payroll_periods_tenant,all,permissive,Y,N,allowed,
+permissions,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+permissions,Y,permissions_select,select,permissive,N,N,allowed,Permission catalogue is public read-only reference data (no tenant data).
+profiles,Y,parent_block_select,select,permissive,N,Y,blocked,Parents may read only their own link/profile row (parent_id/id = auth.uid()); tenant scoping via permissive tenant policy.
+profiles,Y,parent_block_write,all,permissive,N,Y,blocked,Restrictive parent deny for writes; tenant scoping via permissive tenant policy.
+profiles,Y,profiles_admin_delete,delete,permissive,Y,N,allowed,
+profiles,Y,profiles_admin_insert,insert,permissive,Y,N,allowed,
+profiles,Y,profiles_admin_update,update,permissive,Y,N,allowed,
+profiles,Y,profiles_tenant,select,permissive,Y,Y,allowed,
+receipt_counters,Y,receipt_counters_tenant,all,permissive,Y,N,allowed,
+receipts,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+receipts,Y,receipts_tenant,all,permissive,Y,N,allowed,
+report_share_tokens,Y,report_share_tokens_none,all,permissive,N,N,allowed,Deny-all policy; access only via token-gated SECURITY DEFINER RPC.
+report_template_configs,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+report_template_configs,Y,report_template_configs_tenant,all,permissive,Y,N,allowed,
+reversal_reasons,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+reversal_reasons,Y,reversal_reasons_tenant,all,permissive,Y,N,allowed,
+role_permissions,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+role_permissions,Y,role_permissions_tenant_select,select,permissive,Y,Y,allowed,
+role_permissions,Y,role_permissions_tenant_write,all,permissive,Y,Y,allowed,
+roles,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+roles,Y,roles_tenant_select,select,permissive,Y,N,allowed,
+roles,Y,roles_tenant_write,all,permissive,Y,Y,allowed,
+salary_components,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+salary_components,Y,salary_components_tenant,all,permissive,Y,N,allowed,
+section_heads,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+section_heads,Y,section_heads_tenant_select,select,permissive,Y,N,allowed,
+section_heads,Y,section_heads_tenant_write,all,permissive,Y,Y,allowed,
+sensitive_field_access,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+sensitive_field_access,Y,sensitive_field_access_tenant,select,permissive,Y,N,allowed,
+sports,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+sports,Y,sports_tenant,all,permissive,Y,N,allowed,
+sports_events,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+sports_events,Y,sports_events_tenant,all,permissive,Y,N,allowed,
+sports_participation,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+sports_participation,Y,sports_participation_tenant,all,permissive,Y,N,allowed,
+staff_group_members,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+staff_group_members,Y,staff_group_members_tenant_select,select,permissive,Y,N,allowed,
+staff_group_members,Y,staff_group_members_tenant_write,all,permissive,Y,N,allowed,
+staff_groups,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+staff_groups,Y,staff_groups_tenant_select,select,permissive,Y,N,allowed,
+staff_groups,Y,staff_groups_tenant_write,all,permissive,Y,N,allowed,
+streams,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+streams,Y,streams_tenant,select,permissive,Y,N,allowed,
+student_enrollments,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+student_enrollments,Y,student_enrollments_admin_write,all,permissive,Y,Y,allowed,
+student_enrollments,Y,student_enrollments_tenant,select,permissive,Y,N,allowed,
+student_group_members,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+student_group_members,Y,student_group_members_tenant,all,permissive,Y,N,allowed,
+student_groups,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+student_groups,Y,student_groups_tenant,all,permissive,Y,N,allowed,
+student_notes,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+student_notes,Y,student_notes_tenant,all,permissive,Y,N,allowed,
+student_pathways,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+student_pathways,Y,student_pathways_tenant,all,permissive,Y,N,allowed,
+student_residence_assignments,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+student_residence_assignments,Y,student_residence_assignments_tenant,all,permissive,Y,N,allowed,
+student_residences,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+student_residences,Y,student_residences_tenant,all,permissive,Y,N,allowed,
+student_transport,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+student_transport,Y,student_transport_tenant,all,permissive,Y,N,allowed,
+students,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+students,Y,students_admin_write,all,permissive,Y,Y,allowed,
+students,Y,students_tenant,select,permissive,Y,N,allowed,
+subject_papers,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+subject_papers,Y,subject_papers_tenant,all,permissive,Y,N,allowed,
+subject_publish_status,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+subject_publish_status,Y,subject_publish_status_tenant,all,permissive,Y,N,allowed,
+subject_teacher_access,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+subject_teacher_access,Y,subject_teacher_access_tenant,all,permissive,Y,N,allowed,
+subject_teacher_assignments,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+subject_teacher_assignments,Y,subject_teacher_assignments_tenant,all,permissive,Y,N,allowed,
+subjects,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+subjects,Y,subjects_tenant,select,permissive,Y,N,allowed,
+substitutions,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+substitutions,Y,substitutions_tenant,all,permissive,Y,N,allowed,
+teacher_allocations,Y,teacher_allocations_tenant,all,permissive,Y,N,allowed,
+tenants,Y,tenants_tenant,select,permissive,Y,N,allowed,
+term_dates,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+term_dates,Y,term_dates_tenant,all,permissive,Y,N,allowed,
+timetable_entries,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+timetable_entries,Y,timetable_entries_tenant,all,permissive,Y,N,allowed,
+timetable_slots,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+timetable_slots,Y,timetable_slots_tenant,all,permissive,Y,N,allowed,
+transport_routes,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+transport_routes,Y,transport_routes_tenant,all,permissive,Y,N,allowed,
+trip_participants,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+trip_participants,Y,trip_participants_tenant,all,permissive,Y,N,allowed,
+trips,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+trips,Y,trips_tenant,all,permissive,Y,N,allowed,
+user_permissions,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+user_permissions,Y,user_permissions_tenant_select,select,permissive,Y,N,allowed,
+user_permissions,Y,user_permissions_tenant_write,all,permissive,Y,Y,allowed,
+user_roles,Y,user_roles_delete,delete,permissive,Y,Y,allowed,
+user_roles,Y,user_roles_insert,insert,permissive,Y,Y,allowed,
+user_roles,Y,user_roles_select,select,permissive,Y,N,allowed,
+vehicles,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+vehicles,Y,vehicles_tenant,all,permissive,Y,N,allowed,
+vote_head_balances,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+vote_head_balances,Y,vote_head_balances_tenant,all,permissive,Y,N,allowed,
+vote_head_categories,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+vote_head_categories,Y,vote_head_categories_tenant,all,permissive,Y,N,allowed,
+vote_heads,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+vote_heads,Y,vote_heads_tenant,all,permissive,Y,N,allowed,
+wallet_transactions,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+wallet_transactions,Y,wallet_transactions_tenant,all,permissive,Y,N,allowed,
+wallets,Y,parent_block,all,permissive,N,Y,blocked,Restrictive parent deny; tenant scoping is provided by the permissive *_tenant policy on the same table.
+wallets,Y,wallets_tenant,all,permissive,Y,N,allowed,

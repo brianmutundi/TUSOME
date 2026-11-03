@@ -1,0 +1,36 @@
+function,guards,status,justification
+apply_credit,tenant+role/permission,guarded,
+assert_parent_of,tenant+role/permission+parent-link,exempt,Parent-child link guard helper
+bulk_create_students,tenant+role/permission,guarded,
+create_report_share_token,tenant+role/permission,guarded,
+custom_access_token_hook,tenant,exempt,JWT hook; no tenant context yet
+delete_class,tenant+role/permission,guarded,
+delete_school,tenant+role/permission,guarded,
+delete_stream,tenant+role/permission,guarded,
+get_finance_overview,tenant+role/permission,guarded,
+get_my_child_attendance,tenant+parent-link,exempt,Parent RPC gated by assert_parent_of
+get_my_child_fees,tenant+parent-link,exempt,Parent RPC gated by assert_parent_of
+get_my_child_payments,tenant+parent-link,exempt,Parent RPC gated by assert_parent_of
+get_my_child_results,tenant+parent-link,exempt,Parent RPC gated by assert_parent_of
+get_my_children,tenant+role/permission,guarded,
+get_schools,tenant+role/permission,guarded,
+get_shared_report,tenant,exempt,Token-gated public report
+get_student_statement,tenant+role/permission,guarded,
+is_admin,none,exempt,Role helper
+is_parent,role/permission+parent-link,exempt,Role helper
+is_tenant_admin,tenant+role/permission,guarded,
+log_audit_event,tenant,exempt,Internal audit sink
+log_sensitive_field_access,tenant,exempt,Internal audit sink
+my_tenant_id,tenant,exempt,JWT tenant helper
+next_receipt_number,tenant,exempt,Internal counter called by guarded record_fee_payment
+platform_create_school,tenant+role/permission,guarded,
+purge_school,tenant+role/permission,guarded,
+record_fee_payment,tenant+role/permission,guarded,
+restore_school,tenant+role/permission,guarded,
+reverse_payment,tenant+role/permission,guarded,
+rls_auto_enable,none,exempt,Trigger helper
+set_my_phone,none,exempt,Self-service auth.uid() scoped
+teacher_has_allocation,role/permission+teacher-allocation,exempt,Teacher allocation guard helper
+update_school_subscription,tenant+role/permission,guarded,
+upsert_teacher_profile,tenant+role/permission,guarded,
+user_has_role,tenant+role/permission,guarded,
