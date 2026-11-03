@@ -181,7 +181,7 @@ export default function FinancePage() {
     }
     // Overpayment confirmation
     const bal = balanceData?.rows?.find((r: any) => r.student_id === selectedStudent);
-    const outstanding = bal ? Number(bal.balance ?? 0) : 0;
+    const outstanding = bal ? Number(bal.balance ?? 0) : Number(balance?.balance ?? 0);
     if (Number(payAmount) > outstanding && outstanding > 0) {
       if (!window.confirm(`Amount exceeds outstanding balance (KES ${outstanding.toLocaleString()}). This will create a credit. Continue?`)) {
         return;
