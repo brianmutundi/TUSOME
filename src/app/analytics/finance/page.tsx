@@ -120,6 +120,10 @@ export default function FinancePage() {
   }, [financeRefreshKey]);
 
   useEffect(() => {
+    setAllocations({});
+  }, [selectedStudent]);
+
+  useEffect(() => {
     setBalancePage(1);
   }, [balanceSearch, balanceClass, balanceTerm, balanceYear, balanceFilter, balanceMin, balanceMax, balanceSortBy, balanceSortDir]);
 
