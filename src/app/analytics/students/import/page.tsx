@@ -163,9 +163,12 @@ export default function StudentImportPage() {
           previousSchool: r[header.indexOf('previousSchool')] ?? '',
         };
         const errors: string[] = [];
-        // neutralize formula injection
-        for (const k of Object.keys(data) as (keyof RowData)[]) {
-          if (/^[=+\-@]/.test(data[k])) data[k] = "'" + data[k];
+        // normalize phone numbers (accept +254, 07xx, 01xx -> +254...)
+        if (data.primaryPhone) {
+          let p = data.primaryPhone.trim().replace(/\s+/g, '');
+          if (p.startsWith('0')) p = '+254' + p.slice(1);
+          else if (p.startsWith('254')) p = '+' + p;
+          data.primaryPhone = p;
         }
         const v = validateNewStudent({ admissionNo: data.admissionNo, fullName: data.fullName, gender: data.gender, academicYear: data.academicYear, dateOfBirth: data.dateOfBirth, primaryPhone: data.primaryPhone });
         for (const [k, msg] of Object.entries(v)) errors.push(`${k}: ${msg}`);
@@ -189,30 +192,30 @@ export default function StudentImportPage() {
     setImporting(true);
     setError(null);
     setResult(null);
-    let imported = 0;
     try {
-      for (const r of validRows) {
+      const payload = validRows.map((r) => {
         const key = r.data.className.toLowerCase() + '|' + (r.data.streamName || '').toLowerCase();
         const alt = r.data.className.toLowerCase() + '|';
         const info = classMap.get(key) ?? classMap.get(alt);
-        await createStudent(
-          r.data.admissionNo.trim(),
-          r.data.fullName.trim(),
-          r.data.gender || undefined,
-          info?.classId,
-          info?.streamId ?? undefined,
-          r.data.academicYear ? Number(r.data.academicYear) : undefined,
-          {
-            dateOfBirth: r.data.dateOfBirth,
-            guardianName: r.data.guardianName.trim(),
-            guardianRelation: r.data.guardianRelation.trim(),
-            primaryPhone: r.data.primaryPhone.trim(),
-            previousSchool: r.data.previousSchool.trim(),
-          }
-        );
-        imported += 1;
-      }
-      setResult(`Imported ${imported} student(s) successfully.`);
+        return {
+          admission_no: r.data.admissionNo.trim(),
+          full_name: r.data.fullName.trim(),
+          gender: r.data.gender || null,
+          class_id: info?.classId || null,
+          stream_id: info?.streamId || null,
+          academic_year: r.data.academicYear ? Number(r.data.academicYear) : null,
+          date_of_birth: r.data.dateOfBirth || null,
+          guardian_name: r.data.guardianName.trim() || null,
+          guardian_relation: r.data.guardianRelation.trim() || null,
+          primary_phone: r.data.primaryPhone.trim() || null,
+          previous_school: r.data.previousSchool.trim() || null,
+        };
+      });
+      const supabase = (await import('@/lib/supabase/client')).createClient();
+      const { data, error: rpcError } = await supabase.rpc('bulk_create_students', { p_students: payload });
+      if (rpcError) throw new Error(rpcError.message);
+      const count = (data as { count?: number })?.count ?? payload.length;
+      setResult(`Imported ${count} student(s) successfully.`);
       setParsed([]);
       setFileName('');
     } catch (caught) {
