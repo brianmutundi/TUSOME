@@ -1873,6 +1873,7 @@ export async function getStudentFeeBalance(
     admission_no: String(payload.admission_no ?? ''),
     total_fees: Number(payload.total_fees ?? 0),
     total_paid: Number(payload.total_paid ?? 0),
+    total_waived: Number(payload.total_waived ?? 0),
     balance: Number(payload.balance ?? 0),
   };
 }
