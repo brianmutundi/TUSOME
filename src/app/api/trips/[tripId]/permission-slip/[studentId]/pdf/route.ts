@@ -1,0 +1,20 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { isUuid } from '@/lib/analytics/guards';
+import { renderPagePdf } from '@/lib/server/pdf';
+
+export const runtime = 'nodejs';
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { tripId: string; studentId: string } }
+) {
+  const { tripId, studentId } = params;
+  if (!isUuid(tripId) || !isUuid(studentId)) {
+    return NextResponse.json({ error: 'Valid trip and student IDs required' }, { status: 400 });
+  }
+  return renderPagePdf({
+    request,
+    path: `/analytics/trips/${tripId}/permission-slip/${studentId}`,
+    filename: `permission-slip-${studentId}.pdf`,
+  });
+}

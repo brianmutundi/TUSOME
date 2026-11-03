@@ -1,0 +1,27 @@
+-- permission_foundation.sql
+-- Covers migration 53. Written to match the style of the other files in this
+-- folder: run inside a transaction and roll back. Adjust the setup block to
+-- the helper functions in supabase/tests/support if they differ.
+--
+-- Cases:
+--  1. assert_permission raises for a user without the permission.
+--  2. assert_permission returns the tenant for an admin-type user.
+--  3. assert_permission returns NULL for service_role.
+--  4. get_my_permissions lists only effective permissions for a teacher and
+--     the full catalogue for an admin.
+--  5. link_parent_student raises for a user without edit-student-profile.
+--  6. link_parent_student raises for a student of another tenant.
+--  7. link_parent_student raises when the target account is not a parent.
+--  8. A signed-in user cannot INSERT into audit_events directly.
+--  9. log_audit_event still writes a row with actor_id = auth.uid().
+--  10. (migration 54) get_parents returns four columns and only parent-role accounts.
+--  11. (migration 54) get_parents, unlink_parent_student and get_parent_student_links
+--      raise for a user without access-students or edit-student-profile.
+--  12. (migration 55) a parent sees only linked children in get_my_children.
+--  13. (migration 55) get_my_child_* raise 'Student not found' for an unlinked student and for another tenant.
+--  14. (migration 55) a parent cannot SELECT from marks, fee_collections or staff profiles directly.
+--  15. (migration 55) a parent cannot INSERT into parent_student_links.
+--  16. (migration 55) results hide exams that are not published.
+--  17. (migration 55) set_my_phone normalises 0712345678 and +254712345678 to 254712345678 and rejects junk.
+--  18. (migration 55) every public table with a policy has parent_block (except profiles, parent_student_links, tenants).
+--  (UI, slice c) A parent who opens /analytics is sent to /parent; a staff user who opens /parent is sent to /analytics. Check by hand or in the e2e spec.

@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #1d6b70;
+  --color-primary-dark: #18575c;
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  --color-info: #0891b2;
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-gray-50 font-sans text-gray-900 antialiased;
+}
+
+/* Marks, fees and counts must align in columns. */
+table {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dialogs: ease-out in, faster out; sheet on phones. Native <dialog> gives focus trap + Esc. */
+.tusome-dialog {
+  padding: 0;
+  border: 1px solid theme('colors.gray.200');
+  border-radius: 14px;
+  background: #fff;
+  color: theme('colors.gray.900');
+  width: min(32rem, calc(100vw - 1.5rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  box-shadow: 0 20px 50px rgb(18 38 42 / 0.28);
+  opacity: 0;
+  transform: scale(0.96) translateY(6px);
+  transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), overlay 0.2s allow-discrete,
+    display 0.2s allow-discrete;
+}
+.tusome-dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+@starting-style {
+  .tusome-dialog[open] {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+}
+.tusome-dialog[data-closing='true'] {
+  opacity: 0;
+  transform: scale(0.98);
+  transition-duration: 0.12s;
+}
+.tusome-dialog.tusome-dialog-lg {
+  width: min(44rem, calc(100vw - 1.5rem));
+}
+.tusome-dialog::backdrop {
+  background: rgb(18 38 42 / 0.5);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.tusome-dialog[open]::backdrop {
+  opacity: 1;
+}
+.tusome-dialog[data-closing='true']::backdrop {
+  opacity: 0;
+  transition-duration: 0.12s;
+}
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+@media (max-width: 640px) {
+  .tusome-dialog {
+    margin: auto 0 0;
+    width: 100%;
+    max-width: none;
+    border-radius: 16px 16px 0 0;
+    transform: translateY(40px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @starting-style {
+    .tusome-dialog[open] {
+      transform: translateY(40px);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tusome-dialog,
+  .tusome-dialog::backdrop {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Popovers: short ease-out, origin follows the side they open from. */
+.tusome-popover {
+  animation: tusome-pop 0.14s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: top left;
+}
+.tusome-popover[data-side='right'] {
+  transform-origin: left top;
+}
+@keyframes tusome-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tusome-popover {
+    animation: none;
+  }
+}
+
+/* Focus ring for accessibility */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-blue-500;
+}
+
+/* Print: hide application chrome and let the report card own the page. */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .print-report {
+    box-shadow: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  .print-report table {
+    page-break-inside: auto;
+  }
+
+  .print-report tr {
+    page-break-inside: avoid;
+  }
+
+  a[href]::after {
+    content: '';
+  }
+}
