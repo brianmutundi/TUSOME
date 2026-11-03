@@ -168,6 +168,12 @@ begin
     if v_caller_tenant is null then
       raise exception 'Missing tenant claim';
     end if;
+    if not (
+      public.user_has_permission(auth.uid(), v_caller_tenant, 'view-fees')
+      or public.user_has_permission(auth.uid(), v_caller_tenant, 'manage-fees')
+    ) then
+      raise exception 'Access denied: finance permission required' using errcode = '42501';
+    end if;
   end if;
 
   select s.full_name, s.admission_no into v_student_name, v_admission_no
