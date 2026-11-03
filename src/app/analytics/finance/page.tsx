@@ -463,9 +463,10 @@ export default function FinancePage() {
 
           {selectedStudent && (
             <Card>
-              <div className="grid gap-4 p-5 sm:grid-cols-3">
+              <div className="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-4">
                 <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Total fees</p><p className="mt-1 text-xl font-semibold text-gray-900">KES {Number(balance?.total_fees ?? 0).toLocaleString()}</p></div>
                 <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Net paid</p><p className="mt-1 text-xl font-semibold text-emerald-700">KES {Number(balance?.total_paid ?? 0).toLocaleString()}</p></div>
+                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Waived</p><p className="mt-1 text-xl font-semibold text-blue-700">KES {Number(balance?.total_waived ?? 0).toLocaleString()}</p></div>
                 <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Outstanding / credit</p><p className={`mt-1 text-xl font-semibold ${Number(balance?.balance ?? 0) > 0 ? 'text-red-700' : 'text-blue-700'}`}>KES {Number(balance?.balance ?? 0).toLocaleString()}</p></div>
               </div>
             </Card>
@@ -651,9 +652,10 @@ export default function FinancePage() {
 
           {/* Summary cards */}
           {balanceData && (
-            <div className="mb-6 grid gap-4 sm:grid-cols-4">
+            <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
               <Card><div className="p-5 text-center"><p className="text-xs text-gray-500">Total Fees</p><p className="text-2xl font-bold text-gray-900">{Number(balanceData.summary?.total_fees ?? 0).toLocaleString()}</p></div></Card>
-              <Card><div className="p-5 text-center"><p className="text-xs text-gray-500">Total Paid</p><p className="text-2xl font-bold text-emerald-700">{Number(balanceData.summary?.total_paid ?? 0).toLocaleString()}</p></div></Card>
+              <Card><div className="p-5 text-center"><p className="text-xs text-gray-500">Net Paid</p><p className="text-2xl font-bold text-emerald-700">{Number(balanceData.summary?.total_paid ?? 0).toLocaleString()}</p></div></Card>
+              <Card><div className="p-5 text-center"><p className="text-xs text-gray-500">Waived</p><p className="text-2xl font-bold text-blue-700">{Number(balanceData.summary?.total_waived ?? 0).toLocaleString()}</p></div></Card>
               <Card><div className="p-5 text-center"><p className="text-xs text-gray-500">Outstanding</p><p className="text-2xl font-bold text-red-700">{Number(balanceData.summary?.outstanding ?? 0).toLocaleString()}</p></div></Card>
               <Card><div className="p-5 text-center"><p className="text-xs text-gray-500">Learners</p><p className="text-2xl font-bold text-gray-900">{balanceData.total ?? 0}</p></div></Card>
             </div>
@@ -685,7 +687,8 @@ export default function FinancePage() {
                     <th scope="col" className="px-4 py-3 cursor-pointer" onClick={() => { setBalanceSortBy('student_name'); setBalanceSortDir(balanceSortDir === 'asc' ? 'desc' : 'asc'); }}>Student Name</th>
                     <th scope="col" className="px-4 py-3 cursor-pointer" onClick={() => { setBalanceSortBy('class_name'); setBalanceSortDir(balanceSortDir === 'asc' ? 'desc' : 'asc'); }}>Class/Grade</th>
                     <th scope="col" className="px-4 py-3 text-right cursor-pointer" onClick={() => { setBalanceSortBy('total_fees'); setBalanceSortDir(balanceSortDir === 'asc' ? 'desc' : 'asc'); }}>Total Fees</th>
-                    <th scope="col" className="px-4 py-3 text-right cursor-pointer" onClick={() => { setBalanceSortBy('total_paid'); setBalanceSortDir(balanceSortDir === 'asc' ? 'desc' : 'asc'); }}>Fees Paid</th>
+                    <th scope="col" className="px-4 py-3 text-right cursor-pointer" onClick={() => { setBalanceSortBy('total_paid'); setBalanceSortDir(balanceSortDir === 'asc' ? 'desc' : 'asc'); }}>Net Paid</th>
+                    <th scope="col" className="px-4 py-3 text-right">Waived</th>
                     <th scope="col" className="px-4 py-3 text-right cursor-pointer" onClick={() => { setBalanceSortBy('balance'); setBalanceSortDir(balanceSortDir === 'asc' ? 'desc' : 'asc'); }}>Balance</th>
                   </tr>
                 </thead>
@@ -705,6 +708,7 @@ export default function FinancePage() {
                       <td className="px-4 py-2.5 text-gray-700">{row.class_name || '—'}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums">{Number(row.total_fees).toLocaleString()}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-emerald-700">{Number(row.total_paid).toLocaleString()}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-blue-700">{Number(row.total_waived ?? 0).toLocaleString()}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums font-medium text-red-700">{Number(row.balance).toLocaleString()}</td>
                     </tr>
                   ))}
