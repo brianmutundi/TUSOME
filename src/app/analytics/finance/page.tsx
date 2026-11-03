@@ -89,6 +89,13 @@ export default function FinancePage() {
   const [structYear, setStructYear] = useState(String(new Date().getFullYear()));
   const [savingStruct, setSavingStruct] = useState(false);
 
+  const filteredLedgerPayments = useMemo(() => {
+    const query = reportSearch.trim().toLocaleLowerCase();
+    if (!query) return ledgerPayments;
+    return ledgerPayments.filter((payment) => [payment.student_name, payment.admission_no, payment.reference_number, payment.payment_method, payment.term, payment.academic_year]
+      .some((value) => String(value ?? '').toLocaleLowerCase().includes(query)));
+  }, [ledgerPayments, reportSearch]);
+
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
@@ -529,6 +536,75 @@ export default function FinancePage() {
                 </form>
               </div>
             </div>
+          <Card>
+            <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-100 p-5">
+              <div>
+                <h2 className="text-base font-semibold text-gray-900">Student payment commitments</h2>
+                <p className="mt-1 text-sm text-gray-600">Pledges are recorded against this learner and are not counted as payments received.</p>
+              </div>
+            </div>
+            <div className="p-5">
+              {canManageFees && (
+                <form
+                  className="mb-5 grid gap-3 rounded-lg bg-gray-50 p-4 sm:grid-cols-4"
+                  onSubmit={async (event) => {
+                    event.preventDefault();
+                    if (!selectedStudent || !pledgeAmount || Number(pledgeAmount) <= 0) return;
+                    setSavingPledge(true);
+                    setActionError(null);
+                    setActionSuccess(null);
+                    try {
+                      await createFeePledge(selectedStudent, Number(pledgeAmount), pledgeDueDate || undefined, pledgeNotes || undefined);
+                      setPledgeAmount('');
+                      setPledgeDueDate('');
+                      setPledgeNotes('');
+                      setActionSuccess('Student pledge saved.');
+                      setFinanceRefreshKey((current) => current + 1);
+                    } catch (caught) {
+                      setActionError(describeAnalyticsError(caught, 'Could not save student pledge.'));
+                    } finally {
+                      setSavingPledge(false);
+                    }
+                  }}
+                >
+                  <TextField id="pledge-amount" label="Pledged amount (KES)" type="number" required value={pledgeAmount} onChange={(event) => setPledgeAmount(event.target.value)} />
+                  <TextField id="pledge-due-date" label="Due date" type="date" value={pledgeDueDate} onChange={(event) => setPledgeDueDate(event.target.value)} />
+                  <TextField id="pledge-notes" label="Notes" value={pledgeNotes} onChange={(event) => setPledgeNotes(event.target.value)} />
+                  <div className="flex items-end">
+                    <Button type="submit" disabled={savingPledge || !selectedStudent}>{savingPledge ? 'Saving…' : 'Add pledge'}</Button>
+                  </div>
+                </form>
+              )}
+              {pledges.length === 0 ? (
+                <p className="py-3 text-sm text-gray-500">No payment commitments recorded for this learner.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
+                    <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
+                      <tr>
+                        <th className="px-4 py-3">Pledged</th>
+                        <th className="px-4 py-3">Paid</th>
+                        <th className="px-4 py-3">Remaining</th>
+                        <th className="px-4 py-3">Due date</th>
+                        <th className="px-4 py-3">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 bg-white">
+                      {pledges.map((pledge) => (
+                        <tr key={pledge.pledge_id}>
+                          <td className="px-4 py-2.5 font-medium text-gray-900">KES {Number(pledge.pledged_amount).toLocaleString()}</td>
+                          <td className="px-4 py-2.5 text-emerald-700">KES {Number(pledge.paid_amount).toLocaleString()}</td>
+                          <td className="px-4 py-2.5 text-red-700">KES {Number(pledge.remaining_amount).toLocaleString()}</td>
+                          <td className="px-4 py-2.5 text-gray-600">{pledge.due_date || '—'}</td>
+                          <td className="px-4 py-2.5"><Badge className={pledge.status === 'fulfilled' ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-amber-200 bg-amber-50 text-amber-800'}>{pledge.status}</Badge></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </Card>
           )}
         </div>
       )}
@@ -711,265 +787,163 @@ export default function FinancePage() {
               </div>
             </Card>
           )}
-        </>
-      )}
-
-      {/* Pledges Tab */}
-      {tab === 'pledges' && (
-        <>
-          {pledges.length === 0 ? (
-            <EmptyState title="No pledges" />
-          ) : (
-            <Card>
-              <div className="overflow-x-auto">
+          <Card>
+            <div className="flex items-center justify-between gap-3 p-5">
+              <div>
+                <h2 className="text-base font-semibold text-gray-900">Fee setup settings</h2>
+                <p className="mt-1 text-sm text-gray-600">Manage the vote-head reference list used for payment allocations.</p>
+              </div>
+              <Button variant="secondary" onClick={() => setShowVoteHeadSettings((visible) => !visible)}>{showVoteHeadSettings ? 'Hide settings' : 'Vote-head settings'}</Button>
+            </div>
+            {showVoteHeadSettings && (
+              <div className="overflow-x-auto border-t border-gray-100">
                 <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
-                  <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
-                    <tr>
-                      <th scope="col" className="px-4 py-3">Pledged</th>
-                      <th scope="col" className="px-4 py-3">Paid</th>
-                      <th scope="col" className="px-4 py-3">Remaining</th>
-                      <th scope="col" className="px-4 py-3">Due Date</th>
-                      <th scope="col" className="px-4 py-3">Status</th>
-                    </tr>
-                  </thead>
+                  <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500"><tr><th className="px-4 py-3">Name</th><th className="px-4 py-3">Code</th><th className="px-4 py-3">Category</th><th className="px-4 py-3">Status</th></tr></thead>
                   <tbody className="divide-y divide-gray-100 bg-white">
-                    {pledges.map((p) => (
-                      <tr key={p.pledge_id} className="hover:bg-gray-50">
-                        <td className="px-4 py-2.5 font-medium text-gray-900">{p.pledged_amount}</td>
-                        <td className="px-4 py-2.5 text-emerald-700">{p.paid_amount}</td>
-                        <td className="px-4 py-2.5 text-red-700">{p.remaining_amount}</td>
-                        <td className="px-4 py-2.5 text-gray-600">{p.due_date || '—'}</td>
-                        <td className="px-4 py-2.5">
-                          <Badge className={p.status === 'fulfilled' ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-amber-200 bg-amber-50 text-amber-800'}>
-                            {p.status}
-                          </Badge>
-                        </td>
-                      </tr>
-                    ))}
+                    {voteHeads.map((voteHead) => <tr key={voteHead.vote_head_id}><td className="px-4 py-2.5 font-medium text-gray-900">{voteHead.name}</td><td className="px-4 py-2.5 text-gray-600">{voteHead.code || '—'}</td><td className="px-4 py-2.5 text-gray-700">{voteHead.category_name || '—'}</td><td className="px-4 py-2.5 text-gray-700">{voteHead.is_active ? 'Active' : 'Inactive'}</td></tr>)}
+                    {voteHeads.length === 0 && <tr><td colSpan={4} className="px-4 py-6 text-center text-gray-500">No vote heads configured.</td></tr>}
                   </tbody>
                 </table>
               </div>
-            </Card>
-          )}
+            )}
+          </Card>
+
         </>
       )}
 
-      {/* Vote Heads Tab */}
-      {tab === 'voteheads' && (
-        <Card>
-          <CardHeader title="Vote Heads" />
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
-              <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
-                <tr>
-                  <th scope="col" className="px-4 py-3">Name</th>
-                  <th scope="col" className="px-4 py-3">Code</th>
-                  <th scope="col" className="px-4 py-3">Category</th>
-                  <th scope="col" className="px-4 py-3">Active</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 bg-white">
-                {voteHeads.length === 0 ? (
-                  <tr><td colSpan={4} className="px-4 py-8 text-center text-gray-500">No vote heads defined.</td></tr>
-                ) : (
-                  voteHeads.map((vh) => (
-                    <tr key={vh.vote_head_id} className="hover:bg-gray-50">
-                      <td className="px-4 py-2.5 font-medium text-gray-900">{vh.name}</td>
-                      <td className="px-4 py-2.5 text-gray-600">{vh.code || '—'}</td>
-                      <td className="px-4 py-2.5 text-gray-700">{vh.category_name || '—'}</td>
-                      <td className="px-4 py-2.5">
-                        <Badge className={vh.is_active ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-gray-300 bg-gray-100 text-gray-700'}>
-                          {vh.is_active ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      )}
-
-      {/* Collections Tab */}
-      {tab === 'collections' && (
-        <>
-          <div className="mb-4 flex flex-wrap gap-3">
-            <Button variant="secondary" onClick={() => {
-              const header = ['Date','Student','Class','Vote Head','Type','Amount','Method'];
-              const rows = collections.map((c) => [new Date(c.collected_at).toLocaleDateString(), c.student_name ?? '', c.class_name ?? '', c.vote_head_name ?? '', c.collection_type, c.amount, c.payment_method ?? '']);
-              const csv = '\\uFEFF' + [header, ...rows].map((r) => r.map((v) => `\"${String(v).replace(/\"/g, '\"\"')}\"`).join(',')).join('\\r\\n');
-              const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = 'collections.csv';
-              a.click();
-              URL.revokeObjectURL(url);
-            }}>Export CSV</Button>
-            <Button variant="secondary" onClick={() => {
-              exportToExcel(
-                'collections.xlsx',
-                'Collections',
-                [
-                  { header: 'Date', key: 'date', width: 14 },
-                  { header: 'Student', key: 'student', width: 24 },
-                  { header: 'Class', key: 'class', width: 12 },
-                  { header: 'Vote Head', key: 'votehead', width: 14 },
-                  { header: 'Type', key: 'type', width: 12 },
-                  { header: 'Amount', key: 'amount', width: 12 },
-                  { header: 'Method', key: 'method', width: 12 },
-                ],
-                collections,
-                (c, key) => {
-                  switch (key) {
-                    case 'date': return new Date(c.collected_at).toLocaleDateString();
-                    case 'student': return c.student_name ?? '';
-                    case 'class': return c.class_name ?? '';
-                    case 'votehead': return c.vote_head_name ?? '';
-                    case 'type': return c.collection_type;
-                    case 'amount': return c.amount;
-                    case 'method': return c.payment_method ?? '';
-                    default: return '';
+      {/* Reports Tab — authoritative fee payment ledger and linked receipts */}
+      {tab === 'reports' && (
+        <div className="space-y-6">
+          <Card>
+            <div className="flex flex-wrap items-end justify-between gap-3 p-5">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg font-semibold text-gray-900">Payment ledger report</h2>
+                <p className="mt-1 text-sm text-gray-600">This register is sourced from fee_payments. Reversals remain visible as separate ledger entries; legacy collections are not added again.</p>
+                <div className="mt-4 max-w-md">
+                  <TextField id="ledger-search" label="Search ledger" placeholder="Student, admission no., reference or method" value={reportSearch} onChange={(event) => setReportSearch(event.target.value)} />
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="secondary" onClick={() => {
+                  const rows = filteredLedgerPayments.map((payment) => ({
+                    date: new Date(payment.paid_at).toLocaleDateString('en-GB'),
+                    admission_no: payment.admission_no,
+                    student: payment.student_name ?? '',
+                    amount: payment.amount,
+                    method: payment.payment_method,
+                    reference: payment.reference_number ?? '',
+                    term: payment.term ?? '',
+                    year: payment.academic_year ?? '',
+                  }));
+                  const csvRows = [['Date', 'Admission No.', 'Student', 'Amount (KES)', 'Method', 'Reference', 'Term', 'Year'], ...rows.map((row) => [row.date, row.admission_no, row.student, row.amount, row.method, row.reference, row.term, row.year])];
+                  const csv = '\uFEFF' + csvRows.map((row) => row.map((value) => '"' + String(value).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+                  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+                  const anchor = document.createElement('a');
+                  anchor.href = url;
+                  anchor.download = 'tusome-payment-ledger.csv';
+                  anchor.click();
+                  URL.revokeObjectURL(url);
+                }}>Export CSV</Button>
+                <Button variant="secondary" onClick={() => exportToExcel(
+                  'tusome-payment-ledger.xlsx',
+                  'Payment Ledger',
+                  [
+                    { header: 'Date', key: 'date', width: 14 },
+                    { header: 'Admission No.', key: 'admission_no', width: 18 },
+                    { header: 'Student', key: 'student', width: 26 },
+                    { header: 'Amount (KES)', key: 'amount', width: 16 },
+                    { header: 'Method', key: 'method', width: 14 },
+                    { header: 'Reference', key: 'reference', width: 20 },
+                    { header: 'Term', key: 'term', width: 12 },
+                    { header: 'Year', key: 'year', width: 10 },
+                  ],
+                  filteredLedgerPayments,
+                  (payment, key) => {
+                    switch (key) {
+                      case 'date': return new Date(payment.paid_at).toLocaleDateString('en-GB');
+                      case 'admission_no': return payment.admission_no;
+                      case 'student': return payment.student_name ?? '';
+                      case 'amount': return payment.amount;
+                      case 'method': return payment.payment_method;
+                      case 'reference': return payment.reference_number ?? '';
+                      case 'term': return payment.term ?? '';
+                      case 'year': return payment.academic_year ?? '';
+                      default: return '';
+                    }
                   }
-                },
-                { title: 'Fee Collections' }
-              );
-            }}>Export Excel</Button>
-            <SelectField id="coll-class" label="Class" value={collectionClass} onChange={(e) => setCollectionClass(e.target.value)}>
-              <option value="">All classes</option>
-              {Array.from(new Set(students.map((s) => s.class_name).filter(Boolean))).map((c) => (
-                <option key={c as string} value={c as string}>{c as string}</option>
-              ))}
-            </SelectField>
-            <SelectField id="coll-sort" label="Sort by" value={collectionSort} onChange={(e) => setCollectionSort(e.target.value)}>
-              <option value="collected_at">Date</option>
-              <option value="amount">Amount</option>
-              <option value="student_name">Student</option>
-            </SelectField>
-          </div>
-
-          {collections.length === 0 ? (
-            <EmptyState title="No collections" />
-          ) : (
-            <Card>
+                )}>Export Excel</Button>
+              </div>
+            </div>
+            <div className="border-t border-gray-100 px-5 py-3 text-xs text-gray-500">
+              Showing up to {ledgerPayments.length} latest ledger entries returned by the finance API. Export applies the current search.
+            </div>
+            {filteredLedgerPayments.length === 0 ? (
+              <EmptyState title="No matching ledger entries" description="Adjust the search or record a payment." />
+            ) : (
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
                   <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
                     <tr>
-                      <th scope="col" className="px-4 py-3">Date</th>
-                      <th scope="col" className="px-4 py-3">Student</th>
-                      <th scope="col" className="px-4 py-3">Class</th>
-                      <th scope="col" className="px-4 py-3">Vote Head</th>
-                      <th scope="col" className="px-4 py-3">Type</th>
-                      <th scope="col" className="px-4 py-3">Amount</th>
-                      <th scope="col" className="px-4 py-3">Method</th>
+                      <th className="px-4 py-3">Date</th>
+                      <th className="px-4 py-3">Admission No.</th>
+                      <th className="px-4 py-3">Student</th>
+                      <th className="px-4 py-3 text-right">Amount (KES)</th>
+                      <th className="px-4 py-3">Method</th>
+                      <th className="px-4 py-3">Reference</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 bg-white">
-                    {collections.map((c) => (
-                      <tr key={c.collection_id} className="hover:bg-gray-50">
-                        <td className="px-4 py-2.5 text-xs text-gray-600">{new Date(c.collected_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
-                        <td className="px-4 py-2.5 font-medium text-gray-900">{c.student_name || '—'}</td>
-                        <td className="px-4 py-2.5 text-gray-700">{c.class_name || '—'}</td>
-                        <td className="px-4 py-2.5 text-gray-700">{c.vote_head_name || '—'}</td>
-                        <td className="px-4 py-2.5"><Badge className="border-blue-200 bg-blue-50 text-blue-800">{c.collection_type}</Badge></td>
-                        <td className="px-4 py-2.5 font-medium text-gray-900">{c.amount}</td>
-                        <td className="px-4 py-2.5 text-gray-600">{c.payment_method || '—'}</td>
+                    {filteredLedgerPayments.map((payment) => (
+                      <tr key={payment.payment_id}>
+                        <td className="px-4 py-2.5 text-gray-600">{new Date(payment.paid_at).toLocaleDateString('en-GB')}</td>
+                        <td className="px-4 py-2.5 font-mono text-xs text-gray-700">{payment.admission_no}</td>
+                        <td className="px-4 py-2.5 font-medium text-gray-900">{payment.student_name || '—'}</td>
+                        <td className="px-4 py-2.5 text-right tabular-nums font-medium">{Number(payment.amount).toLocaleString()}</td>
+                        <td className="px-4 py-2.5 capitalize text-gray-700">{payment.payment_method}</td>
+                        <td className="px-4 py-2.5 text-gray-600">{payment.reference_number || '—'}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            </Card>
-          )}
-        </>
-      )}
+            )}
+          </Card>
 
-      {/* Invoices Tab */}
-      {tab === 'invoices' && (
-        <>
-          {invoices.length === 0 ? (
-            <EmptyState title="No invoices" description="Create your first invoice above." />
-          ) : (
-            <Card>
+          <Card>
+            <CardHeader title="Receipt archive" />
+            <p className="px-5 pb-3 text-sm text-gray-600">Original receipt records and their existing print/verification links are retained.</p>
+            {receipts.length === 0 ? (
+              <p className="px-5 pb-5 text-sm text-gray-500">No receipts found.</p>
+            ) : (
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
                   <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
                     <tr>
-                      <th scope="col" className="px-4 py-3">Invoice #</th>
-                      <th scope="col" className="px-4 py-3">Student</th>
-                      <th scope="col" className="px-4 py-3">Amount</th>
-                      <th scope="col" className="px-4 py-3">Total</th>
-                      <th scope="col" className="px-4 py-3">Status</th>
-                      <th scope="col" className="px-4 py-3">Issued</th>
-                      <th scope="col" className="px-4 py-3">Due</th>
+                      <th className="px-4 py-3">Receipt</th>
+                      <th className="px-4 py-3">Invoice reference</th>
+                      <th className="px-4 py-3 text-right">Amount (KES)</th>
+                      <th className="px-4 py-3">Method</th>
+                      <th className="px-4 py-3">Reference</th>
+                      <th className="px-4 py-3">Date</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 bg-white">
-                    {invoices.map((inv) => (
-                      <tr key={inv.invoice_id} className="hover:bg-gray-50">
-                        <td className="px-4 py-2.5 font-medium text-gray-900">{inv.invoice_number}</td>
-                        <td className="px-4 py-2.5 text-gray-700">{inv.student_name || '—'}</td>
-                        <td className="px-4 py-2.5 text-gray-700">{inv.amount}</td>
-                        <td className="px-4 py-2.5 font-medium text-gray-900">{inv.total_amount}</td>
-                        <td className="px-4 py-2.5">
-                          <Badge className={inv.status === 'paid' ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-amber-200 bg-amber-50 text-amber-800'}>
-                            {inv.status}
-                          </Badge>
-                        </td>
-                        <td className="px-4 py-2.5 text-gray-600">{inv.issued_date}</td>
-                        <td className="px-4 py-2.5 text-gray-600">{inv.due_date || '—'}</td>
+                    {receipts.map((receipt) => (
+                      <tr key={receipt.receipt_id}>
+                        <td className="px-4 py-2.5 font-medium"><Link href={`/analytics/receipts/${receipt.receipt_id}`} className="text-blue-700 hover:underline">{receipt.receipt_number}</Link></td>
+                        <td className="px-4 py-2.5 text-gray-600">{receipt.invoice_number || '—'}</td>
+                        <td className="px-4 py-2.5 text-right tabular-nums">{Number(receipt.amount_paid).toLocaleString()}</td>
+                        <td className="px-4 py-2.5 capitalize text-gray-700">{receipt.payment_method}</td>
+                        <td className="px-4 py-2.5 text-gray-600">{receipt.reference_number || '—'}</td>
+                        <td className="px-4 py-2.5 text-gray-600">{new Date(receipt.paid_at).toLocaleDateString('en-GB')}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            </Card>
-          )}
-        </>
-      )}
-
-      {/* Receipts Tab */}
-      {tab === 'receipts' && (
-        <>
-          {receipts.length === 0 ? (
-            <EmptyState title="No receipts" description="Receipts will appear here." />
-          ) : (
-            <Card>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
-                  <thead className="bg-gray-50 text-xs font-medium uppercase tracking-wide text-gray-500">
-                    <tr>
-                      <th scope="col" className="px-4 py-3">Receipt #</th>
-                      <th scope="col" className="px-4 py-3">Invoice</th>
-                      <th scope="col" className="px-4 py-3">Amount</th>
-                      <th scope="col" className="px-4 py-3">Method</th>
-                      <th scope="col" className="px-4 py-3">Reference</th>
-                      <th scope="col" className="px-4 py-3">Paid At</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100 bg-white">
-                    {receipts.map((r) => (
-                      <tr key={r.receipt_id} className="hover:bg-gray-50">
-                        <td className="px-4 py-2.5 font-medium text-gray-900">
-                          <Link href={`/analytics/receipts/${r.receipt_id}`} className="text-blue-700 hover:underline">
-                            {r.receipt_number}
-                          </Link>
-                        </td>
-                        <td className="px-4 py-2.5 text-gray-700">{r.invoice_number || '—'}</td>
-                        <td className="px-4 py-2.5 font-medium text-gray-900">{r.amount_paid}</td>
-                        <td className="px-4 py-2.5 text-gray-600">{r.payment_method}</td>
-                        <td className="px-4 py-2.5 text-gray-600">{r.reference_number || '—'}</td>
-                        <td className="px-4 py-2.5 text-gray-600">{new Date(r.paid_at).toLocaleDateString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Card>
-          )}
-        </>
+            )}
+          </Card>
+        </div>
       )}
 
     </main>
