@@ -1,0 +1,17 @@
+-- Set search_path = '' on all feature functions (security hardening)
+alter function public.get_fee_balances set search_path = '';
+alter function public.get_finance_summary set search_path = '';
+alter function public.get_finance_overview set search_path = '';
+alter function public.get_schools set search_path = '';
+alter function public.delete_school set search_path = '';
+alter function public.delete_class set search_path = '';
+alter function public.delete_stream set search_path = '';
+alter function public.create_report_share_token set search_path = '';
+alter function public.get_shared_report set search_path = '';
+alter function public.update_school_subscription set search_path = '';
+alter function public.next_receipt_number set search_path = '';
+alter function public.apply_credit set search_path = '';
+alter function public.bulk_create_students set search_path = '';
+alter function public.reverse_payment set search_path = '';
+alter function public.custom_access_token_hook set search_path = '';
+alter function public.record_fee_payment set search_path = '';
