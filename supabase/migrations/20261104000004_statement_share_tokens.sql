@@ -46,8 +46,8 @@ begin
     raise exception 'Not authorized' using errcode = '42501';
   end if;
 
-  v_token := encode(gen_random_bytes(8), 'hex');
-  v_hash := encode(digest(v_token, 'sha256'), 'hex');
+  v_token := encode(extensions.gen_random_bytes(8), 'hex');
+  v_hash := encode(extensions.digest(v_token, 'sha256'), 'hex');
 
   insert into public.statement_share_tokens (tenant_id, student_id, term, academic_year, token_hash, expires_at)
   values (v_tenant, p_student_id, p_term, p_academic_year, v_hash, now() + (v_days || ' days')::interval);
@@ -79,7 +79,7 @@ begin
   if p_token is null or length(p_token) = 0 then
     raise exception 'Invalid token';
   end if;
-  v_hash := encode(digest(p_token, 'sha256'), 'hex');
+  v_hash := encode(extensions.digest(p_token, 'sha256'), 'hex');
 
   select count(*) into v_recent
   from public.receipt_token_access_log
@@ -146,7 +146,7 @@ declare
   v_tenant uuid;
 begin
   if v_uid is null then raise exception 'Not signed in'; end if;
-  v_hash := encode(digest(p_token, 'sha256'), 'hex');
+  v_hash := encode(extensions.digest(p_token, 'sha256'), 'hex');
   select tenant_id into v_tenant from public.statement_share_tokens where token_hash = v_hash;
   if v_tenant is null then return false; end if;
   if not (public.user_has_permission(v_uid, v_tenant, 'manage-fees') or public.user_has_permission(v_uid, v_tenant, 'view-fees')) then
