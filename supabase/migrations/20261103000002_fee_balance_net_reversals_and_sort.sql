@@ -17,6 +17,7 @@ create or replace function public.get_fee_balances(
 returns jsonb
 language plpgsql
 stable
+set search_path = ''
 as $function$
 declare
   v_caller_tenant uuid;
@@ -74,6 +75,10 @@ begin
   -- rows
   select coalesce(jsonb_agg(row_to_json(r)), '[]'::jsonb) into v_rows
   from (
+    -- Sort one level above the projection: ORDER BY cannot reference a
+    -- select-list alias from inside an expression, only as a bare name.
+    select q.*
+    from (
     select
       s.id as student_id,
       s.admission_no,
@@ -96,27 +101,28 @@ begin
         (p_balance_filter = 'above10000' and (coalesce((select sum(fs.amount) from public.fee_structures fs where fs.class_id=s.class_id and fs.is_active=true and (p_academic_year is null or fs.academic_year=p_academic_year) and (p_term is null or fs.term=p_term)),0) - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id=s.id and (p_academic_year is null or fp.academic_year=p_academic_year) and (p_term is null or fp.term=p_term)),0) - coalesce((select sum(fw.amount) from public.fee_waivers fw where fw.student_id=s.id and fw.tenant_id=s.tenant_id and fw.status='approved' and fw.applied_at is not null),0)) > 10000) or
         (p_balance_filter = 'custom' and (coalesce((select sum(fs.amount) from public.fee_structures fs where fs.class_id=s.class_id and fs.is_active=true and (p_academic_year is null or fs.academic_year=p_academic_year) and (p_term is null or fs.term=p_term)),0) - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id=s.id and (p_academic_year is null or fp.academic_year=p_academic_year) and (p_term is null or fp.term=p_term)),0) - coalesce((select sum(fw.amount) from public.fee_waivers fw where fw.student_id=s.id and fw.tenant_id=s.tenant_id and fw.status='approved' and fw.applied_at is not null),0)) >= coalesce(p_min_balance,0) and (coalesce((select sum(fs.amount) from public.fee_structures fs where fs.class_id=s.class_id and fs.is_active=true and (p_academic_year is null or fs.academic_year=p_academic_year) and (p_term is null or fs.term=p_term)),0) - coalesce((select sum(case when coalesce(fp.type, 'payment') = 'reversal' then -fp.amount else fp.amount end) from public.fee_payments fp where fp.student_id=s.id and (p_academic_year is null or fp.academic_year=p_academic_year) and (p_term is null or fp.term=p_term)),0) - coalesce((select sum(fw.amount) from public.fee_waivers fw where fw.student_id=s.id and fw.tenant_id=s.tenant_id and fw.status='approved' and fw.applied_at is not null),0)) <= coalesce(p_max_balance,999999999))
       )
+    ) q
     order by
-      case when p_sort_dir='asc' and p_sort_by='total_fees' then total_fees end asc,
-      case when p_sort_dir='desc' and p_sort_by='total_fees' then total_fees end desc,
-      case when p_sort_dir='asc' and p_sort_by='total_paid' then total_paid end asc,
-      case when p_sort_dir='desc' and p_sort_by='total_paid' then total_paid end desc,
-      case when p_sort_dir='asc' and p_sort_by='balance' then balance end asc,
-      case when p_sort_dir='desc' and p_sort_by='balance' then balance end desc,
+      case when p_sort_dir='asc' and p_sort_by='total_fees' then q.total_fees end asc,
+      case when p_sort_dir='desc' and p_sort_by='total_fees' then q.total_fees end desc,
+      case when p_sort_dir='asc' and p_sort_by='total_paid' then q.total_paid end asc,
+      case when p_sort_dir='desc' and p_sort_by='total_paid' then q.total_paid end desc,
+      case when p_sort_dir='asc' and p_sort_by='balance' then q.balance end asc,
+      case when p_sort_dir='desc' and p_sort_by='balance' then q.balance end desc,
       case when p_sort_dir='asc' then
         case p_sort_by
-          when 'admission_no' then s.admission_no
-          when 'student_name' then s.full_name
-          when 'class_name' then c.name
-          else s.admission_no
+          when 'admission_no' then q.admission_no
+          when 'student_name' then q.student_name
+          when 'class_name' then q.class_name
+          else q.admission_no
         end
       end asc,
       case when p_sort_dir='desc' then
         case p_sort_by
-          when 'admission_no' then s.admission_no
-          when 'student_name' then s.full_name
-          when 'class_name' then c.name
-          else s.admission_no
+          when 'admission_no' then q.admission_no
+          when 'student_name' then q.student_name
+          when 'class_name' then q.class_name
+          else q.admission_no
         end
       end desc
     limit greatest(coalesce(p_page_size,25),1)
@@ -145,6 +151,7 @@ create or replace function public.get_student_fee_balance(p_student_id uuid, p_a
 returns jsonb
 language plpgsql
 stable
+set search_path = ''
 as $function$
 declare
   v_caller_tenant uuid;
@@ -223,3 +230,9 @@ $function$;
 
 revoke all on function public.get_student_fee_balance(uuid, integer, text) from public, anon;
 grant execute on function public.get_student_fee_balance(uuid, integer, text) to authenticated, service_role;
+
+-- Remove the legacy one-argument overload. Two overloads made "paid" mean two
+-- different things (the old one ignored reversals) and PostgREST cannot resolve
+-- a single-argument call when both exist. The filtered signature is the only
+-- source of truth; the client always passes year and term.
+drop function if exists public.get_student_fee_balance(uuid);

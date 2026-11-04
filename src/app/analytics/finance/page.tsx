@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Alert, Badge, Button, Card, CardHeader, EmptyState, LoadingPanel, SelectField, TextField } from '@/components/ui';
 import { exportToExcel } from '@/lib/analytics/excel';
+import { formatKes } from '@/lib/format-kes';
 import { ReceiptModal } from '@/components/finance/ReceiptModal';
 import {
   describeAnalyticsError,
@@ -225,7 +226,7 @@ export default function FinancePage() {
     const bal = balanceData?.rows?.find((r: any) => r.student_id === selectedStudent);
     const outstanding = bal ? Number(bal.balance ?? 0) : Number(balance?.balance ?? 0);
     if (Number(payAmount) > outstanding && outstanding > 0) {
-      if (!window.confirm(`Amount exceeds outstanding balance (KES ${outstanding.toLocaleString()}). This will create a credit. Continue?`)) {
+      if (!window.confirm(`Amount exceeds outstanding balance (KES ${formatKes(outstanding)}). This will create a credit. Continue?`)) {
         return;
       }
     }
@@ -235,9 +236,12 @@ export default function FinancePage() {
     setActionSuccess(null);
     try {
       const paymentId = await recordFeePayment(selectedStudent, Number(payAmount), payMethod, payRef || undefined, undefined, undefined, payNotes || undefined, paymentIdempotencyKey ?? undefined, undefined, allocEntries.length > 0 ? allocEntries : undefined, paidByValue ?? undefined);
-      // Fetch receipt number + received-by from the committed ledger.
+      // Term/year are attributed by the database from term_dates (single source
+      // of truth); the receipt reads back what the ledger actually stored.
       let receiptNumber: string | null = null;
       let receivedBy: string | null = null;
+      let receiptTerm: string | null = null;
+      let receiptYear: number | null = null;
       try {
         const receipts = await getReceipts();
         const r = receipts.find((x) => x.payment_id === paymentId);
@@ -246,7 +250,11 @@ export default function FinancePage() {
       try {
         const pays = await getFeePayments(selectedStudent, 50);
         const p = pays.find((x) => x.payment_id === paymentId);
-        if (p) { receivedBy = p.recorded_by_name; }
+        if (p) {
+          receivedBy = p.recorded_by_name;
+          receiptTerm = p.term;
+          receiptYear = p.academic_year;
+        }
       } catch (e) { console.error('[finance] getFeePayments failed', e); }
 
       const studentRow = students.find((s) => s.student_id === selectedStudent);
@@ -261,8 +269,8 @@ export default function FinancePage() {
         studentName: studentRow?.full_name ?? balance?.student_name ?? '',
         admissionNo: studentRow?.admission_no ?? balance?.admission_no ?? '',
         className: studentRow?.class_name ?? null,
-        term: balanceTerm || null,
-        academicYear: balanceYear ? Number(balanceYear) : null,
+        term: receiptTerm,
+        academicYear: receiptYear,
         amountPaid: Number(payAmount),
         method: payMethod,
         reference: payRef || null,
@@ -364,21 +372,21 @@ export default function FinancePage() {
             <Card>
               <div className="p-5">
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Total Charges</p>
-                <p className="mt-1 text-2xl font-bold text-gray-900">KES {Number(financeSummary.charges ?? 0).toLocaleString()}</p>
+                <p className="mt-1 text-2xl font-bold text-gray-900">{formatKes(Number(financeSummary.charges ?? 0))}</p>
                 <p className="mt-1 text-xs text-gray-500">Applicable fees for selected filters</p>
               </div>
             </Card>
             <Card>
               <div className="p-5">
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Collected</p>
-                <p className="mt-1 text-2xl font-bold text-emerald-700">KES {Number(financeSummary.collected ?? 0).toLocaleString()}</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-700">{formatKes(Number(financeSummary.collected ?? 0))}</p>
                 <p className="mt-1 text-xs text-gray-500">Net payments after reversals</p>
               </div>
             </Card>
             <Card>
               <div className="p-5">
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Outstanding</p>
-                <p className="mt-1 text-2xl font-bold text-red-700">KES {Number(financeSummary.outstanding ?? 0).toLocaleString()}</p>
+                <p className="mt-1 text-2xl font-bold text-red-700">{formatKes(Number(financeSummary.outstanding ?? 0))}</p>
                 <p className="mt-1 text-xs text-gray-500">Charges minus collected</p>
               </div>
             </Card>
@@ -538,10 +546,10 @@ export default function FinancePage() {
           {selectedStudent && (
             <Card>
               <div className="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-4">
-                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Total fees</p><p className="mt-1 text-xl font-semibold text-gray-900">KES {Number(balance?.total_fees ?? 0).toLocaleString()}</p></div>
-                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Net paid</p><p className="mt-1 text-xl font-semibold text-emerald-700">KES {Number(balance?.total_paid ?? 0).toLocaleString()}</p></div>
-                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Waived</p><p className="mt-1 text-xl font-semibold text-blue-700">KES {Number(balance?.total_waived ?? 0).toLocaleString()}</p></div>
-                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Outstanding / credit</p><p className={`mt-1 text-xl font-semibold ${Number(balance?.balance ?? 0) > 0 ? 'text-red-700' : 'text-blue-700'}`}>KES {Number(balance?.balance ?? 0).toLocaleString()}</p></div>
+                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Total fees</p><p className="mt-1 text-xl font-semibold text-gray-900">{formatKes(Number(balance?.total_fees ?? 0))}</p></div>
+                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Net paid</p><p className="mt-1 text-xl font-semibold text-emerald-700">{formatKes(Number(balance?.total_paid ?? 0))}</p></div>
+                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Waived</p><p className="mt-1 text-xl font-semibold text-blue-700">{formatKes(Number(balance?.total_waived ?? 0))}</p></div>
+                <div><p className="text-xs font-medium uppercase tracking-wide text-gray-500">Outstanding / credit</p><p className={`mt-1 text-xl font-semibold ${Number(balance?.balance ?? 0) > 0 ? 'text-red-700' : 'text-blue-700'}`}>{formatKes(Number(balance?.balance ?? 0))}</p></div>
               </div>
             </Card>
           )}
@@ -631,9 +639,9 @@ export default function FinancePage() {
                       <tbody className="divide-y divide-gray-100 bg-white">
                         {pledges.map((pledge) => (
                           <tr key={pledge.pledge_id}>
-                            <td className="px-4 py-2.5 font-medium text-gray-900">KES {Number(pledge.pledged_amount).toLocaleString()}</td>
-                            <td className="px-4 py-2.5 text-emerald-700">KES {Number(pledge.paid_amount).toLocaleString()}</td>
-                            <td className="px-4 py-2.5 text-red-700">KES {Number(pledge.remaining_amount).toLocaleString()}</td>
+                            <td className="px-4 py-2.5 font-medium text-gray-900">{formatKes(Number(pledge.pledged_amount))}</td>
+                            <td className="px-4 py-2.5 text-emerald-700">{formatKes(Number(pledge.paid_amount))}</td>
+                            <td className="px-4 py-2.5 text-red-700">{formatKes(Number(pledge.remaining_amount))}</td>
                             <td className="px-4 py-2.5 text-gray-600">{pledge.due_date || '—'}</td>
                             <td className="px-4 py-2.5"><Badge className={pledge.status === 'fulfilled' ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-amber-200 bg-amber-50 text-amber-800'}>{pledge.status}</Badge></td>
                           </tr>
@@ -811,7 +819,11 @@ export default function FinancePage() {
                       <td className="px-4 py-2.5 text-right tabular-nums">{Number(row.total_fees).toLocaleString()}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-emerald-700">{Number(row.total_paid).toLocaleString()}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-blue-700">{Number(row.total_waived ?? 0).toLocaleString()}</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums font-medium text-red-700">{Number(row.balance).toLocaleString()}</td>
+                      <td className={`px-4 py-2.5 text-right tabular-nums font-medium ${Number(row.balance) < 0 ? 'text-blue-700' : 'text-red-700'}`}>
+                        {Number(row.balance) < 0
+                          ? `Credit ${Math.abs(Number(row.balance)).toLocaleString()}`
+                          : Number(row.balance).toLocaleString()}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

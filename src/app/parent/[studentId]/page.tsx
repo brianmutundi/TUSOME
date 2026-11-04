@@ -52,7 +52,7 @@ export default function ChildPage() {
     ])
       .then(([fees, payments, results, attendance, receipts]) => setData({ fees, payments, results, attendance, receipts }))
       .catch((caught) => {
-        if (isAbortError(caught)) return;
+        if (controller.signal.aborted || isAbortError(caught)) return;
         setError(describeAnalyticsError(caught, 'Could not load this child.'));
       });
     return () => controller.abort();
