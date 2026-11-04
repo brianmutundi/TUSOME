@@ -56,23 +56,37 @@ export function ReceiptModal({
   const [smsError, setSmsError] = useState<string | null>(null);
   const [shareToken, setShareToken] = useState<string | null>(null);
   const [receiptNumber, setReceiptNumber] = useState<string | null>(data?.receiptNumber ?? null);
+  const [receiptLoading, setReceiptLoading] = useState<boolean>(!data?.receiptNumber);
 
   useEffect(() => {
     if (!open || !data) return;
     getSchoolProfile().then(setProfile).catch(() => setProfile(null));
     getStudentGuardianContacts(data.studentId).then((g) => setGuardians(g.map((x) => ({ guardian_name: x.guardian_name, guardian_phone: x.guardian_phone })))).catch(() => setGuardians([]));
     (async () => {
+      setReceiptLoading(true);
       try {
         const receipts = await getReceipts();
         const r = receipts.find((x) => x.payment_id === data.paymentId);
         if (r) {
           if (r.receipt_number) setReceiptNumber(r.receipt_number);
           if (r.receipt_id) {
-            const token = await createReceiptShareToken(r.receipt_id, 30);
-            setShareToken(token);
+            try { const token = await createReceiptShareToken(r.receipt_id, 30); setShareToken(token); } catch { /* ignore */ }
           }
         }
-      } catch { /* ignore */ }
+      } catch (e) { console.error('[receipt] getReceipts failed', e); }
+      // fallback: try statement
+      if (!receiptNumber) {
+        try {
+          const { getFeeStatement } = await import('@/lib/analytics/api');
+          const stmt = await getFeeStatement(data.studentId);
+          const rows = stmt.filter((x) => x.row_kind === 'payment' || x.row_kind === 'reversal');
+          if (rows.length) {
+            const latest = rows.reduce((a, b) => (new Date(b.occurred_at ?? 0).getTime() > new Date(a.occurred_at ?? 0).getTime() ? b : a));
+            if (latest.receipt_number) setReceiptNumber(latest.receipt_number);
+          }
+        } catch (e) { console.error('[receipt] getFeeStatement failed', e); }
+      }
+      setReceiptLoading(false);
     })();
   }, [open, data]);
 
@@ -173,7 +187,7 @@ export function ReceiptModal({
         </div>
 
         <div className="mb-4 grid grid-cols-2 gap-2 text-sm">
-          <div><span className="font-semibold">Receipt No.:</span> {receiptNumber ?? '—'}</div>
+          <div><span className="font-semibold">Receipt No.:</span> {receiptLoading ? 'Loading…' : (receiptNumber ?? '—')}</div>
           <div><span className="font-semibold">Date/Time:</span> {new Date(data.paidAt).toLocaleString()}</div>
           <div><span className="font-semibold">Student:</span> {data.studentName}</div>
           <div><span className="font-semibold">Adm No.:</span> {data.admissionNo}</div>
