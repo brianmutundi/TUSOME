@@ -1,5 +1,6 @@
 -- Expose payment_id (and paid_by via fee_payments) on get_receipts so the
 -- client can link a receipt to its payment and create share tokens.
+drop function if exists public.get_receipts(uuid);
 create or replace function public.get_receipts(p_invoice_id uuid default null)
 returns table(
   receipt_id uuid,
