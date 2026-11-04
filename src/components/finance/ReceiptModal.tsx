@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Modal } from '@/components/overlays';
 import { Button } from '@/components/ui';
+import { ReceiptView, type ReceiptViewData } from '@/components/finance/ReceiptView';
 import { getSchoolProfile, getStudentGuardianContacts, getReceipts, logMessage, createReceiptShareToken } from '@/lib/analytics/api';
 import { normalizePhoneKE, buildReceiptSms } from '@/lib/finance/receiptSms';
 import type { SchoolProfile } from '@/lib/analytics/types';
@@ -25,16 +26,6 @@ export interface ReceiptModalData {
   balanceRemaining: number;
 }
 
-function formatKES(n: number) {
-  return `KES ${Number(n ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
-
-function termLabel(term: string | null, year: number | null) {
-  const t = term ? term : 'Term 1';
-  const y = year ?? new Date().getFullYear();
-  return `${t} • ${y}`;
-}
-
 export function ReceiptModal({
   open,
   data,
@@ -55,6 +46,7 @@ export function ReceiptModal({
   const [smsMessageId, setSmsMessageId] = useState<string | null>(null);
   const [smsError, setSmsError] = useState<string | null>(null);
   const [shareToken, setShareToken] = useState<string | null>(null);
+  const [receiptId, setReceiptId] = useState<string | null>(null);
   const [receiptNumber, setReceiptNumber] = useState<string | null>(data?.receiptNumber ?? null);
   const [receiptLoading, setReceiptLoading] = useState<boolean>(!data?.receiptNumber);
 
@@ -70,6 +62,7 @@ export function ReceiptModal({
         if (r) {
           if (r.receipt_number) setReceiptNumber(r.receipt_number);
           if (r.receipt_id) {
+            setReceiptId(r.receipt_id);
             try { const token = await createReceiptShareToken(r.receipt_id, 30); setShareToken(token); } catch { /* ignore */ }
           }
         }
@@ -113,13 +106,18 @@ export function ReceiptModal({
     }
     // create share token now
     let token = shareToken;
-    if (!token) {
+    let resolvedReceiptId = receiptId;
+    if (!token || !resolvedReceiptId) {
       try {
         const receipts = await getReceipts();
         const r = receipts.find((x) => x.payment_id === data.paymentId);
-        if (r?.receipt_id) token = await createReceiptShareToken(r.receipt_id, 30);
+        if (r?.receipt_id) {
+          resolvedReceiptId = r.receipt_id;
+          setReceiptId(r.receipt_id);
+          if (!token) token = await createReceiptShareToken(r.receipt_id, 30);
+        }
         if (token) setShareToken(token);
-      } catch { token = null; }
+      } catch { token = token ?? null; }
     }
     const link = token ? `${window.location.origin}/receipt/${token}` : '';
     try {
@@ -130,7 +128,7 @@ export function ReceiptModal({
         receiptNumber,
         link,
       });
-      const msgId = await logMessage('specific_students', [data.studentId], 'text', 'Fee receipt', message, [phone], 1, 1);
+      const msgId = await logMessage('specific_students', [data.studentId], 'fee_info', 'Fee receipt', message, [phone], 1, 1, undefined, { documentId: resolvedReceiptId ?? data.paymentId });
       setSmsMessageId(msgId);
       setSmsStatus('queued');
       // poll for status
@@ -164,28 +162,25 @@ export function ReceiptModal({
     <Modal open={open} onClose={onClose} title="Receipt" size="lg">
       <div className="print:shadow-none">
         <style>{`@media print { @page { size: A4 portrait; margin: 16mm; } .no-print { display: none !important; } }`}</style>
-        <div className="mb-4 text-center">
-          {profile?.logo_url && <img src={profile.logo_url} alt="logo" className="mx-auto mb-2 h-12 w-auto" />}
-          <h3 className="text-lg font-bold">{profile?.name ?? 'School'}</h3>
-          {profile?.motto && <p className="text-xs italic text-gray-600">{profile.motto}</p>}
-          <p className="text-xs text-gray-500">{[profile?.county, profile?.region, profile?.country].filter(Boolean).join(', ')}</p>
-          <p className="text-xs text-gray-500">{profile?.contact_phone && `Tel: ${profile.contact_phone}`} {profile?.contact_email && `Email: ${profile.contact_email}`}</p>
-        </div>
-
-        <div className="mb-4 grid grid-cols-2 gap-2 text-sm">
-          <div><span className="font-semibold">Receipt No.:</span> {receiptLoading ? 'Loading…' : (receiptNumber ?? '—')}</div>
-          <div><span className="font-semibold">Date/Time:</span> {new Date(data.paidAt).toLocaleString()}</div>
-          <div><span className="font-semibold">Student:</span> {data.studentName}</div>
-          <div><span className="font-semibold">Adm No.:</span> {data.admissionNo}</div>
-          <div><span className="font-semibold">Grade:</span> {data.className ?? '—'}</div>
-          <div><span className="font-semibold">Term:</span> {termLabel(data.term, data.academicYear)}</div>
-          <div><span className="font-semibold">Amount paid:</span> {formatKES(data.amountPaid)}</div>
-          <div><span className="font-semibold">Method:</span> {data.method}</div>
-          <div><span className="font-semibold">Reference:</span> {data.reference ?? '—'}</div>
-          <div><span className="font-semibold">Paid by:</span> {data.paidBy ?? '—'}</div>
-          <div><span className="font-semibold">Balance remaining:</span> {formatKES(data.balanceRemaining)}</div>
-          <div><span className="font-semibold">Received by:</span> {data.receivedBy ?? '—'}</div>
-        </div>
+        <ReceiptView
+          variant="plain"
+          data={{
+            school: profile,
+            receiptNumber: receiptLoading ? 'Loading…' : (receiptNumber ?? ''),
+            paidAt: data.paidAt,
+            studentName: data.studentName,
+            admissionNo: data.admissionNo,
+            className: data.className,
+            term: data.term,
+            academicYear: data.academicYear,
+            amountPaid: data.amountPaid,
+            method: data.method,
+            reference: data.reference,
+            paidBy: data.paidBy,
+            receivedBy: data.receivedBy,
+            balanceRemaining: data.balanceRemaining,
+          }}
+        />
 
         <div className="no-print mt-4 space-y-3 border-t pt-4">
           <div className="flex flex-wrap gap-2">

@@ -111,7 +111,7 @@ export default function FeeStatementPage() {
         outstanding: totals.outstanding,
         link,
       });
-      await logMessage('specific_students', [selectedStudent], 'text', 'Fee statement', message, [norm], 1, 1);
+      await logMessage('specific_students', [selectedStudent], 'fee_info', 'Fee statement', message, [norm], 1, 1, undefined, { documentId: selectedStudent });
       setActionSuccess('SMS queued for sending.');
     } catch (e) {
       setActionError(describeAnalyticsError(e, 'Could not send SMS.'));

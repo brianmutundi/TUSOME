@@ -1392,7 +1392,7 @@ export async function logMessage(
   recipientCount: number,
   creditsUsed: number,
   examId?: string,
-  options: RequestOptions = {}
+  options: RequestOptions & { documentId?: string | null } = {}
 ): Promise<string> {
   const supabase = createClient();
   const { data, error } = await supabase
@@ -1406,6 +1406,7 @@ export async function logMessage(
       p_recipient_count: recipientCount,
       p_credits_used: creditsUsed,
       p_exam_id: examId || null,
+      p_document_id: options.documentId || null,
     })
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
