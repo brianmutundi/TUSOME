@@ -13,7 +13,7 @@ test('pay -> receipt -> sms -> statement', async ({ page }) => {
 
   await page.goto(`${base}/analytics/finance`);
   await page.getByRole('button', { name: 'Payments' }).click();
-  await page.getByRole('combobox', { name: /Student:/ }).selectOption({ label: /Amina Otieno/ }).catch(() => {});
+  await page.getByRole('combobox', { name: /Student:/ }).selectOption({ label: 'ADM-5A-005 — Amina Otieno' }).catch(() => {});
 
   // open record payment modal
   await page.getByRole('button', { name: 'Record Payment' }).click();
