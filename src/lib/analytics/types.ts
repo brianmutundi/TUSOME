@@ -730,6 +730,7 @@ export interface ParentStudentLink {
   parent_id: string;
   parent_name: string | null;
   parent_email: string | null;
+  parent_phone: string | null;
   student_id: string;
   student_name: string | null;
   admission_no: string;

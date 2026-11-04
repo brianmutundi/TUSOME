@@ -2522,6 +2522,7 @@ export async function getParentStudentLinks(
     parent_id: String(raw.parent_id ?? ''),
     parent_name: raw.parent_name ? String(raw.parent_name) : null,
     parent_email: raw.parent_email ? String(raw.parent_email) : null,
+    parent_phone: raw.parent_phone ? String(raw.parent_phone) : null,
     student_id: String(raw.student_id ?? ''),
     student_name: raw.student_name ? String(raw.student_name) : null,
     admission_no: String(raw.admission_no ?? ''),
@@ -5449,13 +5450,36 @@ export async function getStudentGuardianContacts(
   studentId: string,
   options: RequestOptions = {}
 ): Promise<GuardianContact[]> {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .rpc('get_student_guardian_contacts', { p_student_id: studentId })
-    .abortSignal(options.signal ?? new AbortController().signal);
-  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
-  throwIfAborted(options.signal);
-  return (Array.isArray(data) ? data : []) as GuardianContact[];
+  // Single source: parent_student_links (extended with parent_phone),
+  // plus the student record's own guardian/phone fields.
+  const links = await getParentStudentLinks(studentId, undefined, options);
+  const out: GuardianContact[] = links.map((l) => ({
+    guardian_name: l.parent_name,
+    guardian_phone: l.parent_phone,
+    relationship: l.relationship,
+    is_primary: l.is_primary,
+    source: 'linked',
+  }));
+  // student record fallback: fetch student phones
+  try {
+    const supabase = createClient();
+    const { data } = await supabase
+      .from('students')
+      .select('guardian_name, guardian_relation, primary_phone, primary_phone_2, secondary_phone, secondary_phone_2')
+      .eq('id', studentId)
+      .maybeSingle();
+    if (data && data.guardian_name) {
+      const phone = data.primary_phone || data.primary_phone_2 || data.secondary_phone || data.secondary_phone_2 || null;
+      out.push({
+        guardian_name: data.guardian_name,
+        guardian_phone: phone,
+        relationship: data.guardian_relation || 'guardian',
+        is_primary: out.length === 0,
+        source: 'student_record',
+      });
+    }
+  } catch { /* ignore */ }
+  return out;
 }
 
 export interface FeeStatementRow {
@@ -5493,11 +5517,11 @@ export async function createReceiptShareToken(
 ): Promise<string> {
   const supabase = createClient();
   const { data, error } = await supabase
-    .rpc('create_receipt_share_token', { p_receipt_id: receiptId, p_expires_days: expiresDays ?? 30 })
+    .rpc('create_document_share_token', { p_document_type: 'receipt', p_document_id: receiptId, p_term: null, p_academic_year: null, p_expires_days: expiresDays ?? 30 })
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
   throwIfAborted(options.signal);
-  if (typeof data !== 'string' || data.length === 0) throw new AnalyticsContractError('create_receipt_share_token');
+  if (typeof data !== 'string' || data.length === 0) throw new AnalyticsContractError('create_document_share_token');
   return data;
 }
 
@@ -5515,7 +5539,7 @@ export async function getReceiptByToken(
 ): Promise<ReceiptByToken> {
   const supabase = createClient();
   const { data, error } = await supabase
-    .rpc('get_receipt_by_token', { p_token: token, p_ip: null })
+    .rpc('get_document_by_token', { p_token: token, p_document_type: 'receipt', p_ip: null })
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
   throwIfAborted(options.signal);
@@ -5528,7 +5552,7 @@ export async function revokeReceiptShareToken(
 ): Promise<boolean> {
   const supabase = createClient();
   const { data, error } = await supabase
-    .rpc('revoke_receipt_share_token', { p_token: token })
+    .rpc('revoke_document_share_token', { p_token: token })
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
   throwIfAborted(options.signal);
@@ -5597,7 +5621,7 @@ export async function createStatementShareToken(
 ): Promise<string> {
   const supabase = createClient();
   const { data, error } = await supabase
-    .rpc('create_statement_share_token', { p_student_id: studentId, p_term: term ?? null, p_academic_year: academicYear ?? null, p_expires_days: expiresDays ?? 7 })
+    .rpc('create_document_share_token', { p_document_type: 'statement', p_document_id: studentId, p_term: term ?? null, p_academic_year: academicYear ?? null, p_expires_days: expiresDays ?? 7 })
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
   throwIfAborted(options.signal);
@@ -5619,7 +5643,7 @@ export async function getStatementByToken(
 ): Promise<StatementByToken> {
   const supabase = createClient();
   const { data, error } = await supabase
-    .rpc('get_statement_by_token', { p_token: token, p_ip: null })
+    .rpc('get_document_by_token', { p_token: token, p_document_type: 'statement', p_ip: null })
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
   throwIfAborted(options.signal);
