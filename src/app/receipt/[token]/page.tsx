@@ -46,7 +46,7 @@ export default function PublicReceiptPage({ params }: { params: { token: string 
       </div>
       <article className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-10">
         <header className="border-b border-gray-200 pb-4 text-center">
-          {school.logo_url && <img src={school.logo_url} alt="logo" className="mx-auto mb-2 h-12 w-auto" />}
+          {school.logo_url && <img src={school.logo_url} alt="School logo" className="mx-auto mb-2 h-12 w-auto" loading="lazy" />}
           <h1 className="text-xl font-bold">{school.name}</h1>
           {school.motto && <p className="text-sm italic text-gray-600">{school.motto}</p>}
           <p className="text-xs text-gray-500">{[school.county, school.region, school.country].filter(Boolean).join(', ')}</p>
