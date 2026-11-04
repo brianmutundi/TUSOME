@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Alert, Badge, Button, Card, CardHeader, EmptyState, LoadingPanel, SelectField, TextField } from '@/components/ui';
 import { exportToExcel } from '@/lib/analytics/excel';
+import { ReceiptModal } from '@/components/finance/ReceiptModal';
 import {
   describeAnalyticsError,
   getFeeLedgerReport,
@@ -18,6 +19,10 @@ import {
   getVoteHeads,
   getStudentDirectory,
   getStudentFeeBalance,
+  getFeePayments,
+  getFeeStatement,
+  getStudentGuardianContacts,
+  createReceiptShareToken,
   isAbortError,
   recordFeePayment,
   upsertFeeStructure,
@@ -74,7 +79,30 @@ export default function FinancePage() {
   const [payMethod, setPayMethod] = useState('cash');
   const [payRef, setPayRef] = useState('');
   const [payNotes, setPayNotes] = useState('');
+  const [payPaidBy, setPayPaidBy] = useState('');
+  const [payPaidByOtherText, setPayPaidByOtherText] = useState('');
+  const [guardians, setGuardians] = useState<{ guardian_name: string | null; guardian_phone: string | null; relationship: string | null; is_primary: boolean; source: string | null }[]>([]);
   const [saving, setSaving] = useState(false);
+  // Receipt modal state
+  const [receiptOpen, setReceiptOpen] = useState(false);
+  const [receiptData, setReceiptData] = useState<{
+    paymentId: string;
+    studentId: string;
+    studentName: string;
+    admissionNo: string;
+    className: string | null;
+    term: string | null;
+    academicYear: number | null;
+    amountPaid: number;
+    method: string;
+    reference: string | null;
+    paidBy: string | null;
+    receivedBy: string | null;
+    paidAt: string;
+    receiptNumber: string | null;
+    balanceRemaining: number;
+  } | null>(null);
+  const [receiptToken, setReceiptToken] = useState<string | null>(null);
 
   // Structure form
   const [showStructForm, setShowStructForm] = useState(false);
@@ -176,6 +204,12 @@ export default function FinancePage() {
     return () => { active = false; controller.abort(); };
   }, [selectedStudent, financeRefreshKey]);
 
+  useEffect(() => {
+    if (!selectedStudent) { setGuardians([]); return; }
+    let active = true;
+    getStudentGuardianContacts(selectedStudent).then((g) => { if (active) setGuardians(g); }).catch(() => { if (active) setGuardians([]); });
+    return () => { active = false; };
+  }, [selectedStudent]);
   const handleRecordPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedStudent || !payAmount) return;
@@ -195,13 +229,63 @@ export default function FinancePage() {
         return;
       }
     }
+    const paidByValue = (payPaidBy === '__other__' ? payPaidByOtherText : payPaidBy).trim().slice(0, 100) || null;
     setSaving(true);
     setActionError(null);
     setActionSuccess(null);
     try {
-      await recordFeePayment(selectedStudent, Number(payAmount), payMethod, payRef || undefined, undefined, undefined, payNotes || undefined, paymentIdempotencyKey ?? undefined, undefined, allocEntries.length > 0 ? allocEntries : undefined);
+      const paymentId = await recordFeePayment(selectedStudent, Number(payAmount), payMethod, payRef || undefined, undefined, undefined, payNotes || undefined, paymentIdempotencyKey ?? undefined, undefined, allocEntries.length > 0 ? allocEntries : undefined, paidByValue ?? undefined);
+      // Fetch receipt number + received-by from the committed ledger.
+      let receiptNumber: string | null = null;
+      let receivedBy: string | null = null;
+      try {
+        const stmt = await getFeeStatement(selectedStudent);
+        const row = stmt.find((r) => r.row_kind === 'payment' && r.receipt_number);
+        // match by amount/date is fragile; instead fetch payments list
+      } catch { /* ignore */ }
+      try {
+        const pays = await getFeePayments(selectedStudent, 50);
+        const p = pays.find((x) => x.payment_id === paymentId);
+        if (p) { receivedBy = p.recorded_by_name; }
+      } catch { /* ignore */ }
+      try {
+        const stmt2 = await getFeeStatement(selectedStudent);
+        // find the row whose payment matches; statement has no payment_id, so use latest payment row
+        const paymentRows = stmt2.filter((r) => r.row_kind === 'payment' || r.row_kind === 'reversal');
+        if (paymentRows.length) {
+          // latest by occurred_at
+          const latest = paymentRows.reduce((a, b) => (new Date(b.occurred_at ?? 0).getTime() > new Date(a.occurred_at ?? 0).getTime() ? b : a));
+          receiptNumber = latest.receipt_number;
+        }
+      } catch { /* ignore */ }
+
+      const studentRow = students.find((s) => s.student_id === selectedStudent);
+      const balRow = (balanceData?.rows ?? []).find((r: any) => r.student_id === selectedStudent);
+      const outstanding = balRow ? Number(balRow.balance ?? 0) : Number(balance?.balance ?? 0);
+      // recompute after payment: outstanding - amountPaid
+      const newOutstanding = outstanding - Number(payAmount);
+
+      setReceiptData({
+        paymentId,
+        studentId: selectedStudent,
+        studentName: studentRow?.full_name ?? balance?.student_name ?? '',
+        admissionNo: studentRow?.admission_no ?? balance?.admission_no ?? '',
+        className: studentRow?.class_name ?? null,
+        term: balanceTerm || null,
+        academicYear: balanceYear ? Number(balanceYear) : null,
+        amountPaid: Number(payAmount),
+        method: payMethod,
+        reference: payRef || null,
+        paidBy: paidByValue,
+        receivedBy,
+        paidAt: new Date().toISOString(),
+        receiptNumber,
+        balanceRemaining: newOutstanding,
+      });
+      setReceiptOpen(true);
+
       setActionSuccess('Payment recorded.');
-      setPayAmount(''); setPayRef(''); setPayNotes(''); setAllocations({});
+      setPayAmount(''); setPayRef(''); setPayNotes(''); setPayPaidBy(''); setPayPaidByOtherText(''); setAllocations({});
       setShowPaymentModal(false);
       setPaymentIdempotencyKey(null);
       // Refresh all finance views from the committed ledger transaction.
@@ -588,6 +672,26 @@ export default function FinancePage() {
                     <TextField id="pay-ref" label="Reference No." value={payRef} onChange={(event) => setPayRef(event.target.value)} />
                     <TextField id="pay-notes" label="Notes" value={payNotes} onChange={(event) => setPayNotes(event.target.value)} />
                   </div>
+                  <div>
+                    <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Paid by</label>
+                    <select value={payPaidBy} onChange={(event) => setPayPaidBy(event.target.value)} className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900">
+                      <option value="">— Select payer —</option>
+                      {guardians.map((g, i) => (
+                        <option key={i} value={g.guardian_name ?? ''}>{g.guardian_name ?? 'Guardian'}{g.guardian_phone ? ` (${g.guardian_phone})` : ''}{g.is_primary ? ' — primary' : ''}</option>
+                      ))}
+                      <option value="__other__">Other (type name)</option>
+                    </select>
+                    {payPaidBy === '__other__' && (
+                      <input
+                        type="text"
+                        maxLength={100}
+                        value={payPaidByOtherText}
+                        onChange={(event) => setPayPaidByOtherText(event.target.value)}
+                        placeholder="Payer name"
+                        className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
+                      />
+                    )}
+                  </div>
                   {voteHeads.length > 0 && (
                     <div>
                       <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Allocations (must sum to amount)</label>
@@ -611,6 +715,14 @@ export default function FinancePage() {
           )}
         </div>
       )}
+      <ReceiptModal
+        open={receiptOpen}
+        data={receiptData}
+        onClose={() => setReceiptOpen(false)}
+        onViewStatement={(sid) => {
+          window.location.href = `/analytics/finance/statement?student=${sid}`;
+        }}
+      />
       {/* Balances Tab */}
       {tab === 'balances' && (
         <>

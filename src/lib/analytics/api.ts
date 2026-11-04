@@ -1953,6 +1953,7 @@ export async function getFeeLedgerReport(
     term: raw.term ? String(raw.term) : null,
     notes: raw.notes ? String(raw.notes) : null,
     recorded_by_name: raw.recorded_by_name ? String(raw.recorded_by_name) : null,
+    paid_by: raw.paid_by ? String(raw.paid_by) : null,
     paid_at: String(raw.paid_at ?? ''),
     entry_type: raw.entry_type === 'reversal' ? 'reversal' : 'payment',
     reversal_reason: raw.reversal_reason ? String(raw.reversal_reason) : null,
@@ -2815,6 +2816,8 @@ export async function getReceipts(
     reference_number: raw.reference_number ? String(raw.reference_number) : null,
     paid_at: String(raw.paid_at ?? ''),
     recorded_by_name: raw.recorded_by_name ? String(raw.recorded_by_name) : null,
+    payment_id: raw.payment_id ? String(raw.payment_id) : null,
+    paid_by: raw.paid_by ? String(raw.paid_by) : null,
   }));
 }
 

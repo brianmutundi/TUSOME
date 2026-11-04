@@ -563,6 +563,7 @@ export interface FeePayment {
   term: string | null;
   notes: string | null;
   recorded_by_name: string | null;
+  paid_by: string | null;
   paid_at: string;
 }
 
@@ -816,6 +817,8 @@ export interface Receipt {
   reference_number: string | null;
   paid_at: string;
   recorded_by_name: string | null;
+  payment_id: string | null;
+  paid_by: string | null;
 }
 
 export interface Wallet {
