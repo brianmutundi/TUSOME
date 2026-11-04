@@ -23,6 +23,11 @@ const EXEMPT = new Set([
   'rls_auto_enable',            // trigger helper
   'set_my_phone',               // self-service (auth.uid() scoped)
   'teacher_has_allocation',      // guard helper
+  'fee_period_for_date',         // pure period resolver; callers enforce tenant + permission before use
+  'get_document_by_token',        // token-gated public document read (document_share_tokens hash lookup)
+  'get_fee_statement_by_token',  // token-gated public statement rows read (unified document_share_tokens)
+  'get_receipt_by_token',         // token-gated public receipt read (document_share_tokens hash lookup)
+  'get_statement_by_token',      // token-gated public statement read (legacy token table, unified)
 ]);
 
 const GUARD_PATTERNS = [
@@ -32,6 +37,11 @@ const GUARD_PATTERNS = [
   /is_parent\s*\(/,
   /assert_parent_of\s*\(/,
   /teacher_has_allocation\s*\(/,
+  // Tenant resolved from the caller's JWT claims inside the function body.
+  /v_caller_tenant\s*:=/,
+  /auth\.jwt\(\)\s*->>\s*'tenant_id'/,
+  // Tenant resolved from an explicit, caller-validated tenant argument.
+  /p_tenant_id/,
 ];
 
 const files = readdirSync(migDir).filter(f => f.endsWith('.sql')).sort();

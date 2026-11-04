@@ -12,6 +12,9 @@ const migDir = join(root, 'supabase', 'migrations');
 const EXEMPT = new Map([
   ['permissions', 'Public read-only permission catalogue (no tenant data).'],
   ['report_share_tokens', 'Deny-all RLS; access only via token-gated SECURITY DEFINER RPC.'],
+  ['document_share_tokens', 'Deny-all RLS; access only via token-gated SECURITY DEFINER RPC.'],
+  ['receipt_share_tokens', 'Legacy token table dropped in 20261104000007 (unified into document_share_tokens); deny-all by design.'],
+  ['statement_share_tokens', 'Legacy token table dropped in 20261104000007 (unified into document_share_tokens); deny-all by design.'],
 ]);
 
 function extractParens(str, startIdx) {
