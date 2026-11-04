@@ -131,7 +131,7 @@ begin
   from public.document_token_access_log
   where token_hash = v_hash
     and accessed_at > now() - interval '1 hour';
-  if v_recent >= 20 then raise exception 'Rate limit exceeded' using errcode = 'P0001'; end if;
+  if v_recent >= 20 then raise exception 'Rate limit exceeded' using errcode = 'PT429'; end if;
   insert into public.document_token_access_log (token_hash, ip) values (v_hash, p_ip);
 
   select * into v_row
@@ -215,17 +215,18 @@ grant execute on function public.revoke_document_share_token(text) to authentica
 -- ---------------------------------------------------------------------------
 -- 4. Extend get_parent_student_links with parent_phone
 -- ---------------------------------------------------------------------------
--- (Redefine via create or replace; adding column to return type requires drop)
-drop function if exists public.get_parent_student_links(uuid, uuid);
--- Note: full redefinition omitted for brevity; the app now calls get_parent_student_links
--- and reads parent_phone. The function body is updated in a follow-up if needed.
+-- Intentionally NOT dropped or redefined here. Adding parent_phone requires
+-- dropping the function, which must happen in the same migration that recreates
+-- it (see 20261104000008_extend_parent_links.sql). Dropping it here without a
+-- replacement removed a live function the app depends on.
 
 -- ---------------------------------------------------------------------------
--- 5. get_student_statement extended with billed rows + paid_by (redefine)
+-- 5. get_student_statement / get_fee_statement
 -- ---------------------------------------------------------------------------
--- Drop old get_fee_statement
-drop function if exists public.get_fee_statement(uuid, text, integer);
-drop function if exists public.get_fee_statement_by_token(text, text);
+-- Intentionally NOT dropped here. The app still calls get_fee_statement and
+-- get_fee_statement_by_token, so removing them in this migration broke the
+-- statement page. Their removal belongs in a migration that lands together
+-- with the client switch to get_student_statement.
 
 -- Extend get_student_statement: keep existing signature, add paid_by + billed rows.
 -- (Full redefinition would duplicate; instead we keep get_student_statement as-is
