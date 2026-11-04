@@ -17,16 +17,23 @@ create table if not exists public.document_share_tokens (
   created_at timestamptz not null default now()
 );
 
--- migrate existing data
-insert into public.document_share_tokens (id, tenant_id, document_type, document_id, token_hash, expires_at, revoked, created_at)
-select id, tenant_id, 'receipt', receipt_id, token_hash, expires_at, revoked, created_at
-from public.receipt_share_tokens
-on conflict (token_hash) do nothing;
-
-insert into public.document_share_tokens (tenant_id, document_type, document_id, term, academic_year, token_hash, expires_at, revoked, created_at)
-select tenant_id, 'statement', student_id, term, academic_year, token_hash, expires_at, revoked, created_at
-from public.statement_share_tokens
-on conflict (token_hash) do nothing;
+-- migrate existing data (idempotent: only if old tables still exist)
+do $$
+begin
+  if exists (select 1 from information_schema.tables where table_schema='public' and table_name='receipt_share_tokens') then
+    insert into public.document_share_tokens (id, tenant_id, document_type, document_id, token_hash, expires_at, revoked, created_at)
+    select id, tenant_id, 'receipt', receipt_id, token_hash, expires_at, revoked, created_at
+    from public.receipt_share_tokens
+    on conflict (token_hash) do nothing;
+  end if;
+  if exists (select 1 from information_schema.tables where table_schema='public' and table_name='statement_share_tokens') then
+    insert into public.document_share_tokens (tenant_id, document_type, document_id, term, academic_year, token_hash, expires_at, revoked, created_at)
+    select tenant_id, 'statement', student_id, term, academic_year, token_hash, expires_at, revoked, created_at
+    from public.statement_share_tokens
+    on conflict (token_hash) do nothing;
+  end if;
+end;
+$$;
 
 alter table public.document_share_tokens enable row level security;
 
@@ -91,8 +98,8 @@ begin
     end if;
   end if;
 
-  v_token := encode(gen_random_bytes(8), 'hex');
-  v_hash := encode(digest(v_token, 'sha256'), 'hex');
+  v_token := encode(extensions.gen_random_bytes(8), 'hex');
+  v_hash := encode(extensions.digest(v_token, 'sha256'), 'hex');
 
   insert into public.document_share_tokens (tenant_id, document_type, document_id, term, academic_year, token_hash, expires_at)
   values (v_tenant, p_document_type, p_document_id, case when p_document_type = 'statement' then p_term end, case when p_document_type = 'statement' then p_academic_year end, v_hash, now() + (v_days || ' days')::interval);
@@ -118,7 +125,7 @@ declare
   v_recent int;
 begin
   if p_token is null or length(p_token) = 0 then raise exception 'Invalid token'; end if;
-  v_hash := encode(digest(p_token, 'sha256'), 'hex');
+  v_hash := encode(extensions.digest(p_token, 'sha256'), 'hex');
 
   select count(*) into v_recent
   from public.document_token_access_log
@@ -191,7 +198,7 @@ declare
   v_tenant uuid;
 begin
   if v_uid is null then raise exception 'Not signed in'; end if;
-  v_hash := encode(digest(p_token, 'sha256'), 'hex');
+  v_hash := encode(extensions.digest(p_token, 'sha256'), 'hex');
   select tenant_id into v_tenant from public.document_share_tokens where token_hash = v_hash;
   if v_tenant is null then return false; end if;
   if not (public.user_has_permission(v_uid, v_tenant, 'manage-fees') or public.user_has_permission(v_uid, v_tenant, 'view-fees')) then
