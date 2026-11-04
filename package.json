@@ -24,6 +24,7 @@
     "db:check-rls": "node scripts/check-rls.mjs"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.9.0",
     "@supabase/supabase-js": "^2.118.0",
     "exceljs": "^4.4.0",
     "lucide-react": "^1.66.0",
