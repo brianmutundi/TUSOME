@@ -10,11 +10,15 @@ import {
   getMyChildFees,
   getMyChildPayments,
   getMyChildResults,
+  getMyChildReceipts,
+  createMyChildReceiptToken,
+  createMyChildStatementToken,
   isAbortError,
   type MyChildAttendanceCount,
   type MyChildFeeLine,
   type MyChildPayment,
   type MyChildResult,
+  type ParentReceipt,
 } from '@/lib/analytics/api';
 import { formatKes } from '@/lib/format-kes';
 
@@ -23,6 +27,7 @@ interface ChildData {
   payments: MyChildPayment[];
   results: MyChildResult[];
   attendance: MyChildAttendanceCount[];
+  receipts: ParentReceipt[];
 }
 
 export default function ChildPage() {
@@ -30,6 +35,8 @@ export default function ChildPage() {
   const studentId = params.studentId;
   const [data, setData] = useState<ChildData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [downloading, setDownloading] = useState<string | null>(null);
+  const [statementLoading, setStatementLoading] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -41,8 +48,9 @@ export default function ChildPage() {
       getMyChildPayments(studentId, 20, opts),
       getMyChildResults(studentId, opts),
       getMyChildAttendance(studentId, undefined, opts),
+      getMyChildReceipts(studentId, opts),
     ])
-      .then(([fees, payments, results, attendance]) => setData({ fees, payments, results, attendance }))
+      .then(([fees, payments, results, attendance, receipts]) => setData({ fees, payments, results, attendance, receipts }))
       .catch((caught) => {
         if (isAbortError(caught)) return;
         setError(describeAnalyticsError(caught, 'Could not load this child.'));
@@ -65,6 +73,30 @@ export default function ChildPage() {
     return Array.from(map.entries());
   }, [data]);
 
+  const handleDownloadReceipt = async (receiptId: string) => {
+    setDownloading(receiptId);
+    try {
+      const token = await createMyChildReceiptToken(receiptId);
+      window.open(`/receipt/${token}`, '_blank');
+    } catch (e) {
+      setError(describeAnalyticsError(e, 'Could not open receipt.'));
+    } finally {
+      setDownloading(null);
+    }
+  };
+
+  const handleViewStatement = async () => {
+    setStatementLoading(true);
+    try {
+      const token = await createMyChildStatementToken(studentId);
+      window.open(`/statement/${token}`, '_blank');
+    } catch (e) {
+      setError(describeAnalyticsError(e, 'Could not open statement.'));
+    } finally {
+      setStatementLoading(false);
+    }
+  };
+
   if (error) {
     return (
       <div className="space-y-4">
@@ -84,8 +116,10 @@ export default function ChildPage() {
         <div className="px-5 py-4">
           <p className="text-sm text-gray-500">Total owed</p>
           <p className="text-3xl font-bold text-gray-900">{formatKes(owed)}</p>
-          <div className="mt-3">
-            <Button disabled title="Online payment is being added">Pay with M-Pesa (coming soon)</Button>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Button variant="secondary" onClick={handleViewStatement} disabled={statementLoading}>
+              {statementLoading ? 'Opening…' : 'View fee statement'}
+            </Button>
           </div>
         </div>
         {data.fees.length === 0 ? (
@@ -96,6 +130,34 @@ export default function ChildPage() {
               <li key={f.voteHeadId} className="flex justify-between gap-3 px-5 py-3 text-sm">
                 <span className="text-gray-700">{f.voteHeadName}</span>
                 <span className="font-medium text-gray-900">{formatKes(f.balance)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+
+      <Card>
+        <CardHeader title="Receipts" />
+        {data.receipts.length === 0 ? (
+          <EmptyState title="No receipts yet" />
+        ) : (
+          <ul className="divide-y divide-gray-100">
+            {data.receipts.map((r) => (
+              <li key={r.receipt_id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 text-sm">
+                <div className="min-w-0">
+                  <p className="font-medium text-gray-900">{r.receipt_number}</p>
+                  <p className="text-xs text-gray-500">
+                    {new Date(r.paid_at).toLocaleDateString('en-KE')} · {r.payment_method} · {formatKes(r.amount_paid)}
+                    {r.paid_by ? ` · Paid by ${r.paid_by}` : ''}
+                  </p>
+                </div>
+                <Button
+                  variant="secondary"
+                  onClick={() => handleDownloadReceipt(r.receipt_id)}
+                  disabled={downloading === r.receipt_id}
+                >
+                  {downloading === r.receipt_id ? 'Opening…' : 'Download'}
+                </Button>
               </li>
             ))}
           </ul>

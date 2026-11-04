@@ -5535,6 +5535,59 @@ export async function revokeReceiptShareToken(
   return Boolean(data);
 }
 
+export interface ParentReceipt {
+  receipt_id: string;
+  receipt_number: string;
+  amount_paid: number;
+  payment_method: string;
+  reference_number: string | null;
+  paid_at: string;
+  paid_by: string | null;
+}
+
+export async function getMyChildReceipts(
+  studentId: string,
+  options: RequestOptions = {}
+): Promise<ParentReceipt[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('get_my_child_receipts', { p_student_id: studentId })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return (Array.isArray(data) ? data : []) as ParentReceipt[];
+}
+
+export async function createMyChildReceiptToken(
+  receiptId: string,
+  options: RequestOptions = {}
+): Promise<string> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('create_my_child_receipt_token', { p_receipt_id: receiptId })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  if (typeof data !== 'string' || data.length === 0) throw new AnalyticsContractError('create_my_child_receipt_token');
+  return data;
+}
+
+export async function createMyChildStatementToken(
+  studentId: string,
+  term?: string,
+  academicYear?: number,
+  options: RequestOptions = {}
+): Promise<string> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('create_my_child_statement_token', { p_student_id: studentId, p_term: term ?? null, p_academic_year: academicYear ?? null })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  if (typeof data !== 'string' || data.length === 0) throw new AnalyticsContractError('create_my_child_statement_token');
+  return data;
+}
+
 export async function createStatementShareToken(
   studentId: string,
   term?: string,
