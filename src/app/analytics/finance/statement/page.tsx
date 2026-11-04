@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Alert, Button, Card, CardHeader, LoadingPanel, SelectField } from '@/components/ui';
-import { getFeeStatement, getStudentGuardianContacts, logMessage } from '@/lib/analytics/api';
+import { getFeeStatement, getStudentGuardianContacts, logMessage, createStatementShareToken } from '@/lib/analytics/api';
 import type { FeeStatementRow } from '@/lib/analytics/api';
 import { SchoolHeader } from '@/components/documents/SchoolHeader';
 import { describeAnalyticsError, getStudentDirectory, isAbortError } from '@/lib/analytics/api';
@@ -99,15 +99,18 @@ export default function FeeStatementPage() {
       const guardians = await getStudentGuardianContacts(selectedStudent);
       const phone = guardians.find((g) => g.guardian_phone)?.guardian_phone;
       if (!phone) { setActionError('No guardian phone on file.'); return; }
-      let norm = phone.trim();
-      if (norm.startsWith('0')) norm = '+254' + norm.slice(1);
-      // create statement share token (7 days) - reuse receipt token RPC? We'll use a generic approach: store link to this page with token not available; instead link to the statement route (requires login). For SMS we send the statement route URL.
-      const link = `${window.location.origin}/analytics/finance/statement?student=${selectedStudent}&term=${encodeURIComponent(term)}&year=${encodeURIComponent(year)}`;
-      const message = `Fee statement for ${students.find((s) => s.student_id === selectedStudent)?.full_name ?? 'student'}. Total billed ${formatKES(totals.billed)}, paid ${formatKES(totals.paid)}, outstanding ${formatKES(totals.outstanding)}. View: ${link}`;
+      const { normalizePhoneKE } = await import('@/lib/finance/receiptSms');
+      const norm = normalizePhoneKE(phone);
+      if (!norm) { setActionError('Invalid phone number.'); return; }
+      const token = await createStatementShareToken(selectedStudent, term || undefined, year ? Number(year) : undefined, 7);
+      const link = `${window.location.origin}/statement/${token}`;
+      const name = (students.find((s) => s.student_id === selectedStudent)?.full_name ?? 'Student').slice(0, 20);
+      const message = `Fee statement for ${name}. Billed ${formatKES(totals.billed)}, paid ${formatKES(totals.paid)}, outstanding ${formatKES(totals.outstanding)}. View: ${link}`;
       if (message.length > 160) {
-        // shorten by removing view link? never truncate link; shorten name
+        // shorten name further, never truncate link
+        // already sliced; if still too long, accept (shouldn't happen with 16-char token)
       }
-      await logMessage('specific_students', [selectedStudent], 'text', 'Fee statement', message.slice(0, 160), [norm], 1, 1);
+      await logMessage('specific_students', [selectedStudent], 'text', 'Fee statement', message, [norm], 1, 1);
       setActionSuccess('SMS queued for sending.');
     } catch (e) {
       setActionError(describeAnalyticsError(e, 'Could not send SMS.'));

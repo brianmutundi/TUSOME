@@ -5534,3 +5534,54 @@ export async function revokeReceiptShareToken(
   throwIfAborted(options.signal);
   return Boolean(data);
 }
+
+export async function createStatementShareToken(
+  studentId: string,
+  term?: string,
+  academicYear?: number,
+  expiresDays?: number,
+  options: RequestOptions = {}
+): Promise<string> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('create_statement_share_token', { p_student_id: studentId, p_term: term ?? null, p_academic_year: academicYear ?? null, p_expires_days: expiresDays ?? 7 })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  if (typeof data !== 'string' || data.length === 0) throw new AnalyticsContractError('create_statement_share_token');
+  return data;
+}
+
+export interface StatementByToken {
+  student: { id: string; full_name: string; admission_no: string; class_name: string | null };
+  school: { name: string; logo_url: string | null; motto: string | null; county: string | null; region: string | null; country: string | null; contact_phone: string | null; contact_email: string | null };
+  term: string | null;
+  academic_year: number | null;
+  expires_at: string;
+}
+
+export async function getStatementByToken(
+  token: string,
+  options: RequestOptions = {}
+): Promise<StatementByToken> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('get_statement_by_token', { p_token: token, p_ip: null })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return data as StatementByToken;
+}
+
+export async function getFeeStatementByToken(
+  token: string,
+  options: RequestOptions = {}
+): Promise<FeeStatementRow[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('get_fee_statement_by_token', { p_token: token, p_ip: null })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return (Array.isArray(data) ? data : []) as FeeStatementRow[];
+}

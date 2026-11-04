@@ -3,9 +3,41 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   eslint: {
-    // Linting runs as its own CI step (`npm run lint`); keep builds fast and
-    // deterministic so a lint warning cannot block a production build.
     ignoreDuringBuilds: true,
+  },
+  async headers() {
+    return [
+      {
+        source: '/receipt/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+          { key: 'Cache-Control', value: 'no-store' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+        ],
+      },
+      {
+        source: '/statement/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+          { key: 'Cache-Control', value: 'no-store' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+        ],
+      },
+      {
+        source: '/api/receipt/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+        ],
+      },
+      {
+        source: '/api/statement/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+        ],
+      },
+    ];
   },
 };
 

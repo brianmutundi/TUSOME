@@ -51,7 +51,8 @@ export function ReceiptModal({
   const [smsTarget, setSmsTarget] = useState<'guardian' | 'other'>('guardian');
   const [smsGuardianIdx, setSmsGuardianIdx] = useState(0);
   const [smsPhone, setSmsPhone] = useState('');
-  const [smsStatus, setSmsStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [smsStatus, setSmsStatus] = useState<'idle' | 'sending' | 'queued' | 'sent' | 'failed' | 'error'>('idle');
+  const [smsMessageId, setSmsMessageId] = useState<string | null>(null);
   const [smsError, setSmsError] = useState<string | null>(null);
   const [shareToken, setShareToken] = useState<string | null>(null);
 
@@ -121,12 +122,32 @@ export function ReceiptModal({
     }
     const link = token ? `${window.location.origin}/receipt/${token}` : '';
     const message = buildSmsMessage(link || '(link unavailable)');
+    if (message.length > 160) {
+      // safety: never send over 160
+    }
     try {
-      await logMessage('specific_students', [data.studentId], 'text', 'Fee receipt', message, [phone], 1, 1);
-      setSmsStatus('sent');
+      const msgId = await logMessage('specific_students', [data.studentId], 'text', 'Fee receipt', message.slice(0, 160), [phone], 1, 1);
+      setSmsMessageId(msgId);
+      setSmsStatus('queued');
+      // poll for status
+      (async () => {
+        for (let i = 0; i < 12; i++) {
+          await new Promise((r) => setTimeout(r, 5000));
+          try {
+            const { getMessageHistory } = await import('@/lib/analytics/api');
+            const history = await getMessageHistory(50);
+            const row = history.find((h: any) => h.message_id === msgId || h.id === msgId);
+            if (row) {
+              const st = String(row.status ?? '').toLowerCase();
+              if (st === 'sent' || st === 'delivered') { setSmsStatus('sent'); return; }
+              if (st === 'failed' || st === 'error') { setSmsStatus('failed'); setSmsError('SMS failed to send.'); return; }
+            }
+          } catch { /* ignore */ }
+        }
+      })();
     } catch (e) {
       setSmsStatus('error');
-      setSmsError(e instanceof Error ? e.message : 'Failed to send SMS.');
+      setSmsError(e instanceof Error ? e.message : 'Failed to queue SMS.');
     }
   };
 
@@ -164,7 +185,10 @@ export function ReceiptModal({
 
         <div className="no-print mt-4 space-y-3 border-t pt-4">
           <div className="flex flex-wrap gap-2">
-            <Button variant="primary" onClick={handlePrint}>Print</Button>
+            <Button variant="primary" onClick={handlePrint}>Print (A4)</Button>
+            {shareToken && (
+              <Button variant="secondary" onClick={() => window.open(`/receipt/${shareToken}?format=thermal`, '_blank')}>Print (80mm)</Button>
+            )}
             <Button variant="secondary" onClick={handleViewStatement}>View fee statement</Button>
             <Button variant="secondary" onClick={onClose}>Done</Button>
           </div>
@@ -195,11 +219,13 @@ export function ReceiptModal({
               <Button
                 variant="primary"
                 onClick={handleSendSms}
-                disabled={smsStatus === 'sending' || (smsTarget === 'guardian' && guardians.length === 0 && !guardians[smsGuardianIdx]?.guardian_phone)}
+                disabled={smsStatus === 'sending' || smsStatus === 'queued' || (smsTarget === 'guardian' && guardians.length === 0 && !guardians[smsGuardianIdx]?.guardian_phone)}
               >
-                {smsStatus === 'sending' ? 'Sending…' : 'Send'}
+                {smsStatus === 'sending' ? 'Queuing…' : 'Send'}
               </Button>
-              {smsStatus === 'sent' && <span className="text-sm text-green-700">SMS queued for sending.</span>}
+              {smsStatus === 'queued' && <span className="text-sm text-amber-700">Queued for sending via device.</span>}
+              {smsStatus === 'sent' && <span className="text-sm text-green-700">Sent.</span>}
+              {smsStatus === 'failed' && <span className="text-sm text-red-700">{smsError ?? 'Failed.'} <button className="underline" onClick={handleSendSms}>Retry</button></span>}
               {smsStatus === 'error' && <span className="text-sm text-red-700">{smsError} <button className="underline" onClick={handleSendSms}>Retry</button></span>}
             </div>
           </div>

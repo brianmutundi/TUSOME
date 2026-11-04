@@ -12,6 +12,12 @@ export default function PublicReceiptPage({ params }: { params: { token: string 
   const [data, setData] = useState<ReceiptByToken | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [thermal, setThermal] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setThermal(params.get('format') === 'thermal');
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -61,7 +67,7 @@ export default function PublicReceiptPage({ params }: { params: { token: string 
           <div><span className="font-semibold">Received by:</span> —</div>
         </section>
       </article>
-      <style>{`@media print { @page { size: A4 portrait; margin: 16mm; } .print\\:hidden { display: none !important; } }`}</style>
+      <style>{`@media print { @page { size: ${thermal ? '80mm auto' : 'A4 portrait'}; margin: ${thermal ? '4mm' : '16mm'}; } .print\\:hidden { display: none !important; } }`}</style>
     </main>
   );
 }
