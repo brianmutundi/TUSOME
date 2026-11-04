@@ -1889,6 +1889,7 @@ export async function recordFeePayment(
   idempotencyKey?: string,
   paymentDate?: string,
   allocations?: { vote_head_id?: string; fee_structure_id?: string; amount: number }[],
+  paidBy?: string,
   options: RequestOptions = {}
 ): Promise<string> {
   const supabase = createClient();
@@ -1904,6 +1905,7 @@ export async function recordFeePayment(
       p_idempotency_key: idempotencyKey ?? null,
       p_payment_date: paymentDate ?? null,
       p_allocations: allocations ? JSON.stringify(allocations) : null,
+      p_paid_by: paidBy ?? null,
     })
     .abortSignal(options.signal ?? new AbortController().signal);
   if (error) throw AnalyticsAPIError.fromSupabaseError(error);
@@ -5427,4 +5429,105 @@ export function describeAnalyticsError(
 
   console.error('[analytics]', code ?? 'unknown', message ?? error);
   return fallback;
+}
+
+// ---------------------------------------------------------------------------
+// Receipt share tokens + fee statement + guardian contacts
+// ---------------------------------------------------------------------------
+export interface GuardianContact {
+  guardian_name: string | null;
+  guardian_phone: string | null;
+  relationship: string | null;
+  is_primary: boolean;
+  source: string | null;
+}
+
+export async function getStudentGuardianContacts(
+  studentId: string,
+  options: RequestOptions = {}
+): Promise<GuardianContact[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('get_student_guardian_contacts', { p_student_id: studentId })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return (Array.isArray(data) ? data : []) as GuardianContact[];
+}
+
+export interface FeeStatementRow {
+  row_kind: string;
+  description: string | null;
+  term: string | null;
+  academic_year: number | null;
+  occurred_at: string | null;
+  receipt_number: string | null;
+  payment_method: string | null;
+  paid_by: string | null;
+  amount: number;
+  running_balance: number;
+}
+
+export async function getFeeStatement(
+  studentId: string,
+  term?: string,
+  academicYear?: number,
+  options: RequestOptions = {}
+): Promise<FeeStatementRow[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('get_fee_statement', { p_student_id: studentId, p_term: term ?? null, p_academic_year: academicYear ?? null })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return (Array.isArray(data) ? data : []) as FeeStatementRow[];
+}
+
+export async function createReceiptShareToken(
+  receiptId: string,
+  expiresDays?: number,
+  options: RequestOptions = {}
+): Promise<string> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('create_receipt_share_token', { p_receipt_id: receiptId, p_expires_days: expiresDays ?? 30 })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  if (typeof data !== 'string' || data.length === 0) throw new AnalyticsContractError('create_receipt_share_token');
+  return data;
+}
+
+export interface ReceiptByToken {
+  receipt: { id: string; receipt_number: string; amount_paid: number; payment_method: string; reference_number: string | null; paid_at: string };
+  payment: { id: string; amount: number; payment_method: string; reference_number: string | null; academic_year: number | null; term: string | null; paid_by: string | null; paid_at: string };
+  student: { id: string; full_name: string; admission_no: string; class_name: string | null };
+  school: { name: string; logo_url: string | null; motto: string | null; county: string | null; region: string | null; country: string | null; contact_phone: string | null; contact_email: string | null };
+  expires_at: string;
+}
+
+export async function getReceiptByToken(
+  token: string,
+  options: RequestOptions = {}
+): Promise<ReceiptByToken> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('get_receipt_by_token', { p_token: token, p_ip: null })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return data as ReceiptByToken;
+}
+
+export async function revokeReceiptShareToken(
+  token: string,
+  options: RequestOptions = {}
+): Promise<boolean> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .rpc('revoke_receipt_share_token', { p_token: token })
+    .abortSignal(options.signal ?? new AbortController().signal);
+  if (error) throw AnalyticsAPIError.fromSupabaseError(error);
+  throwIfAborted(options.signal);
+  return Boolean(data);
 }
