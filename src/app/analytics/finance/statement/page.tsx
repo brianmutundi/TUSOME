@@ -8,6 +8,7 @@ import type { FeeStatementRow } from '@/lib/analytics/api';
 import { SchoolHeader } from '@/components/documents/SchoolHeader';
 import { describeAnalyticsError, getStudentDirectory, isAbortError } from '@/lib/analytics/api';
 import type { StudentDirectoryRow } from '@/lib/analytics/types';
+import { buildStatementSms, normalizePhoneKE } from '@/lib/finance/receiptSms';
 
 function formatKES(n: number) {
   return `KES ${Number(n ?? 0).toLocaleString('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -99,17 +100,17 @@ export default function FeeStatementPage() {
       const guardians = await getStudentGuardianContacts(selectedStudent);
       const phone = guardians.find((g) => g.guardian_phone)?.guardian_phone;
       if (!phone) { setActionError('No guardian phone on file.'); return; }
-      const { normalizePhoneKE } = await import('@/lib/finance/receiptSms');
       const norm = normalizePhoneKE(phone);
       if (!norm) { setActionError('Invalid phone number.'); return; }
       const token = await createStatementShareToken(selectedStudent, term || undefined, year ? Number(year) : undefined, 7);
       const link = `${window.location.origin}/statement/${token}`;
-      const name = (students.find((s) => s.student_id === selectedStudent)?.full_name ?? 'Student').slice(0, 20);
-      const message = `Fee statement for ${name}. Billed ${formatKES(totals.billed)}, paid ${formatKES(totals.paid)}, outstanding ${formatKES(totals.outstanding)}. View: ${link}`;
-      if (message.length > 160) {
-        // shorten name further, never truncate link
-        // already sliced; if still too long, accept (shouldn't happen with 16-char token)
-      }
+      const message = buildStatementSms({
+        studentName: students.find((s) => s.student_id === selectedStudent)?.full_name ?? 'Student',
+        billed: totals.billed,
+        paid: totals.paid,
+        outstanding: totals.outstanding,
+        link,
+      });
       await logMessage('specific_students', [selectedStudent], 'text', 'Fee statement', message, [norm], 1, 1);
       setActionSuccess('SMS queued for sending.');
     } catch (e) {
@@ -193,7 +194,7 @@ export default function FeeStatementPage() {
             <div className="mt-4 text-sm">
               <p><span className="font-semibold">Total billed:</span> {formatKES(totals.billed)}</p>
               <p><span className="font-semibold">Total paid:</span> {formatKES(totals.paid)}</p>
-              <p><span className="font-semibold">Outstanding balance:</span> {formatKES(totals.outstanding)}</p>
+              <p><span className="font-semibold">{totals.outstanding < 0 ? 'Credit balance:' : 'Outstanding balance:'}</span> {formatKES(Math.abs(totals.outstanding))}</p>
               <p className="mt-2 text-xs text-gray-500">Generated {new Date().toLocaleString()}</p>
             </div>
           </div>

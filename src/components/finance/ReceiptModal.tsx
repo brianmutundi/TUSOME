@@ -96,23 +96,6 @@ export function ReceiptModal({
     window.print();
   };
 
-  const buildSmsMessage = (link: string) => {
-    const school = (profile?.name ?? 'School').slice(0, 20);
-    const amt = formatKES(data.amountPaid);
-    const base = `Hi, thanks for paying ${amt} at ${school}. Receipt ${receiptNumber ?? ''}. Download: ${link}`;
-    // GSM-7, max 160: shorten school name first if needed
-    if (base.length <= 160) return base;
-    // shorten school name
-    let msg = base;
-    // try progressively shorter school name
-    for (let len = school.length; len >= 5; len--) {
-      const s = (profile?.name ?? 'School').slice(0, len);
-      const candidate = `Hi, thanks for paying ${amt} at ${s}. Receipt ${receiptNumber ?? ''}. Download: ${link}`;
-      if (candidate.length <= 160) { msg = candidate; break; }
-    }
-    return msg;
-  };
-
   const handleSendSms = async () => {
     setSmsStatus('sending');
     setSmsError(null);
@@ -139,12 +122,15 @@ export function ReceiptModal({
       } catch { token = null; }
     }
     const link = token ? `${window.location.origin}/receipt/${token}` : '';
-    const message = buildSmsMessage(link || '(link unavailable)');
-    if (message.length > 160) {
-      // safety: never send over 160
-    }
     try {
-      const msgId = await logMessage('specific_students', [data.studentId], 'text', 'Fee receipt', message.slice(0, 160), [phone], 1, 1);
+      if (!link) throw new Error('Receipt link unavailable. Try again before sending SMS.');
+      const message = buildReceiptSms({
+        schoolName: profile?.name ?? 'School',
+        amountPaid: data.amountPaid,
+        receiptNumber,
+        link,
+      });
+      const msgId = await logMessage('specific_students', [data.studentId], 'text', 'Fee receipt', message, [phone], 1, 1);
       setSmsMessageId(msgId);
       setSmsStatus('queued');
       // poll for status
