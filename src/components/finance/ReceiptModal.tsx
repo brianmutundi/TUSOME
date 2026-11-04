@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Modal } from '@/components/overlays';
 import { Button } from '@/components/ui';
 import { getSchoolProfile, getStudentGuardianContacts, getReceipts, logMessage, createReceiptShareToken } from '@/lib/analytics/api';
+import { normalizePhoneKE, buildReceiptSms } from '@/lib/finance/receiptSms';
 import type { SchoolProfile } from '@/lib/analytics/types';
 
 export interface ReceiptModalData {
@@ -96,15 +97,14 @@ export function ReceiptModal({
   const handleSendSms = async () => {
     setSmsStatus('sending');
     setSmsError(null);
-    let phone = '';
+    let rawPhone = '';
     if (smsTarget === 'guardian') {
-      phone = guardians[smsGuardianIdx]?.guardian_phone ?? '';
+      rawPhone = guardians[smsGuardianIdx]?.guardian_phone ?? '';
     } else {
-      phone = smsPhone.trim();
+      rawPhone = smsPhone.trim();
     }
-    // normalise to +254
-    if (phone.startsWith('0')) phone = '+254' + phone.slice(1);
-    if (!phone.startsWith('+254') || phone.length < 13) {
+    const phone = normalizePhoneKE(rawPhone);
+    if (!phone) {
       setSmsStatus('error');
       setSmsError('Invalid phone number. Use +254…');
       return;
