@@ -98,7 +98,7 @@ export default function FinancePage() {
       getStudentDirectory(undefined, undefined, undefined, undefined, { signal: controller.signal }),
       getFeeStructures(undefined, undefined, { signal: controller.signal }),
       getVoteHeads({ signal: controller.signal }),
-      getFeeLedgerReport(undefined, 500, { signal: controller.signal }),
+      getFeeLedgerReport(undefined, 500, { signal: controller.signal }).catch(() => []),
       getFeeCollections(undefined, undefined, undefined, undefined, undefined, undefined, 'collected_at', 'desc', 500, { signal: controller.signal }).catch(() => []),
       getFinanceOverview(undefined, undefined, undefined, { signal: controller.signal }),
       getReceipts(undefined, { signal: controller.signal }).catch(() => []),
@@ -163,8 +163,8 @@ export default function FinancePage() {
     let active = true;
     Promise.all([
       getStudentFeeBalance(selectedStudent, undefined, undefined, { signal: controller.signal }),
-      getFeeLedgerReport(selectedStudent, 50, { signal: controller.signal }),
-      getFeePledges(selectedStudent, { signal: controller.signal }),
+      getFeeLedgerReport(selectedStudent, 50, { signal: controller.signal }).catch(() => []),
+      getFeePledges(selectedStudent, { signal: controller.signal }).catch(() => []),
     ])
       .then(([b, p, pl]) => {
         if (!active) return;
@@ -447,7 +447,7 @@ export default function FinancePage() {
                     <option value="">Select a student</option>
                     {students.map((student) => (
                       <option key={student.student_id} value={student.student_id}>
-                        {student.admission_no ? `${student.admission_no} — ` : ''}{student.student_name}
+                        {student.admission_no ? `${student.admission_no} — ` : ''}{student.full_name}
                       </option>
                     ))}
                   </SelectField>
