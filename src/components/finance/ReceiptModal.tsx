@@ -55,6 +55,7 @@ export function ReceiptModal({
   const [smsMessageId, setSmsMessageId] = useState<string | null>(null);
   const [smsError, setSmsError] = useState<string | null>(null);
   const [shareToken, setShareToken] = useState<string | null>(null);
+  const [receiptNumber, setReceiptNumber] = useState<string | null>(data?.receiptNumber ?? null);
 
   useEffect(() => {
     if (!open || !data) return;
@@ -64,9 +65,12 @@ export function ReceiptModal({
       try {
         const receipts = await getReceipts();
         const r = receipts.find((x) => x.payment_id === data.paymentId);
-        if (r?.receipt_id) {
-          const token = await createReceiptShareToken(r.receipt_id, 30);
-          setShareToken(token);
+        if (r) {
+          if (r.receipt_number) setReceiptNumber(r.receipt_number);
+          if (r.receipt_id) {
+            const token = await createReceiptShareToken(r.receipt_id, 30);
+            setShareToken(token);
+          }
         }
       } catch { /* ignore */ }
     })();
@@ -81,7 +85,7 @@ export function ReceiptModal({
   const buildSmsMessage = (link: string) => {
     const school = (profile?.name ?? 'School').slice(0, 20);
     const amt = formatKES(data.amountPaid);
-    const base = `Hi, thanks for paying ${amt} at ${school}. Receipt ${data.receiptNumber ?? ''}. Download: ${link}`;
+    const base = `Hi, thanks for paying ${amt} at ${school}. Receipt ${receiptNumber ?? ''}. Download: ${link}`;
     // GSM-7, max 160: shorten school name first if needed
     if (base.length <= 160) return base;
     // shorten school name
@@ -89,7 +93,7 @@ export function ReceiptModal({
     // try progressively shorter school name
     for (let len = school.length; len >= 5; len--) {
       const s = (profile?.name ?? 'School').slice(0, len);
-      const candidate = `Hi, thanks for paying ${amt} at ${s}. Receipt ${data.receiptNumber ?? ''}. Download: ${link}`;
+      const candidate = `Hi, thanks for paying ${amt} at ${s}. Receipt ${receiptNumber ?? ''}. Download: ${link}`;
       if (candidate.length <= 160) { msg = candidate; break; }
     }
     return msg;
@@ -169,7 +173,7 @@ export function ReceiptModal({
         </div>
 
         <div className="mb-4 grid grid-cols-2 gap-2 text-sm">
-          <div><span className="font-semibold">Receipt No.:</span> {data.receiptNumber ?? '—'}</div>
+          <div><span className="font-semibold">Receipt No.:</span> {receiptNumber ?? '—'}</div>
           <div><span className="font-semibold">Date/Time:</span> {new Date(data.paidAt).toLocaleString()}</div>
           <div><span className="font-semibold">Student:</span> {data.studentName}</div>
           <div><span className="font-semibold">Adm No.:</span> {data.admissionNo}</div>

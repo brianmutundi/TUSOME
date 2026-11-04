@@ -239,25 +239,15 @@ export default function FinancePage() {
       let receiptNumber: string | null = null;
       let receivedBy: string | null = null;
       try {
-        const stmt = await getFeeStatement(selectedStudent);
-        const row = stmt.find((r) => r.row_kind === 'payment' && r.receipt_number);
-        // match by amount/date is fragile; instead fetch payments list
-      } catch { /* ignore */ }
+        const receipts = await getReceipts();
+        const r = receipts.find((x) => x.payment_id === paymentId);
+        if (r) { receiptNumber = r.receipt_number; }
+      } catch (e) { console.error('[finance] getReceipts failed', e); }
       try {
         const pays = await getFeePayments(selectedStudent, 50);
         const p = pays.find((x) => x.payment_id === paymentId);
         if (p) { receivedBy = p.recorded_by_name; }
-      } catch { /* ignore */ }
-      try {
-        const stmt2 = await getFeeStatement(selectedStudent);
-        // find the row whose payment matches; statement has no payment_id, so use latest payment row
-        const paymentRows = stmt2.filter((r) => r.row_kind === 'payment' || r.row_kind === 'reversal');
-        if (paymentRows.length) {
-          // latest by occurred_at
-          const latest = paymentRows.reduce((a, b) => (new Date(b.occurred_at ?? 0).getTime() > new Date(a.occurred_at ?? 0).getTime() ? b : a));
-          receiptNumber = latest.receipt_number;
-        }
-      } catch { /* ignore */ }
+      } catch (e) { console.error('[finance] getFeePayments failed', e); }
 
       const studentRow = students.find((s) => s.student_id === selectedStudent);
       const balRow = (balanceData?.rows ?? []).find((r: any) => r.student_id === selectedStudent);
