@@ -195,25 +195,35 @@ export function ReceiptModal({
 
           <div className="rounded-lg border border-gray-200 p-3">
             <p className="mb-2 text-sm font-semibold">Send via SMS</p>
-            <div className="mb-2 flex gap-4 text-sm">
-              <label><input type="radio" checked={smsTarget === 'guardian'} onChange={() => setSmsTarget('guardian')} /> Guardian on file</label>
-              <label><input type="radio" checked={smsTarget === 'other'} onChange={() => setSmsTarget('other')} /> Another number</label>
-            </div>
+            <fieldset className="mb-2">
+              <legend className="sr-only">SMS recipient</legend>
+              <div className="flex gap-4 text-sm">
+                <label className="flex items-center gap-1"><input type="radio" checked={smsTarget === 'guardian'} onChange={() => setSmsTarget('guardian')} /> Guardian on file</label>
+                <label className="flex items-center gap-1"><input type="radio" checked={smsTarget === 'other'} onChange={() => setSmsTarget('other')} /> Another number</label>
+              </div>
+            </fieldset>
             {smsTarget === 'guardian' ? (
-              <select value={smsGuardianIdx} onChange={(e) => setSmsGuardianIdx(Number(e.target.value))} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
-                {guardians.length === 0 && <option value={0}>No guardians on file</option>}
-                {guardians.map((g, i) => (
-                  <option key={i} value={i}>{g.guardian_name ?? 'Guardian'} {g.guardian_phone ? `(${g.guardian_phone})` : ''}</option>
-                ))}
-              </select>
+              <div>
+                <label htmlFor="sms-guardian" className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Guardian</label>
+                <select id="sms-guardian" value={smsGuardianIdx} onChange={(e) => setSmsGuardianIdx(Number(e.target.value))} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+                  {guardians.length === 0 && <option value={0}>No guardians on file</option>}
+                  {guardians.map((g, i) => (
+                    <option key={i} value={i}>{g.guardian_name ?? 'Guardian'} {g.guardian_phone ? `(${g.guardian_phone})` : ''}</option>
+                  ))}
+                </select>
+              </div>
             ) : (
-              <input
-                type="tel"
-                value={smsPhone}
-                onChange={(e) => setSmsPhone(e.target.value)}
-                placeholder="+2547XXXXXXXX"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-              />
+              <div>
+                <label htmlFor="sms-phone" className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">Phone number</label>
+                <input
+                  id="sms-phone"
+                  type="tel"
+                  value={smsPhone}
+                  onChange={(e) => setSmsPhone(e.target.value)}
+                  placeholder="+2547XXXXXXXX"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                />
+              </div>
             )}
             <div className="mt-2 flex items-center gap-2">
               <Button
