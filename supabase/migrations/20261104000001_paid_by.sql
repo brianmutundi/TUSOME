@@ -230,6 +230,7 @@ revoke all on function public.record_fee_payment(uuid, numeric, text, text, inte
 grant execute on function public.record_fee_payment(uuid, numeric, text, text, integer, text, text, uuid, date, jsonb, text) to authenticated, service_role;
 
 -- Update get_fee_payments to return paid_by
+drop function if exists public.get_fee_payments(uuid, integer);
 create or replace function public.get_fee_payments(p_student_id uuid default null, p_limit integer default 50)
 returns table(
   payment_id uuid,
