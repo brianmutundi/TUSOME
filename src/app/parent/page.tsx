@@ -24,6 +24,7 @@ export default function ParentHomePage() {
       .then(setChildren)
       .catch((caught) => {
         if (isAbortError(caught)) return;
+        console.error('getMyChildren failed:', caught);
         setError(describeAnalyticsError(caught, 'Could not load your children.'));
       });
     return () => controller.abort();
@@ -49,6 +50,10 @@ export default function ParentHomePage() {
 
   return (
     <div className="space-y-6">
+      <header className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Parent portal</h1>
+        <p className="text-sm text-gray-500">View your children's fees, receipts, results, and attendance.</p>
+      </header>
       <Card>
         <CardHeader title="My children" />
         {children.length === 0 ? (

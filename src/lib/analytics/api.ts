@@ -5403,13 +5403,12 @@ export async function completeReconciliation(
 }
 
 export function isAbortError(error: unknown): boolean {
-  return (
-    (error instanceof DOMException && error.name === 'AbortError') ||
-    (typeof error === 'object' &&
-      error !== null &&
-      'name' in error &&
-      (error as { name?: string }).name === 'AbortError')
-  );
+  if (error instanceof DOMException && error.name === 'AbortError') return true;
+  if (typeof error !== 'object' || error === null) return false;
+  const e = error as { name?: string; code?: string; message?: string; details?: string };
+  if (e.name === 'AbortError') return true;
+  if (e.code === 'SERVER_ERROR' && /abort/i.test(String(e.details ?? e.message ?? ''))) return true;
+  return /abort/i.test(String(e.message ?? '')) && /abort/i.test(String(e.details ?? ''));
 }
 
 export function describeAnalyticsError(
