@@ -7,10 +7,9 @@
 - Tests run: none (Phase 1 is read-only inventory).
 - Open items: Phase 2 permission engine audit pending.
 
-## Batch: Phase 8 — RPC and RLS
+## Batch: Phase 9 — Resource-level isolation
 - Date: 2026-11-07
-- Files changed: 3 migrations (20261108000003, 04, 05) + docs/security/PHASE8_AUDIT.md
-- Findings: RLS on all 119 tables; 4 un-pinned SECURITY DEFINER functions fixed; PD-1 permission-based write gating; director removed from user_has_permission bypass.
-- DB verification: NOT RUN (no Docker/non-prod instance). Marked unaudited.
-- Tests: typecheck 0 (migrations don't affect TS).
-- Open items: Phase 9 resource isolation.
+- Files changed: docs/security/PHASE9_AUDIT.md (created)
+- Findings: Parent uses assert_parent_of guards; teachers use allocations; RLS tenant-scoped. Per-RPC ownership unaudited (no DB).
+- Tests: none (read-only audit).
+- Open items: Phase 10 files/exports.
