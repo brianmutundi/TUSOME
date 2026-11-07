@@ -7,9 +7,9 @@
 - Tests run: none (Phase 1 is read-only inventory).
 - Open items: Phase 2 permission engine audit pending.
 
-## Batch: Phase 11 — Tests (matrix + attack test checklist)
+## Batch: Phase 12 — Re-audit
 - Date: 2026-11-07
-- Files changed: src/lib/analytics/routePermissions.matrix.test.ts (new)
-- Findings: Added table-driven route-guard matrix (fail-closed unknown routes, null/empty perms deny, admin reaches all, teacher scoping). Attack tests requiring a live DB (cross-tenant, swapped student/class/tenant IDs, direct API calls, unauthorized export/download, private file access, tampered browser metadata, self-escalation, multi-role DENY bypass, another parent's child, unassigned class, another school, permission-load failure, unregistered route, revoked/expired account, anon-key access) are listed as NOT RUN — see docs/security/PHASE11_ATTACK_TESTS.md.
-- Tests: typecheck 0, 361 tests pass (29 files).
-- Open items: Phase 12 re-audit + final report.
+- Files changed: docs/security/FINAL_REPORT.md (created)
+- Findings: Final report written. All /analytics routes covered. Service-role only in server route handler. 4 un-pinned functions fixed via migration. 361 tests pass, typecheck 0, build 0. DB tests NOT RUN.
+- Tests: typecheck 0, 361 tests pass, build 0.
+- Open items: none for this audit cycle. Follow-ups listed in FINAL_REPORT.md.
