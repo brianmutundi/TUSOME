@@ -7,9 +7,9 @@
 - Tests run: none (Phase 1 is read-only inventory).
 - Open items: Phase 2 permission engine audit pending.
 
-## Batch: Phase 3 — Central helpers
+## Batch: Phase 4 — Navigation
 - Date: 2026-11-07
-- Files changed: src/lib/auth/permissions.ts (new), src/components/auth/AuthGate.tsx (fail-closed perm load), src/lib/analytics/routePermissions.ts (unknown routes deny + missing guards + /analytics catch-all)
-- Tests: typecheck 0, 354 tests pass.
-- Decisions applied: PD-1=A, PD-2=A, PD-3=B (interim).
-- Open items: Phase 4 navigation, Phase 5 route protection continue. Empty-anyOf migration deferred to Phase 6.
+- Files changed: none (audit only).
+- Findings: Rail, flyout, mobile bar, sheet and command palette all derive from navGroupsForRole/searchNavForRole (single source). Breadcrumbs are plain /analytics links (no permission gating needed — highlight only). Dashboard 'Related views' ReportLinks are rendered unconditionally; gated at click by AuthGate, but link visibility is not permission-aware -> Phase 6 item.
+- Tests: none new.
+- Open items: Phase 5 route protection continues.
