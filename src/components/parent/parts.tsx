@@ -66,7 +66,7 @@ export function TopBar({ eyebrow, title, backHref }: { eyebrow: string; title: s
       >
         <Bell className="h-5 w-5" aria-hidden="true" />
         {unreadCount > 0 && (
-          <span className="absolute -right-1 -top-1 grid h-5 min-w-[1.25rem] place-items-center rounded-full border-2 border-gray-50 bg-danger-600 px-1 text-[11px] font-extrabold text-white">
+          <span className="absolute -right-1 -top-1 grid h-5 min-w-[1.25rem] place-items-center rounded-full border-2 border-gray-50 bg-danger-600 px-1 text-xs font-extrabold text-white">
             {unreadCount}
           </span>
         )}
@@ -196,54 +196,13 @@ const NAV: { href: string; label: string; icon: Icon; match: (p: string) => bool
     label: 'More',
     icon: LayoutGrid,
     match: (p) => /^\/parent\/(more|alerts|profile|messages|timetable)/.test(p),
+    badge: 'messages',
   },
 ];
 
-export function Sidebar() {
-  const { kids, child } = useParent();
-  const pathname = usePathname() ?? '/parent';
-  const on = (href: string) => {
-    const match = NAV.find((n) => n.href === href)?.match;
-    return match ? match(pathname) : href === pathname;
-  };
-  return (
-    <aside
-      className="lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 lg:z-10 bg-white border-r border-gray-100 shadow-2xl flex flex-col pt-6"
-      aria-label="Main navigation"
-    >
-      <div className="flex h-14 items-center justify-between px-6">
-        <span className="text-sm font-medium text-gray-900">Tusome</span>
-        <button
-          aria-label="Close sidebar"
-          className="lg:hidden p-2"
-          onClick={() => window.location.hash = ''}
-        >
-          <ChevronLeft className="h-5 w-5" aria-hidden="true" />
-        </button>
-      </div>
-      <nav aria-label="Sidebar nav" className="flex-1 pt-2">
-        <ul className="space-y-1 px-2">
-          {NAV.map(({ href, label, icon: I }) => (
-            <li key={href} className="group">
-              <Link
-                href={href}
-                aria-current={on(href) ? 'page' : undefined}
-                className="flex items-center rounded-xl px-3 py-2 text-sm font-medium text-gray-700 group-hover:text-brand-600 group-hover:bg-brand-50 transition-colors lg:w-full"
-              >
-                <I className="h-4 w-4 mr-2" aria-hidden="true" />
-                <span>{label}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </aside>
-  );
-}
-
 export function BottomNav() {
   const pathname = usePathname() ?? '';
-  const { homeworkTodo, messagesTodo } = useParent();
+  const { homeworkTodo, messagesUnread } = useParent();
   return (
     <nav
       aria-label="Main"
@@ -253,19 +212,23 @@ export function BottomNav() {
       <ul className="mx-auto flex max-w-lg px-1 py-2">
         {NAV.map(({ href, label, icon: I, match, badge }) => {
           const on = match(pathname);
-          const count = badge === 'homework' ? homeworkTodo : badge === 'messages' ? messagesTodo : 0;
+          const count = badge === 'homework' ? homeworkTodo : badge === 'messages' ? messagesUnread : 0;
           return (
             <li key={href} className="flex-1">
               <Link
                 href={href}
                 aria-current={on ? 'page' : undefined}
-                aria-label={count > 0 ? `${label}, ${count} unread` : undefined}
-                className={`flex min-h-[3.5rem] flex-col items-center justify-center gap-1 rounded-xl text-[11.5px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600 ${on ? 'text-brand-600' : 'text-gray-500'}`}
+                aria-label={
+                  count > 0
+                    ? `${label}, ${count} ${badge === 'messages' ? `unread message${count === 1 ? '' : 's'}` : 'to do'}`
+                    : undefined
+                }
+                className={`flex min-h-[3.5rem] flex-col items-center justify-center gap-1 rounded-xl text-xs font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600 ${on ? 'text-brand-600' : 'text-gray-500'}`}
               >
                 <span className={`relative grid h-7 w-11 place-items-center rounded-full ${on ? 'bg-brand-50' : ''}`}>
                   <I className="h-5 w-5" aria-hidden="true" />
                   {count > 0 && (
-                    <span className="absolute -right-0.5 -top-1 grid h-4 min-w-[1rem] place-items-center rounded-full bg-danger-600 px-1 text-[10px] font-extrabold leading-none text-white" aria-hidden="true">
+                    <span className="absolute -right-0.5 -top-1 grid h-5 min-w-[1.25rem] place-items-center rounded-full bg-danger-600 px-1 text-xs font-extrabold leading-none text-white" aria-hidden="true">
                       {count > 9 ? '9+' : count}
                     </span>
                   )}

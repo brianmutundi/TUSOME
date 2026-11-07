@@ -186,18 +186,18 @@ export default function PermissionSlipPage() {
               <div>
                 <div className="border-t border-gray-400 pt-2">
                   <p className="text-xs text-gray-500">Parent/Guardian Signature</p>
-                  <p className="text-xs text-gray-400">Date: _______________</p>
+                  <p className="text-xs text-gray-500">Date: _______________</p>
                 </div>
               </div>
               <div>
                 <div className="border-t border-gray-400 pt-2">
                   <p className="text-xs text-gray-500">Class Teacher Signature</p>
-                  <p className="text-xs text-gray-400">Date: _______________</p>
+                  <p className="text-xs text-gray-500">Date: _______________</p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 text-center text-xs text-gray-400">
+            <div className="mt-8 text-center text-xs text-gray-500">
               <p>This is a computer-generated permission slip.</p>
             </div>
           </div>

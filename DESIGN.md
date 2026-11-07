@@ -2,66 +2,54 @@
 name: TUSOME School Management System
 description: Premium SaaS platform for Kenyan primary, junior, and senior school management
 colors:
-  primary: "#2563eb"
-  primary-dark: "#1d4ed8"
-  primary-light: "#3b82f6"
-  primary-50: "#eff6ff"
-  primary-100: "#dbeafe"
+  brand-600: "#1d6b70"
+  brand-700: "#18575c"
+  brand-50: "#eef7f7"
+  surface: "#ffffff"
+  surface-sunken: "#f8f7f4"
+  ink: "#1c1b17"
+  muted: "#57554c"
+  subtle: "#6f6c62"
+  hairline: "#e4e1da"
+  focus: "#2a8388"
   success: "#059669"
-  success-light: "#10b981"
-  success-50: "#ecfdf5"
   warning: "#d97706"
-  warning-light: "#f59e0b"
-  warning-50: "#fffbeb"
   danger: "#dc2626"
-  danger-light: "#ef4444"
-  danger-50: "#fef2f2"
   info: "#0891b2"
-  info-50: "#ecfeff"
-  neutral-50: "#f9fafb"
-  neutral-100: "#f3f4f6"
-  neutral-200: "#e5e7eb"
-  neutral-300: "#d1d5db"
-  neutral-400: "#9ca3af"
-  neutral-500: "#6b7280"
-  neutral-600: "#4b5563"
-  neutral-700: "#374151"
-  neutral-800: "#1f2937"
-  neutral-900: "#111827"
 typography:
   display:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif"
     fontSize: "2rem"
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "-0.025em"
   heading:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.5rem"
     fontWeight: 700
     lineHeight: 1.3
     letterSpacing: "-0.015em"
   subheading:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.125rem"
     fontWeight: 600
     lineHeight: 1.4
     letterSpacing: "0em"
   body:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: "0em"
   label:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 500
     lineHeight: 1.4
     letterSpacing: "0.025em"
   caption:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
-    fontSize: "0.6875rem"
+    fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.75rem"
     fontWeight: 400
     lineHeight: 1.4
     letterSpacing: "0.025em"
@@ -87,42 +75,42 @@ spacing:
   3xl: "48px"
 components:
   button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.neutral-50}"
-    rounded: "{rounded.md}"
+    backgroundColor: "{colors.brand-600}"
+    textColor: "{colors.surface}"
+    rounded: "{rounded.lg}"
     padding: "8px 16px"
   button-secondary:
-    backgroundColor: "{colors.neutral-100}"
-    textColor: "{colors.neutral-700}"
-    rounded: "{rounded.md}"
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.lg}"
     padding: "8px 16px"
   button-danger:
     backgroundColor: "{colors.danger}"
-    textColor: "{colors.neutral-50}"
-    rounded: "{rounded.md}"
+    textColor: "{colors.surface}"
+    rounded: "{rounded.lg}"
     padding: "8px 16px"
   card:
-    backgroundColor: "{colors.neutral-50}"
+    backgroundColor: "{colors.surface}"
     rounded: "{rounded.lg}"
-    padding: "24px"
+    padding: "20px"
   badge-success:
-    backgroundColor: "{colors.success-50}"
-    textColor: "{colors.success}"
+    backgroundColor: "#ecfdf5"
+    textColor: "#047857"
     rounded: "{rounded.full}"
     padding: "2px 8px"
   badge-danger:
-    backgroundColor: "{colors.danger-50}"
-    textColor: "{colors.danger}"
+    backgroundColor: "#fef2f2"
+    textColor: "#b91c1c"
     rounded: "{rounded.full}"
     padding: "2px 8px"
   badge-warning:
-    backgroundColor: "{colors.warning-50}"
-    textColor: "{colors.warning}"
+    backgroundColor: "#fffbeb"
+    textColor: "#b45309"
     rounded: "{rounded.full}"
     padding: "2px 8px"
   badge-info:
-    backgroundColor: "{colors.info-50}"
-    textColor: "{colors.info}"
+    backgroundColor: "#ecfeff"
+    textColor: "#0e7490"
     rounded: "{rounded.full}"
     padding: "2px 8px"
 ---
@@ -131,115 +119,124 @@ components:
 
 ## Overview
 
-TUSOME is a premium school management SaaS platform for Kenyan primary, junior, and senior schools. The design prioritizes clarity, information density, and professional aesthetics suitable for school administrators, bursars, teachers, and principals. The interface uses a restrained blue-and-green palette on neutral surfaces with strong typography and clear content hierarchy.
+TUSOME is a premium school management SaaS platform for Kenyan primary, junior, and senior schools. The design prioritises clarity, information density, and professional aesthetics for administrators, bursars, teachers, principals, and parents. The interface uses a restrained petrol-teal brand on warm paper surfaces, with strong typographic hierarchy and print-first report cards.
+
+This document is the source of truth. It replaced the pre-November 2026 blue/system-font spec, which no longer matched the code.
 
 ## Colors
 
-### Primary Palette
-- **Blue (#2563eb):** Primary navigation, links, key actions, active states
-- **Blue Dark (#1d4ed8):** Hover states for primary actions
-- **Blue Light (#3b82f6):** Secondary highlights
+### Brand
+- **Petrol teal (`brand-600` #1d6b70):** Primary navigation, links, key actions, active states
+- **`brand-700` (#18575c):** Hover and pressed states
+- **`brand-50` (#eef7f7):** Selected rows, active nav backgrounds
 
-### Semantic Colors
-- **Green (#059669):** Success, positive outcomes, active status
-- **Amber (#d97706):** Warnings, pending states
-- **Red (#dc2626):** Errors, destructive actions, critical states
-- **Cyan (#0891b2):** Informational badges and highlights
+`tailwind.config.ts` remaps `blue`, `gray` and `slate` onto the teal and warm-neutral ramps so legacy classes such as `bg-blue-600` and `text-gray-500` render the v2 palette. New code should use `brand-*` or the semantic tokens below.
 
-### Neutral Surfaces
-- **Gray 50 (#f9fafb):** Page background
-- **Gray 100 (#f3f4f6):** Card backgrounds, secondary surfaces
-- **Gray 200 (#e5e7eb):** Borders, dividers
-- **Gray 500 (#6b7280):** Secondary text, labels
-- **Gray 900 (#111827):** Primary text, headings
+### Semantic tokens (preferred in new code)
+Defined as CSS variables in `src/app/globals.css` and exposed to Tailwind:
 
-### Status Colors
-Status badges use tinted backgrounds with matching text:
-- Success: green-50 bg / green-700 text
-- Danger: red-50 bg / red-800 text
-- Warning: amber-50 bg / amber-800 text
-- Info: blue-50 bg / blue-800 text
-- Neutral: gray-100 bg / gray-700 text
+| Token | Value | Use |
+| --- | --- | --- |
+| `surface` | `#ffffff` | Cards, sheets, inputs |
+| `surface-sunken` | `#f8f7f4` | Page background |
+| `ink` | `#1c1b17` | Primary text |
+| `muted` | `#57554c` | Secondary text (6.9:1) |
+| `subtle` | `#6f6c62` | Lightest legal text (5.4:1) |
+| `hairline` | `#e4e1da` | Borders and dividers |
+| `focus` | `#2a8388` | Focus ring |
+
+**Never go lighter than `subtle` for text.** `gray-400` (#9c988c) is 2.4:1 on white and is banned for text and meaningful icons — it was removed repo-wide in the Nov 2026 audit.
+
+### Status
+- **Emerald (#059669):** success, paid, present
+- **Amber (#d97706):** warning, pending, partial
+- **Red (#dc2626):** error, arrears, absent
+- **Cyan (#0891b2):** informational
+
+Status is always colour **plus** a text label or icon, never colour alone.
 
 ## Typography
 
-### Type Scale
-- **Display (2rem, 700):** Page titles only
+### Type scale
+- **Display (2rem, 700):** Page titles
 - **Heading (1.5rem, 700):** Section headings
-- **Subheading (1.125rem, 600):** Card titles, subsections
+- **Subheading (1.125rem, 600):** Card titles
 - **Body (0.875rem, 400):** Default text, table data
 - **Label (0.75rem, 500):** Form labels, column headers
-- **Caption (0.6875rem, 400):** Metadata, timestamps, helper text
+- **Caption (0.75rem, 400):** Metadata, helper text, footers
 - **Mono (0.8125rem, 400):** IDs, codes, reference numbers
 
-### Font Family
-System font stack: `ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif`
+**12px is the floor.** `caption` was 11px before the audit; nothing smaller than 12px ships now, including badges and rail labels. The Tailwind aliases (`text-body`, `text-caption`, …) exist in `tailwind.config.ts`; most screens use the equivalent raw utilities (`text-sm`, `text-xs`).
 
-### Font Weights
-- 400: Body text, data values
-- 500: Labels, secondary emphasis
-- 600: Subheadings, card titles
-- 700: Page titles, primary headings
+### Font
+Hanken Grotesk via `next/font` (`--font-sans`) with a system fallback. Table cells, marks and money use `tabular-nums` so columns align and print cleanly.
 
 ## Layout
 
-### Application Shell
-- **Sidebar:** Fixed left, 240px wide on desktop, collapsible on mobile
-- **Top bar:** 56px height, contains search, notifications, user menu
-- **Content area:** Max-width 1280px, centered, with 24px padding
-- **Page header:** Title (h1) + description + primary action button
+### Application shell
+- **Desktop:** 72px icon rail (no sidebar column), flyout popovers per nav group
+- **Below 1024px:** bottom bar (Home, Students, Academics, Finance, Menu) with a bottom-sheet menu
+- **Top bar:** 56px, breadcrumb + search (`Cmd/Ctrl+K`) + shortcuts + profile
+- **Content:** fluid width, `p-2 sm:p-4 lg:p-5`, bottom padding clears the mobile bar
+- **Page header:** title (`h1`) + description + primary action
 
-### Spacing Scale
-4px, 8px, 12px, 16px, 24px, 32px, 48px (multiples of 4)
+### Spacing
+4, 8, 12, 16, 24, 32, 48px — multiples of 4. Prefer `gap-*` on grids/flex over per-child margins.
 
-### Grid
-- Forms: 2-4 column grid on desktop, 1 column on mobile
-- Dashboard: 3-column summary cards, 2-column charts
-- Tables: Full-width with horizontal scroll on mobile
+### Responsive
+Mobile-first. Reflow dense tables into cards or a scroller with a sticky first column; never shrink desktop layouts into a phone width.
 
 ## Elevation & Depth
 
-- **Cards:** `shadow-sm` (subtle), `rounded-lg` (8px)
-- **Modals/Dialogs:** `shadow-lg`, `rounded-xl` (12px)
-- **Dropdowns:** `shadow-md`, `rounded-md` (6px)
-- **No nested cards** — use flat sections within a card instead
+- **Cards:** white, `border-hairline`, `rounded-lg`, `shadow-sm`
+- **Modals:** `rounded-xl`, large soft shadow, bottom sheet on phones
+- **Popovers:** `shadow-md`, portalled and fixed so tables never clip them
+- **No nested cards** — use flat sections with a divider inside a card
 
 ## Shapes
 
-- **Buttons:** 6px border radius
-- **Cards:** 8px border radius
-- **Badges:** Full border radius (pill shape)
-- **Inputs:** 6px border radius
-- **Tables:** No border radius on container, rounded header
+- **Buttons and inputs:** 8px radius
+- **Cards:** 8px
+- **Badges:** full pill
+- **Dialogs:** 14px on desktop, 16px top corners on the phone sheet
 
 ## Components
 
 ### Buttons
-- Primary: Blue bg, white text
-- Secondary: Gray-100 bg, gray-700 text
-- Danger: Red bg, white text
-- Disabled: Reduced opacity, no pointer
+- Primary: `brand-600` bg, white text
+- Secondary: white bg, hairline border, ink text
+- Ghost: transparent, hover `surface-sunken`
+- Danger: red bg, white text
+- Disabled: 50% opacity, `cursor-not-allowed`
+- Minimum target 44px tall (`min-h-[2.75rem]`); 36px only in dense desktop toolbars
 
-### Badges/Status
-- Pill shape with tinted background and matching text
-- Success (green), Danger (red), Warning (amber), Info (blue), Neutral (gray)
+### Badges / status
+Pill, tinted background with the matching 700-level text colour. Grades keep their database colour, and the chart label flips between white and ink by measured luminance.
 
 ### Forms
-- Labels: 12px, uppercase, tracking-wide, gray-500
-- Inputs: 6px radius, gray-300 border, focus ring blue-200
-- Helper text: 12px, gray-500
-- Error text: 12px, red-600
+- Label: 12px, uppercase, `tracking-wide`, `gray-500`, always visible (never placeholder-only)
+- Input: 8px radius, hairline border, 2px ring on focus in `brand-200`
+- Hint: 12px `muted`, wired via `aria-describedby`
+- Error: 12px bold `red-700` directly under the field, with `aria-invalid`
 
 ### Tables
-- Header: gray-50 bg, uppercase, tracking-wide, gray-500 text
-- Rows: white bg, hover gray-50
-- Borders: gray-200 between rows
-- Empty state: centered message with description
+- Header: `surface-sunken`, uppercase, 12px, `gray-500`
+- Rows: white, hover `surface-sunken`, hairline dividers
+- Numeric columns: right-aligned, `tabular-nums`
+- Horizontal scroll on narrow screens; empty state with a description and a next action
 
 ### Cards
-- White background, gray-200 border, rounded-lg, shadow-sm
-- Header: title + description
-- Body: consistent padding (16px or 24px)
+- White, hairline border, `rounded-lg`, `shadow-sm`
+- Header: title + optional description + action
+- Body padding 16–20px
+
+## Accessibility baseline
+
+- Text contrast ≥ 4.5:1; non-text UI (icons, borders that carry meaning) ≥ 3:1
+- Focus ring: 2px `--focus` with 2px offset, from the global `*:focus-visible` rule — never `outline-none` without a replacement
+- Skip link to `#main` on every shell
+- Reduced motion honoured globally, not per component
+- `prefers-contrast`, print and screen-reader paths are part of "done"
 
 ## Do's and Don'ts
 

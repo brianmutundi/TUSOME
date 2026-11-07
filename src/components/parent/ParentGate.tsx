@@ -1,13 +1,13 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { Alert, Skeleton } from '@/components/ui';
-import { ProfileMenu } from '@/components/shell/ProfileMenu';
 import { createClient } from '@/lib/supabase/client';
 import { describeAnalyticsError, getMyPermissions } from '@/lib/analytics/api';
 import { roleKey } from '@/lib/analytics/accounts';
+import { ParentProvider } from './ParentContext';
+import { BottomNav } from './parts';
 
 type GateState = 'loading' | 'ready' | 'error';
 
@@ -17,7 +17,6 @@ export function ParentGate({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GateState>('loading');
   const [message, setMessage] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
-  const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
     let disposed = false;
@@ -36,7 +35,6 @@ export function ParentGate({ children }: { children: ReactNode }) {
         const me = await getMyPermissions({ signal: controller.signal });
         if (disposed) return;
         setEmail(data.session.user.email ?? null);
-        setRole(me.role);
         if (roleKey(me.role) !== 'parent') {
           router.replace('/analytics');
           return;
@@ -55,17 +53,17 @@ export function ParentGate({ children }: { children: ReactNode }) {
     };
   }, [pathname, router]);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     try {
       await createClient().auth.signOut();
     } finally {
       router.replace('/login');
     }
-  };
+  }, [router]);
 
   if (state === 'error') {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-12">
+      <main className="mx-auto max-w-lg px-5 py-12">
         <Alert tone="error" title="Could not open the parent portal">
           {message}
         </Alert>
@@ -75,7 +73,7 @@ export function ParentGate({ children }: { children: ReactNode }) {
 
   if (state === 'loading') {
     return (
-      <main className="mx-auto max-w-3xl space-y-4 px-4 py-10" aria-busy="true">
+      <main className="mx-auto max-w-lg space-y-4 px-5 py-10" aria-busy="true">
         <span className="sr-only">Checking your account…</span>
         <Skeleton className="h-10" />
         <Skeleton className="h-40" />
@@ -84,17 +82,11 @@ export function ParentGate({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="border-b border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-          <Link href="/parent" className="flex items-center gap-2 font-semibold text-gray-900">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-blue-600 text-sm font-bold text-white">T</span>
-            Parent portal
-          </Link>
-          <ProfileMenu email={email} role={role} showAdminLinks={false} onSignOut={signOut} />
-        </div>
-      </header>
-      <main className="mx-auto max-w-3xl px-4 py-6">{children}</main>
-    </div>
+    <ParentProvider email={email} onSignOut={signOut}>
+      <div className="min-h-screen bg-gray-50">
+        <main className="mx-auto max-w-lg pb-28">{children}</main>
+        <BottomNav />
+      </div>
+    </ParentProvider>
   );
 }

@@ -179,7 +179,7 @@ export default function DailyAttendancePage() {
                           className="w-full rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-900"
                         />
                       ) : (
-                        <span className="text-gray-400">—</span>
+                        <span className="text-gray-500">—</span>
                       )}
                     </td>
                   </tr>

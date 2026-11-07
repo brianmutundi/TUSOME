@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { CalendarDays, Clock, MessageCircle, Settings, type LucideIcon } from 'lucide-react';
+import { BookOpen, Clock, MessageCircle, Settings, type LucideIcon } from 'lucide-react';
 import {
   getMyChildAttendance,
   getMyChildFees,
+  getMyChildResults,
   createMyChildStatementToken,
   describeAnalyticsError,
 } from '@/lib/analytics/api';
@@ -15,9 +16,12 @@ import {
   daysUntil,
   feeTotals,
   firstName,
+  formatScore,
   greeting,
+  groupResults,
   openShareDocument,
 } from '@/lib/parent/portal';
+import { homeworkDueLabel, splitHomework } from '@/lib/homework';
 import { useChildData } from '@/lib/parent/useChildData';
 import { useParent } from '@/components/parent/ParentContext';
 import { PaybillButton } from '@/components/parent/PaybillSheet';
@@ -29,28 +33,37 @@ import {
   SectionHeading,
   TopBar,
   cardClass,
-  Sidebar,
 } from '@/components/parent/parts';
 import { EventRowItem } from '@/components/parent/EventRowItem';
 import type { MyChild } from '@/lib/analytics/api';
 
-const TILES: { href: string; label: string; icon: LucideIcon; tone: 'brand' | 'ok' | 'warn' | 'bad' }[] = [
+type TileBadge = 'homework' | 'messages';
+
+const TILES: { href: string; label: string; icon: LucideIcon; tone: 'brand' | 'ok' | 'warn' | 'bad'; badge?: TileBadge }[] = [
   { href: '/parent/timetable', label: 'Timetable', icon: Clock, tone: 'brand' },
-  { href: '/parent/messages', label: 'Messages', icon: MessageCircle, tone: 'ok' },
-  { href: '/parent/alerts?tab=calendar', label: 'Calendar', icon: CalendarDays, tone: 'warn' },
+  { href: '/parent/homework', label: 'Homework', icon: BookOpen, tone: 'warn', badge: 'homework' },
+  { href: '/parent/messages', label: 'Messages', icon: MessageCircle, tone: 'ok', badge: 'messages' },
   { href: '/parent/profile', label: 'Settings', icon: Settings, tone: 'bad' },
 ];
 
+/** Homework items shown on the home screen; the full list is one tap away. */
+const HOME_HOMEWORK_LIMIT = 3;
+
 function Home({ child }: { child: MyChild }) {
-  const { events, unreadCount } = useParent();
+  const { events, unreadCount, homework, homeworkError, reloadHomework, messagesUnread } = useParent();
   const fees = useChildData(child.studentId, getMyChildFees, 'Could not load fees.');
   const attendance = useChildData(child.studentId, (id, o) => getMyChildAttendance(id, undefined, o), 'Could not load attendance.');
+  const results = useChildData(child.studentId, getMyChildResults, 'Could not load results.');
   const [opening, setOpening] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
 
   const totals = fees.data ? feeTotals(fees.data) : null;
   const owed = totals ? totals.owed : null;
   const next = events[0];
+  const now = new Date();
+  const split = homework ? splitHomework(homework, now) : null;
+  const openHomework = split ? [...split.overdue, ...split.todo] : [];
+  const latestExam = results.data ? groupResults(results.data)[0] ?? null : null;
 
   const openStatement = async () => {
     setOpening(true);
@@ -65,10 +78,10 @@ function Home({ child }: { child: MyChild }) {
   };
 
   return (
-    <div className="space-y-5 lg:space-y-8 px-5 lg:px-8">
+    <div className="space-y-5 px-5">
       <ChildSwitcher />
 
-      <section className="relative overflow-hidden rounded-3xl lg:grid lg:grid-cols-2 lg:gap-8 lg:py-12 lg:px-8 bg-gradient-to-br from-brand-600 via-brand-500 to-brand-400 text-white shadow-lg" aria-label="Fee balance">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-600 via-brand-500 to-brand-400 p-5 text-white shadow-lg" aria-label="Fee balance">
         <div className="pointer-events-none absolute -right-12 -top-16 h-44 w-44 rounded-full bg-white/10" aria-hidden="true" />
         <p className="relative text-sm font-semibold text-white/90">Balance to pay · {firstName(child.fullName)}</p>
         {fees.error ? (
@@ -118,24 +131,101 @@ function Home({ child }: { child: MyChild }) {
       </section>
       {actionError && <p role="alert" className="text-sm font-medium text-danger-600">{actionError}</p>}
 
-      <section className={`${cardClass} lg:grid-cols-5 lg:gap-4 lg:p-6`} aria-label="At a glance">
+      <section className={`${cardClass} grid grid-cols-3 gap-2.5 p-4`} aria-label="At a glance">
         <Stat value={attendance.data ? String(attendanceDays(attendance.data, 'present')) : '–'} label="Days present" />
         <Stat value={next ? `${Math.max(daysUntil(next.start_date), 0)}d` : '–'} label="Next event" />
         <Stat value={String(unreadCount)} label="New alerts" />
       </section>
 
-      <nav aria-label="Shortcuts" className="lg:grid-cols-6 gap-2.5">
-        {TILES.map(({ href, label, icon, tone }) => (
-          <Link
-            key={href}
-            href={href}
-            className="flex min-h-[5.5rem] flex-col items-center justify-center gap-2 rounded-2xl border border-gray-100 bg-white px-1 py-3 text-center shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600"
-          >
-            <IconTile icon={icon} tone={tone} />
-            <span className="text-xs font-semibold text-gray-800">{label}</span>
-          </Link>
-        ))}
+      <nav aria-label="Shortcuts" className="grid grid-cols-4 gap-2.5">
+        {TILES.map(({ href, label, icon, tone, badge }) => {
+          const count = badge === 'homework' ? split?.todo.length ?? 0 : badge === 'messages' ? messagesUnread : 0;
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-label={count > 0 ? `${label}, ${count} ${badge === 'messages' ? 'unread' : 'to do'}` : undefined}
+              className="relative flex min-h-[5.5rem] flex-col items-center justify-center gap-2 rounded-2xl border border-gray-100 bg-white px-1 py-3 text-center shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600"
+            >
+              <IconTile icon={icon} tone={tone} />
+              <span className="text-xs font-semibold text-gray-800">{label}</span>
+              {count > 0 && (
+                <span className="absolute right-2 top-2 grid h-5 min-w-[1.25rem] place-items-center rounded-full bg-danger-600 px-1 text-xs font-extrabold leading-none text-white" aria-hidden="true">
+                  {count > 9 ? '9+' : count}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
+
+      <section aria-label="Homework">
+        <SectionHeading
+          title="Homework due"
+          action={<Link href="/parent/homework" className="inline-flex min-h-[2.75rem] items-center px-1 text-sm font-bold text-brand-600">See all</Link>}
+        />
+        {homeworkError ? (
+          <div className="mt-2"><LoadFailure message={homeworkError} onRetry={reloadHomework} /></div>
+        ) : homework === null ? (
+          <p className={`${cardClass} mt-2 p-4 text-sm text-gray-500`}>Loading homework…</p>
+        ) : openHomework.length === 0 ? (
+          <p className={`${cardClass} mt-2 p-4 text-sm text-gray-500`}>Nothing to do. All homework is ticked off.</p>
+        ) : (
+          <ul className={`${cardClass} mt-2 divide-y divide-gray-100`}>
+            {openHomework.slice(0, HOME_HOMEWORK_LIMIT).map((h) => {
+              const overdue = split ? split.overdue.includes(h) : false;
+              return (
+                <li key={h.assignmentId} className="px-4 py-3">
+                  <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-bold text-brand-700">{h.subjectName}</span>
+                    <span className={`text-xs font-semibold ${overdue ? 'text-danger-600' : 'text-gray-700'}`}>{homeworkDueLabel(h.dueDate, now)}</span>
+                  </p>
+                  <p className="mt-1 break-words text-sm font-bold text-gray-900">{h.title}</p>
+                </li>
+              );
+            })}
+            {openHomework.length > HOME_HOMEWORK_LIMIT && (
+              <li className="px-4 py-2.5 text-xs font-semibold text-gray-500">
+                +{openHomework.length - HOME_HOMEWORK_LIMIT} more
+              </li>
+            )}
+          </ul>
+        )}
+      </section>
+
+      {results.error ? (
+        <section aria-label="Latest results">
+          <LoadFailure message={results.error} onRetry={results.retry} />
+        </section>
+      ) : (
+        latestExam && (
+          <section aria-label="Latest results">
+            <SectionHeading
+              title="Latest results"
+              action={<Link href="/parent/results" className="inline-flex min-h-[2.75rem] items-center px-1 text-sm font-bold text-brand-600">All results</Link>}
+            />
+            <Link
+              href="/parent/results"
+              className={`${cardClass} mt-2 flex items-center gap-4 p-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600`}
+            >
+              <div className="min-w-0 flex-1">
+                <p className="break-words text-sm font-bold text-gray-900">{latestExam.name}</p>
+                {latestExam.strongest && (
+                  <p className="mt-1 text-xs font-semibold text-gray-500">
+                    Strongest: {latestExam.strongest.subjectName} ({formatScore(latestExam.strongest)})
+                  </p>
+                )}
+              </div>
+              {latestExam.average !== null && (
+                <div className="text-right">
+                  <b className="block text-2xl font-extrabold text-brand-600">{Math.round(latestExam.average)}%</b>
+                  <span className="text-xs font-semibold text-gray-500">Average</span>
+                </div>
+              )}
+            </Link>
+          </section>
+        )
+      )}
 
       <section>
         <SectionHeading
@@ -143,9 +233,9 @@ function Home({ child }: { child: MyChild }) {
           action={<Link href="/parent/alerts?tab=calendar" className="inline-flex min-h-[2.75rem] items-center px-1 text-sm font-bold text-brand-600">Calendar</Link>}
         />
         {events.length === 0 ? (
-          <p className={`${cardClass} lg:mt-4 lg:p-6 mt-2 p-4 text-sm text-gray-500`}>No upcoming events.</p>
+          <p className={`${cardClass} mt-2 p-4 text-sm text-gray-500`}>No upcoming events.</p>
         ) : (
-          <ul className="lg:mt-6 space-y-3.5">
+          <ul className="mt-2 space-y-2.5">
             {events.slice(0, 2).map((e) => (
               <EventRowItem key={e.event_id} event={e} />
             ))}
@@ -169,7 +259,6 @@ export default function ParentHomePage() {
   return (
     <>
       <TopBar eyebrow={greeting()} title="Welcome back" />
-      <Sidebar />
       <ChildGuard>{(child) => <Home key={child.studentId} child={child} />}</ChildGuard>
     </>
   );

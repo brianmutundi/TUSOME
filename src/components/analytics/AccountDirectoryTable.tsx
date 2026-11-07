@@ -480,7 +480,7 @@ export function PermissionCategoryChecklist({
                   />
                   <span>
                     <span className="block font-medium text-gray-900">{perm.display_name}</span>
-                    <code className="text-[11px] text-gray-500">{perm.code}</code>
+                    <code className="text-xs text-gray-500">{perm.code}</code>
                   </span>
                 </label>
               ))}

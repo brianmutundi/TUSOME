@@ -136,7 +136,7 @@ export default function PayslipPage() {
               </div>
             </div>
 
-            <div className="border-t border-gray-200 pt-4 text-xs text-gray-400 text-center">
+            <div className="border-t border-gray-200 pt-4 text-xs text-gray-500 text-center">
               <p>Employer Contributions: NSSF {entry.nssf_employer.toFixed(2)} + AHL {entry.ahl_employer.toFixed(2)}</p>
               <p className="mt-2">This is a computer-generated payslip.</p>
             </div>

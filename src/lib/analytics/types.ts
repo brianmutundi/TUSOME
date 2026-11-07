@@ -565,6 +565,7 @@ export interface FeePayment {
   recorded_by_name: string | null;
   paid_by: string | null;
   paid_at: string;
+  total_count?: number;
 }
 
 export interface FeeLedgerEntry extends FeePayment {

@@ -37,6 +37,10 @@ const GUARD_PATTERNS = [
   /is_parent\s*\(/,
   /assert_parent_of\s*\(/,
   /teacher_has_allocation\s*\(/,
+  // Homework write RPCs delegate to one guard that checks tenant claim, manage-homework and allocation.
+  /homework_assert_staff\s*\(/,
+  // Message inbox RPCs delegate to one guard that checks tenant claim, reply-parent-messages and who may see the thread.
+  /parent_msg_assert_staff\s*\(/,
   // Tenant resolved from the caller's JWT claims inside the function body.
   /v_caller_tenant\s*:=/,
   /auth\.jwt\(\)\s*->>\s*'tenant_id'/,

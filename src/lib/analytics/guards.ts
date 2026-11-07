@@ -683,6 +683,7 @@ export function normalizeFeePayments(data: unknown): FeePayment[] {
       recorded_by_name: asNullableString(raw.recorded_by_name, 'recorded_by_name'),
       paid_by: asNullableString(raw.paid_by, 'paid_by'),
       paid_at: asString(raw.paid_at, 'paid_at'),
+      total_count: asNullableNumber(raw.total_count, 'total_count') ?? undefined,
     };
   });
 }

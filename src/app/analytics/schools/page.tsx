@@ -6,6 +6,7 @@ import { Modal, RadioCardGroup } from '@/components/overlays';
 import { Alert, Button, Card, EmptyState, TextField } from '@/components/ui';
 import { getMyPermissions } from '@/lib/analytics/api';
 import { roleKey } from '@/lib/analytics/accounts';
+import { apiErrorMessage } from '@/lib/analytics/errors';
 import { createClient } from '@/lib/supabase/client';
 
 type Setup = 'invite' | 'password';
@@ -91,7 +92,7 @@ export default function SchoolsPage() {
         body: JSON.stringify({ tenantId: deleteTarget.id }),
       });
       const payload = (await res.json().catch(() => ({}))) as { error?: string };
-      if (!res.ok) throw new Error(payload.error ?? 'Could not delete the school.');
+      if (!res.ok) throw new Error(apiErrorMessage(payload, 'Could not delete the school.'));
       setDeleteTarget(null);
       loadSchools();
     } catch (caught) {
@@ -175,7 +176,7 @@ export default function SchoolsPage() {
         invited?: boolean;
         ownerEmail?: string;
       };
-      if (!res.ok) throw new Error(payload.error ?? 'Could not add the school.');
+      if (!res.ok) throw new Error(apiErrorMessage(payload, 'Could not add the school.'));
       setCreated((list) => [
         { schoolName, ownerEmail: payload.ownerEmail ?? ownerEmail, invited: Boolean(payload.invited) },
         ...list,

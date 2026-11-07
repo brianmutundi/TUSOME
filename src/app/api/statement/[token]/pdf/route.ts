@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { renderToBuffer } from '@react-pdf/renderer';
+import { apiError } from '@/lib/server/apiError';
 import { createClient } from '@supabase/supabase-js';
 import { getSupabaseBrowserConfig } from '@/lib/supabase/client';
 import { StatementDocument } from '@/lib/pdf/statementDocument';
@@ -9,9 +10,9 @@ export async function GET(_request: NextRequest, { params }: { params: { token: 
   const supabase = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
   try {
     const { data: meta, error: metaErr } = await supabase.rpc('get_statement_by_token', { p_token: params.token, p_ip: null });
-    if (metaErr) return NextResponse.json({ error: metaErr.message }, { status: 404 });
+    if (metaErr) return apiError('NOT_FOUND', 'Statement not found or link has expired.');
     const { data: rows, error: rowsErr } = await supabase.rpc('get_fee_statement_by_token', { p_token: params.token, p_ip: null });
-    if (rowsErr) return NextResponse.json({ error: rowsErr.message }, { status: 404 });
+    if (rowsErr) return apiError('NOT_FOUND', 'Statement not found or link has expired.');
 
     const r = (Array.isArray(rows) ? rows : []) as any[];
     let totalBilled = 0, totalPaid = 0;
@@ -44,6 +45,7 @@ export async function GET(_request: NextRequest, { params }: { params: { token: 
       },
     });
   } catch (e) {
-    return NextResponse.json({ error: e instanceof Error ? e.message : 'PDF generation failed' }, { status: 500 });
+    console.error('[api/statement] pdf failed', e);
+    return apiError('SERVER_ERROR', 'PDF generation failed.');
   }
 }

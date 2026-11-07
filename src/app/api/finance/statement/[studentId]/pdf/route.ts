@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { renderToBuffer } from '@react-pdf/renderer';
+import { apiError, apiErrorFromSupabase } from '@/lib/server/apiError';
 import { createClient } from '@supabase/supabase-js';
 import { getSupabaseBrowserConfig } from '@/lib/supabase/client';
 import { authenticate } from '@/lib/server/auth';
@@ -7,7 +8,7 @@ import { StatementDocument } from '@/lib/pdf/statementDocument';
 
 export async function GET(request: NextRequest, { params }: { params: { studentId: string } }) {
   const caller = await authenticate(request);
-  if (!caller) return NextResponse.json({ error: 'Sign in required' }, { status: 401 });
+  if (!caller) return apiError('NOT_AUTHENTICATED', 'Sign in required.');
 
   const { url, key } = getSupabaseBrowserConfig();
   const supabase = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false }, global: { headers: { Authorization: `Bearer ${caller.accessToken}` } } });
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest, { params }: { params: { studentI
       p_term: term,
       p_academic_year: academicYear,
     });
-    if (stmtErr) return NextResponse.json({ error: stmtErr.message }, { status: 400 });
+    if (stmtErr) return apiErrorFromSupabase(stmtErr);
 
     const { data: profileData } = await supabase.rpc('get_school_profile');
     const { data: studentData } = await supabase.from('students').select('full_name,admission_no,class_id').eq('id', params.studentId).single();
@@ -66,6 +67,7 @@ export async function GET(request: NextRequest, { params }: { params: { studentI
       },
     });
   } catch (e) {
-    return NextResponse.json({ error: e instanceof Error ? e.message : 'PDF generation failed' }, { status: 500 });
+    console.error('[api/finance/statement] pdf failed', e);
+    return apiError('SERVER_ERROR', 'PDF generation failed.');
   }
 }

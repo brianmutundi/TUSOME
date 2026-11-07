@@ -73,7 +73,7 @@ export default function PublicStatementPage({ params }: { params: { token: strin
           </thead>
           <tbody>
             {rows.map((r, i) => (
-              <tr key={i} className={`border-b border-gray-100 ${r.row_kind === 'reversal' ? 'line-through text-gray-400' : ''}`}>
+              <tr key={i} className={`border-b border-gray-100 ${r.row_kind === 'reversal' ? 'line-through text-gray-500' : ''}`}>
                 <td className="px-2 py-2">{r.occurred_at ? new Date(r.occurred_at).toLocaleDateString() : '—'}</td>
                 <td className="px-2 py-2">{r.description ?? '—'}</td>
                 <td className="px-2 py-2">{r.term ?? '—'}</td>

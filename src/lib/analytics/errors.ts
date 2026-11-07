@@ -16,12 +16,18 @@ export type AnalyticsErrorCode =
   | 'ABORTED'
   | 'CONTRACT_ERROR'
   | 'SERVER_ERROR'
+  | 'RATE_LIMITED'
   | 'UNKNOWN';
 
 export class AnalyticsAPIError extends Error {
   readonly code: AnalyticsErrorCode;
   readonly details?: unknown;
   readonly statusCode?: number;
+  /**
+   * The server's own text when `message` was replaced with a generic one (42501 becomes
+   * "Permission denied"). For matching against known messages only; never show it raw.
+   */
+  readonly serverMessage?: string;
 
   constructor(
     code: AnalyticsErrorCode,
@@ -59,7 +65,10 @@ export class AnalyticsAPIError extends Error {
     }
 
     if (error.code === '42501') {
-      return new AnalyticsAPIError('ACCESS_DENIED', 'Permission denied', error.details, 403);
+      const denied = new AnalyticsAPIError('ACCESS_DENIED', 'Permission denied', error.details, 403);
+      // readonly is compile-time only; set once here so the constructor signature stays as it was.
+      (denied as { serverMessage?: string }).serverMessage = message;
+      return denied;
     }
 
     return new AnalyticsAPIError('SERVER_ERROR', message, error.details, 500);
@@ -106,4 +115,21 @@ export function isAbortError(error: unknown): boolean {
     return error.name === 'AbortError' || error.message.includes('aborted');
   }
   return false;
+}
+
+/**
+ * Read the display message from a route handler's error envelope.
+ * Tolerates the legacy flat `{ error: 'text' }` shape so an older deploy
+ * cannot make the client show nothing.
+ */
+export function apiErrorMessage(body: unknown, fallback: string): string {
+  if (body && typeof body === 'object') {
+    const error = (body as { error?: unknown }).error;
+    if (typeof error === 'string' && error.trim()) return error;
+    if (error && typeof error === 'object') {
+      const message = (error as { message?: unknown }).message;
+      if (typeof message === 'string' && message.trim()) return message;
+    }
+  }
+  return fallback;
 }

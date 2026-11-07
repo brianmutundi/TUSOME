@@ -878,7 +878,7 @@ export default function ExamWorkspacePage() {
                                   {row.points !== null ? `(${row.points} pts)` : ''}
                                 </Badge>
                               ) : (
-                                <span className="text-xs text-gray-400">No mark</span>
+                                <span className="text-xs text-gray-500">No mark</span>
                               )}
                             </td>
                             <td className="px-4 py-2.5 text-xs">
@@ -892,7 +892,7 @@ export default function ExamWorkspacePage() {
                                   Report card
                                 </Link>
                               ) : (
-                                <span className="text-gray-400">
+                                <span className="text-gray-500">
                                   {exam.status === 'published' ? 'No marks' : 'Publish to view'}
                                 </span>
                               )}

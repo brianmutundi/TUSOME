@@ -248,4 +248,4 @@ export function Popover({
 
 /** Row styling shared by menu entries (links and buttons). */
 export const menuItemClass =
-  'flex w-full min-h-[2.5rem] items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-800 transition-colors hover:bg-gray-100 focus-visible:bg-gray-100 focus-visible:outline-none aria-[current=page]:bg-blue-50 aria-[current=page]:text-blue-800 disabled:opacity-50';
+  'flex w-full min-h-[2.5rem] items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-800 transition-colors hover:bg-gray-100 focus-visible:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-blue-600 aria-[current=page]:bg-blue-50 aria-[current=page]:text-blue-800 disabled:opacity-50';

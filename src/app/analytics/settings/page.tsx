@@ -25,6 +25,7 @@ import {
   updateSchoolProfile,
   upsertTermDate,
 } from '@/lib/analytics/api';
+import { PaybillCard } from './PaybillCard';
 import type { ReportTemplateConfig, SchoolProfile, SchoolValidity, TermDateRow } from '@/lib/analytics/types';
 
 type SettingsTab = 'profile' | 'term-dates' | 'printout-settings' | 'validity';
@@ -297,6 +298,7 @@ export default function SettingsPage() {
       )}
 
       {activeTab === 'profile' && profile && (
+        <div className="space-y-6">
         <Card>
           <CardHeader
             title="School Profile"
@@ -391,6 +393,8 @@ export default function SettingsPage() {
             </div>
           </form>
         </Card>
+        <PaybillCard />
+        </div>
       )}
 
       {activeTab === 'term-dates' && (

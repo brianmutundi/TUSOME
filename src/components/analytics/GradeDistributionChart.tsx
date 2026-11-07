@@ -2,6 +2,31 @@ import { Badge, Card, CardHeader, EmptyState } from '@/components/ui';
 import { gradeBadgeClass } from '@/lib/analytics/format';
 import type { GradeDistribution } from '@/lib/analytics/types';
 
+/**
+ * Grade colours come from the database, so the label colour cannot be fixed:
+ * white text on a pale grade tint fails 1.4.3. Pick the higher-contrast pole.
+ */
+function readableOn(hex: string | null | undefined): '#ffffff' | '#1c1b17' {
+  const normalise = (value: string | undefined) => {
+    if (!value) return null;
+    const short = /^#([0-9a-f]{3})$/i.exec(value);
+    if (short) return short[1].split('').map((c) => c + c).join('');
+    const full = /^#([0-9a-f]{6})$/i.exec(value);
+    return full ? full[1] : null;
+  };
+  const rgb = normalise(hex ?? undefined);
+  if (!rgb) return '#ffffff';
+
+  const [r, g, b] = [0, 2, 4].map((i) => {
+    const channel = parseInt(rgb.slice(i, i + 2), 16) / 255;
+    return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  });
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  const onWhite = 1.05 / (luminance + 0.05);
+  const onInk = (luminance + 0.05) / 0.05;
+  return onWhite >= onInk ? '#ffffff' : '#1c1b17';
+}
+
 export function GradeDistributionChart({ grades }: { grades: GradeDistribution[] }) {
   const total = grades.reduce((sum, grade) => sum + grade.count, 0);
 
@@ -33,13 +58,15 @@ export function GradeDistributionChart({ grades }: { grades: GradeDistribution[]
                   aria-label={`${grade.grade_name}: ${grade.count} students, ${grade.percentage}%`}
                 >
                   <div
-                    className="flex h-full items-center justify-end rounded-full px-2 text-[11px] font-semibold text-white"
+                    aria-hidden="true"
+                    className="flex h-full items-center justify-end rounded-full px-2 text-xs font-semibold"
                     style={{
                       width: `${width}%`,
                       minWidth: grade.count > 0 ? '1.75rem' : 0,
                       backgroundColor: /^#[0-9a-f]{3,8}$/i.test(grade.color ?? '')
                         ? grade.color
                         : '#6b7280',
+                      color: readableOn(grade.color),
                     }}
                   >
                     {grade.count}

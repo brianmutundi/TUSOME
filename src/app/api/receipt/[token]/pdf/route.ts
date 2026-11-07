@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { renderToBuffer } from '@react-pdf/renderer';
+import { apiError } from '@/lib/server/apiError';
 import { createClient } from '@/lib/supabase/client';
 import { ReceiptDocument } from '@/lib/pdf/receiptDocument';
 import type { ReceiptPdfData } from '@/lib/pdf/receiptDocument';
@@ -10,8 +11,10 @@ export async function GET(_request: NextRequest, { params }: { params: { token: 
     const supabase = createClient();
     const { data, error } = await supabase.rpc('get_receipt_by_token', { p_token: token, p_ip: null });
     if (error) {
-      const status = /rate limit/i.test(error.message) ? 429 : 404;
-      return NextResponse.json({ error: error.message }, { status });
+      if (/rate limit/i.test(error.message)) {
+        return apiError('RATE_LIMITED', 'Too many requests. Try again in a moment.');
+      }
+      return apiError('NOT_FOUND', 'Receipt not found.');
     }
     const d = data as any;
     const pdfData: ReceiptPdfData = {
@@ -31,6 +34,7 @@ export async function GET(_request: NextRequest, { params }: { params: { token: 
       },
     });
   } catch (e) {
-    return NextResponse.json({ error: e instanceof Error ? e.message : 'PDF generation failed' }, { status: 500 });
+    console.error('[api/receipt] pdf failed', e);
+    return apiError('SERVER_ERROR', 'PDF generation failed.');
   }
 }

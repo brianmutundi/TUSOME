@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 :root {
+  /* Semantic layer — what components should reference. */
+  --surface: #ffffff;
+  --surface-sunken: #f8f7f4;
+  --ink: #1c1b17;
+  --muted: #57554c; /* 6.9:1 on white */
+  --subtle: #6f6c62; /* 5.4:1 on white — the lightest text allowed */
+  --hairline: #e4e1da;
+  --focus: #2a8388;
+
   --color-primary: #1d6b70;
   --color-primary-dark: #18575c;
   --color-success: #059669;
@@ -23,10 +32,23 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Sticky shell header is 3.5rem tall; keep anchor targets below it. */
+  scroll-padding-top: 4.5rem;
 }
 
 body {
   @apply bg-gray-50 font-sans text-gray-900 antialiased;
+}
+
+/* Long headings should not leave a single orphaned word. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 /* Marks, fees and counts must align in columns. */
@@ -130,9 +152,22 @@ body:has(dialog[open]) {
   }
 }
 
-/* Focus ring for accessibility */
+/* Focus ring for accessibility — single source of truth, in brand teal. */
 *:focus-visible {
-  @apply outline-2 outline-offset-2 outline-blue-500;
+  @apply outline-2 outline-offset-2;
+  outline-color: var(--focus);
+}
+
+/* Respect the OS motion preference everywhere, not just per component. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Print: hide application chrome and let the report card own the page. */
@@ -144,6 +179,12 @@ body:has(dialog[open]) {
   html,
   body {
     background: #fff !important;
+  }
+
+  /* Keep badge and status tints when a report card is printed or saved as PDF. */
+  .print-report {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 
   .print\:hidden {

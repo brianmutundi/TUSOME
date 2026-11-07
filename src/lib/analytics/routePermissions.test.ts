@@ -19,6 +19,8 @@ const TEACHER_PERMISSIONS = [
   'search-student',
   'view-student-profile',
   'view-student-analysis',
+  'manage-homework',
+  'reply-parent-messages',
 ];
 
 describe('canAccessRoute — teacher scoping', () => {
@@ -67,5 +69,23 @@ describe('ROUTE_GUARDS integrity', () => {
   it('has unique prefixes', () => {
     const prefixes = ROUTE_GUARDS.map((g) => g.prefix);
     expect(new Set(prefixes).size).toBe(prefixes.length);
+  });
+});
+
+describe('canAccessRoute — homework', () => {
+  it('is open to the teacher default and closed without manage-homework', () => {
+    expect(canAccessRoute(TEACHER_PERMISSIONS, '/analytics/homework')).toBe(true);
+    expect(canAccessRoute(TEACHER_PERMISSIONS.filter((p) => p !== 'manage-homework'), '/analytics/homework')).toBe(false);
+  });
+});
+
+describe('canAccessRoute — parent messages', () => {
+  it('is open to the teacher default and closed without reply-parent-messages', () => {
+    expect(canAccessRoute(TEACHER_PERMISSIONS, '/analytics/parent-messages')).toBe(true);
+    expect(canAccessRoute(TEACHER_PERMISSIONS.filter((p) => p !== 'reply-parent-messages'), '/analytics/parent-messages')).toBe(false);
+  });
+  it('does not open the SMS page or the other way round', () => {
+    expect(canAccessRoute(['reply-parent-messages'], '/analytics/messages')).toBe(false);
+    expect(canAccessRoute(['compose-send-sms'], '/analytics/parent-messages')).toBe(false);
   });
 });

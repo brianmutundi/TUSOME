@@ -17,7 +17,7 @@ export function displayNameFor(email: string | null | undefined, fullName?: stri
 }
 
 const rowClass =
-  'flex min-h-[2.5rem] w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-800 hover:bg-gray-100 focus-visible:bg-gray-100 focus-visible:outline-none';
+  'flex min-h-[2.5rem] w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-800 hover:bg-gray-100 focus-visible:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-blue-600';
 
 /** Avatar button that opens a profile card with account links and sign out. */
 export function ProfileMenu({

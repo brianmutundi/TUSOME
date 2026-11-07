@@ -41,6 +41,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
   { prefix: '/analytics/subject-papers', anyOf: ['access-subjects'] },
   { prefix: '/analytics/classes', anyOf: ['access-classes'] },
   { prefix: '/analytics/timetable', anyOf: ['manage-timetable'] },
+  { prefix: '/analytics/homework', anyOf: ['manage-homework'] },
   { prefix: '/analytics/lesson-plans', anyOf: [] },
   { prefix: '/analytics/curriculum-coverage', anyOf: [] },
   { prefix: '/analytics/exam-comments', anyOf: [] },
@@ -74,6 +75,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
 
   // Communication
   { prefix: '/analytics/messages', anyOf: ['compose-send-sms'] },
+  { prefix: '/analytics/parent-messages', anyOf: ['reply-parent-messages'] },
   { prefix: '/analytics/events', anyOf: [] },
 
   // Operations

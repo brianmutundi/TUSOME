@@ -228,7 +228,7 @@ function Listbox({
     <div ref={wrapRef} tabIndex={-1} onKeyDown={onKeyDown} className="outline-none">
       {searchable && (
         <div className="flex items-center gap-2 border-b border-gray-100 px-3 py-2">
-          <Search aria-hidden="true" className="h-4 w-4 text-gray-400" />
+          <Search aria-hidden="true" className="h-4 w-4 text-gray-500" />
           <input
             ref={searchRef}
             value={query}
@@ -240,7 +240,7 @@ function Listbox({
             aria-controls={`${baseId}-list`}
             aria-activedescendant={visible[active] ? `${baseId}-${active}` : undefined}
             placeholder="Search…"
-            className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+            className="w-full bg-transparent text-sm placeholder:text-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           />
         </div>
       )}

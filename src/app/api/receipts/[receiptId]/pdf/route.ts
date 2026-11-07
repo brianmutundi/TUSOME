@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
+import { apiError } from '@/lib/server/apiError';
 import { isUuid } from '@/lib/analytics/guards';
 import { renderPagePdf } from '@/lib/server/pdf';
 
@@ -10,7 +11,7 @@ export async function GET(
 ) {
   const { receiptId } = params;
   if (!isUuid(receiptId)) {
-    return NextResponse.json({ error: 'Valid receipt ID required' }, { status: 400 });
+    return apiError('VALIDATION_ERROR', 'A valid receipt ID is required.', { status: 400 });
   }
   return renderPagePdf({
     request,

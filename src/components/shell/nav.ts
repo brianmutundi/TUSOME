@@ -61,6 +61,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: '/analytics/subject-papers', label: 'Subject Papers', icon: FileText },
       { href: '/analytics/classes', label: 'Classes & Streams', icon: School },
       { href: '/analytics/timetable', label: 'Timetable', icon: Calendar },
+      { href: '/analytics/homework', label: 'Homework', icon: ClipboardList, keywords: 'assignments set homework' },
       { href: '/analytics/lesson-plans', label: 'Lesson Plans', icon: ClipboardList },
       { href: '/analytics/curriculum-coverage', label: 'Curriculum Coverage', icon: CheckSquare },
       { href: '/analytics/exam-comments', label: 'Exam Comments', icon: MessageSquare },
@@ -118,6 +119,7 @@ export const NAV_GROUPS: NavGroup[] = [
     icon: Megaphone,
     items: [
       { href: '/analytics/messages', label: 'Messaging & SMS', icon: MessageCircle },
+      { href: '/analytics/parent-messages', label: 'Parent messages', icon: MessageSquare, keywords: 'inbox parents reply conversations' },
       { href: '/analytics/events', label: 'Events & Notices', icon: Bell, keywords: 'calendar announcements' },
     ],
   },

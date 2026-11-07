@@ -31,7 +31,7 @@ export function Button({
   return (
     <button
       type={type}
-      className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${buttonVariants[variant]} ${buttonSizes[size]} ${className}`}
+      className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${buttonVariants[variant]} ${buttonSizes[size]} ${className}`}
       {...props}
     />
   );
@@ -77,8 +77,13 @@ export function TextField({
   label,
   id,
   className = '',
+  hint,
+  error,
   ...props
-}: InputHTMLAttributes<HTMLInputElement> & { label: string; id: string }) {
+}: InputHTMLAttributes<HTMLInputElement> & { label: string; id: string; hint?: string; error?: string }) {
+  const hintId = hint ? `${id}-hint` : undefined;
+  const errorId = error ? `${id}-error` : undefined;
+  const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined;
   return (
     <div className={`w-full sm:min-w-[12rem] sm:flex-1 ${className}`}>
       <label htmlFor={id} className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -86,9 +91,26 @@ export function TextField({
       </label>
       <input
         id={id}
-        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+        aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy}
+        className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 ${
+          error
+            ? 'border-red-500 focus:border-red-600 focus:ring-red-200'
+            : 'border-gray-300 focus:ring-blue-200'
+        }`}
         {...props}
       />
+      {error ? (
+        <p id={errorId} className="mt-1 text-xs font-medium text-red-700">
+          {error}
+        </p>
+      ) : (
+        hint && (
+          <p id={hintId} className="mt-1 text-xs text-gray-500">
+            {hint}
+          </p>
+        )
+      )}
     </div>
   );
 }
@@ -158,7 +180,7 @@ export function StatCard({
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
       <div className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</div>
-      <div className="mt-1 text-2xl font-bold text-gray-900">{value}</div>
+      <div className="mt-1 text-2xl font-bold tabular-nums text-gray-900">{value}</div>
       {hint && <div className="mt-1 text-xs text-gray-500">{hint}</div>}
     </div>
   );

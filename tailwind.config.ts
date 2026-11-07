@@ -60,6 +60,15 @@ const config: Config = {
           900: '#12262a',
           950: '#0b181b',
         },
+        // Semantic tokens. Prefer these in new code; the palette remaps above keep
+        // legacy `blue-*` / `gray-*` classes rendering the same values.
+        surface: 'var(--surface)',
+        'surface-sunken': 'var(--surface-sunken)',
+        ink: 'var(--ink)',
+        muted: 'var(--muted)',
+        subtle: 'var(--subtle)',
+        hairline: 'var(--hairline)',
+        focus: 'var(--focus)',
         success: {
           50: '#ecfdf5',
           500: '#10b981',
@@ -87,6 +96,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Cascadia Code', 'Segoe UI Mono', 'monospace'],
       },
       fontSize: {
         'display': ['2rem', { lineHeight: '1.2', fontWeight: '700', letterSpacing: '-0.025em' }],
@@ -94,17 +104,8 @@ const config: Config = {
         'subheading': ['1.125rem', { lineHeight: '1.4', fontWeight: '600' }],
         'body': ['0.875rem', { lineHeight: '1.5', fontWeight: '400' }],
         'label': ['0.75rem', { lineHeight: '1.4', fontWeight: '500', letterSpacing: '0.025em' }],
-        'caption': ['0.6875rem', { lineHeight: '1.4', fontWeight: '400', letterSpacing: '0.025em' }],
+        'caption': ['0.75rem', { lineHeight: '1.4', fontWeight: '400', letterSpacing: '0.025em' }],
         'mono': ['0.8125rem', { lineHeight: '1.5', fontWeight: '400' }],
-      },
-      spacing: {
-        'xs': '4px',
-        'sm': '8px',
-        'md': '12px',
-        'lg': '16px',
-        'xl': '24px',
-        '2xl': '32px',
-        '3xl': '48px',
       },
       borderRadius: {
         'sm': '4px',

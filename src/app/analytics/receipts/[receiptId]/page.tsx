@@ -143,7 +143,7 @@ export default function ReceiptPage() {
               <p className="font-medium text-gray-900">{receipt.recorded_by_name || '—'}</p>
             </div>
 
-            <div className="mt-6 text-center text-xs text-gray-400">
+            <div className="mt-6 text-center text-xs text-gray-500">
               <p>This is a computer-generated receipt. No signature required.</p>
               <p>Reprint — Original receipt identity preserved.</p>
             </div>
