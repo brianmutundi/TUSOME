@@ -1,10 +1,12 @@
+import React from 'react';
+
 export function StatCard({
   label,
   value,
   hint,
 }: {
   label: string;
-  value: ReactNode;
+  value: React.ReactNode;
   hint?: string;
 }) {
   return (

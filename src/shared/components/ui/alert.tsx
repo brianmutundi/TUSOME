@@ -1,3 +1,5 @@
+import React from 'react';
+
 type AlertTone = 'error' | 'warning' | 'info' | 'success';
 
 const alertTones: Record<AlertTone, string> = {
@@ -15,8 +17,8 @@ export function Alert({
 }: {
   tone?: AlertTone;
   title: string;
-  children?: ReactNode;
-  action?: ReactNode;
+  children?: React.ReactNode;
+  action?: React.ReactNode;
 }) {
   return (
     <div

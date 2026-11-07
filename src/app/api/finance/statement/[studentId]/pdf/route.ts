@@ -3,12 +3,17 @@ import { renderToBuffer } from '@react-pdf/renderer';
 import { apiError, apiErrorFromSupabase } from '@/lib/server/apiError';
 import { createClient } from '@supabase/supabase-js';
 import { getSupabaseBrowserConfig } from '@/lib/supabase/client';
-import { authenticate } from '@/lib/server/auth';
+import { authenticate, getCallerPermissions, hasAnyPermission } from '@/lib/server/auth';
 import { StatementDocument } from '@/lib/pdf/statementDocument';
 
 export async function GET(request: NextRequest, { params }: { params: { studentId: string } }) {
   const caller = await authenticate(request);
   if (!caller) return apiError('NOT_AUTHENTICATED', 'Sign in required.');
+
+  const perms = await getCallerPermissions(caller);
+  if (!hasAnyPermission(perms, ['view-fees', 'manage-fees'])) {
+    return apiError('ACCESS_DENIED', 'You do not have permission to view fee statements.');
+  }
 
   const { url, key } = getSupabaseBrowserConfig();
   const supabase = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false }, global: { headers: { Authorization: `Bearer ${caller.accessToken}` } } });

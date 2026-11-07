@@ -7,6 +7,24 @@ export interface Caller {
   session: Session;
 }
 
+export async function getCallerPermissions(caller: Caller): Promise<string[]> {
+  const { url, key } = getSupabaseBrowserConfig();
+  const supabase = createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: { headers: { Authorization: `Bearer ${caller.accessToken}` } },
+  });
+  const { data, error } = await supabase.rpc('get_my_permissions');
+  if (error || !data) return [];
+  const row = data as Record<string, unknown>;
+  const perms = Array.isArray(row.permissions) ? row.permissions.map(String) : [];
+  return perms;
+}
+
+export function hasAnyPermission(perms: string[], codes: readonly string[]): boolean {
+  const set = new Set(perms);
+  return codes.some((c) => set.has(c));
+}
+
 function decodeExp(token: string): number {
   try {
     const payload = JSON.parse(Buffer.from(token.split('.')[1] ?? '', 'base64url').toString('utf8'));

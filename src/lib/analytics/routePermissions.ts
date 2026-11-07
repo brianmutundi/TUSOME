@@ -12,14 +12,18 @@
 export interface RouteGuard {
   /** Route prefix (with leading slash). */
   prefix: string;
-  /** Permission codes, any of which grants access. Empty = any authenticated user. */
+  /** Permission codes, any of which grants access. Empty = see authenticatedOnly/superAdminOnly. */
   anyOf: string[];
+  /** Explicitly open to any authenticated school user. Must be justified. */
+  authenticatedOnly?: boolean;
+  /** Restricted to platform super admins (handled in AuthGate). */
+  superAdminOnly?: boolean;
 }
 
 export const ROUTE_GUARDS: RouteGuard[] = [
   // Platform
-  { prefix: '/analytics/schools', anyOf: [] }, // super admin only, handled separately
-  { prefix: '/analytics', anyOf: [] }, // any authenticated school user (catch-all)
+  { prefix: '/analytics/schools', anyOf: [], authenticatedOnly: true, superAdminOnly: true }, // super admin only
+  { prefix: '/analytics', anyOf: [], authenticatedOnly: true }, // any authenticated school user (catch-all)
 
   // Accounts & roles
   { prefix: '/analytics/accounts', anyOf: ['view-user-roles', 'edit-user-roles', 'can-manage-user-permissions', 'edit-teacher-profile', 'add-teachers'] },
@@ -44,23 +48,23 @@ export const ROUTE_GUARDS: RouteGuard[] = [
   { prefix: '/analytics/classes', anyOf: ['access-classes'] },
   { prefix: '/analytics/timetable', anyOf: ['manage-timetable'] },
   { prefix: '/analytics/homework', anyOf: ['manage-homework'] },
-  { prefix: '/analytics/lesson-plans', anyOf: [] },
-  { prefix: '/analytics/curriculum-coverage', anyOf: [] },
-  { prefix: '/analytics/exam-comments', anyOf: [] },
+  { prefix: '/analytics/lesson-plans', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/curriculum-coverage', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/exam-comments', anyOf: [], authenticatedOnly: true },
 
   // Attendance & conduct
-  { prefix: '/analytics/daily-attendance', anyOf: [] },
-  { prefix: '/analytics/attendance', anyOf: [] },
-  { prefix: '/analytics/behaviour', anyOf: [] },
-  { prefix: '/analytics/counselling', anyOf: [] },
-  { prefix: '/analytics/medical', anyOf: [] },
+  { prefix: '/analytics/daily-attendance', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/attendance', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/behaviour', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/counselling', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/medical', anyOf: [], authenticatedOnly: true },
 
   // Staff
   { prefix: '/analytics/staff', anyOf: ['access-staff-bom-pa', 'access-teachers'] },
   { prefix: '/analytics/teachers', anyOf: ['access-teachers'] },
   { prefix: '/analytics/leave', anyOf: ['approve-leave'] },
-  { prefix: '/analytics/duty-rosters', anyOf: [] },
-  { prefix: '/analytics/teacher-workload', anyOf: [] },
+  { prefix: '/analytics/duty-rosters', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/teacher-workload', anyOf: [], authenticatedOnly: true },
 
   // Finance
   { prefix: '/analytics/finance', anyOf: ['view-fees', 'manage-fees'] },
@@ -79,18 +83,18 @@ export const ROUTE_GUARDS: RouteGuard[] = [
   // Communication
   { prefix: '/analytics/messages', anyOf: ['compose-send-sms'] },
   { prefix: '/analytics/parent-messages', anyOf: ['reply-parent-messages'] },
-  { prefix: '/analytics/events', anyOf: [] },
+  { prefix: '/analytics/events', anyOf: [], authenticatedOnly: true },
 
   // Operations
-  { prefix: '/analytics/library', anyOf: [] },
-  { prefix: '/analytics/transport', anyOf: [] },
-  { prefix: '/analytics/boarding', anyOf: [] },
-  { prefix: '/analytics/sports', anyOf: [] },
-  { prefix: '/analytics/trips', anyOf: [] },
-  { prefix: '/analytics/opportunities', anyOf: [] },
+  { prefix: '/analytics/library', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/transport', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/boarding', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/sports', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/trips', anyOf: [], authenticatedOnly: true },
+  { prefix: '/analytics/opportunities', anyOf: [], authenticatedOnly: true },
 
   // Reports
-  { prefix: '/analytics/analysis', anyOf: [] },
+  { prefix: '/analytics/analysis', anyOf: [], authenticatedOnly: true },
   { prefix: '/analytics/marks', anyOf: ['access-exams'] },
   { prefix: '/analytics/merit-list', anyOf: ['view-merit-list', 'access-printouts'] },
   { prefix: '/analytics/mark-sheet', anyOf: ['view-assessments', 'access-printouts'] },
@@ -120,6 +124,9 @@ export function canAccessRoute(
     }
   }
   if (!guard) return false; // unknown route -> deny (fail closed)
-  if (guard.anyOf.length === 0) return true; // any authenticated user
+  if (guard.superAdminOnly) return false; // super admin handled separately in AuthGate
+  if (guard.anyOf.length === 0) {
+    return guard.authenticatedOnly === true && permissions != null;
+  }
   return guard.anyOf.some((p) => permSet.has(p));
 }

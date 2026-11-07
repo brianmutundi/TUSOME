@@ -1,3 +1,6 @@
+import React from 'react';
+import { Skeleton } from './skeleton';
+
 export function LoadingPanel({ label = 'Loading analytics…' }: { label?: string }) {
   return (
     <div role="status" aria-live="polite" className="space-y-4">

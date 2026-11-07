@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function TextField({
   label,
   id,
@@ -5,7 +7,7 @@ export function TextField({
   hint,
   error,
   ...props
-}: InputHTMLAttributes<HTMLInputElement> & { label: string; id: string; hint?: string; error?: string }) {
+}: React.InputHTMLAttributes<HTMLInputElement> & { label: string; id: string; hint?: string; error?: string }) {
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined;

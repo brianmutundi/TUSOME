@@ -1,9 +1,11 @@
+import React from 'react';
+
 export function Badge({
   children,
   className = '',
   title,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
   title?: string;
 }) {

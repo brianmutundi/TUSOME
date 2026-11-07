@@ -34,6 +34,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
   const [subBlocked, setSubBlocked] = useState<string | null>(null);
   const [subReady, setSubReady] = useState(false);
   const [permError, setPermError] = useState(false);
+  const [subVerifyError, setSubVerifyError] = useState(false);
 
   useEffect(() => {
     let supabase;
@@ -141,7 +142,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
               setSubBlocked(null);
             }
           } catch {
-            setSubBlocked(null);
+            setSubVerifyError(true);
           }
         } else {
           setSubBlocked(null);
@@ -233,6 +234,25 @@ export function AuthGate({ children }: { children: ReactNode }) {
           {[0, 1, 2, 3].map((i) => (
             <Skeleton key={i} className="h-24" />
           ))}
+        </div>
+      </main>
+    );
+  }
+
+  if (subVerifyError) {
+    return (
+      <main className="mx-auto max-w-3xl px-6 py-16">
+        <Alert tone="error" title="Could not verify your school subscription">
+          We could not confirm your school's subscription status. Access is paused until verification succeeds.
+        </Alert>
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            Retry
+          </button>
         </div>
       </main>
     );

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function CardHeader({
   title,
   description,
@@ -5,7 +7,7 @@ export function CardHeader({
 }: {
   title: string;
   description?: string;
-  action?: ReactNode;
+  action?: React.ReactNode;
 }) {
   return (
     <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-100 px-5 py-4">

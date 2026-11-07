@@ -51,8 +51,9 @@ describe('route guard: fail closed', () => {
 });
 
 describe('route guard: role matrix (spot checks)', () => {
-  it('admin (all codes) reaches every gated route', () => {
+  it('admin (all codes) reaches every non-super-admin gated route', () => {
     for (const g of ROUTE_GUARDS) {
+      if (g.superAdminOnly) continue;
       expect(canAccessRoute(ALL_PERMISSIONS, g.prefix)).toBe(true);
     }
   });

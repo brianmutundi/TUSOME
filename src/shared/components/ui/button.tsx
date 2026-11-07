@@ -1,3 +1,6 @@
+import React from 'react';
+import type { ButtonHTMLAttributes } from 'react';
+
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type ButtonSize = 'sm' | 'md';
 
@@ -14,7 +17,7 @@ const buttonSizes: Record<ButtonSize, string> = {
   md: 'px-4 py-2 text-sm min-h-[2.75rem]',
 };
 
-export { ButtonVariant, ButtonSize };
+export type { ButtonVariant, ButtonSize };
 
 export function Button({
   variant = 'primary',

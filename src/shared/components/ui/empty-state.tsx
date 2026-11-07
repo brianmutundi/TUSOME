@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function EmptyState({
   title,
   description,
@@ -5,7 +7,7 @@ export function EmptyState({
 }: {
   title: string;
   description?: string;
-  action?: ReactNode;
+  action?: React.ReactNode;
 }) {
   return (
     <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
