@@ -9,6 +9,7 @@ import { describeAnalyticsError, getMyPermissions } from '@/lib/analytics/api';
 import { canAccessRoute } from '@/lib/analytics/routePermissions';
 import type { MyPermissions } from '@/lib/analytics/api';
 import { roleKey } from '@/lib/analytics/accounts';
+import { isActiveAccount } from '@/lib/auth/permissions';
 import type { Session } from '@supabase/supabase-js';
 
 type AuthState = 'loading' | 'authenticated' | 'anonymous' | 'misconfigured';
@@ -32,6 +33,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
   const [me, setMe] = useState<MyPermissions | null>(null);
   const [subBlocked, setSubBlocked] = useState<string | null>(null);
   const [subReady, setSubReady] = useState(false);
+  const [permError, setPermError] = useState(false);
 
   useEffect(() => {
     let supabase;
@@ -104,6 +106,11 @@ export function AuthGate({ children }: { children: ReactNode }) {
     const controller = new AbortController();
     getMyPermissions({ signal: controller.signal })
       .then(async (permissions) => {
+        setPermError(false);
+        if (!isActiveAccount(permissions)) {
+          setPermError(true);
+          return;
+        }
         setMe(permissions);
         if (roleKey(permissions.role) === 'parent') router.replace('/parent');
         if (roleKey(permissions.role) === 'super admin' && pathname !== '/analytics/schools') {
@@ -141,7 +148,9 @@ export function AuthGate({ children }: { children: ReactNode }) {
         }
         setSubReady(true);
       })
-      .catch(() => {});
+      .catch(() => {
+        setPermError(true);
+      });
     return () => controller.abort();
   }, [state, router, pathname]);
 
@@ -186,6 +195,25 @@ export function AuthGate({ children }: { children: ReactNode }) {
             className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
             Sign out
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  if (permError) {
+    return (
+      <main className="mx-auto max-w-3xl px-6 py-16">
+        <Alert tone="error" title="Could not verify your permissions">
+          We could not load your account permissions. Access is denied until this is resolved.
+        </Alert>
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            Retry
           </button>
         </div>
       </main>

@@ -19,6 +19,7 @@ export interface RouteGuard {
 export const ROUTE_GUARDS: RouteGuard[] = [
   // Platform
   { prefix: '/analytics/schools', anyOf: [] }, // super admin only, handled separately
+  { prefix: '/analytics', anyOf: [] }, // any authenticated school user (catch-all)
 
   // Accounts & roles
   { prefix: '/analytics/accounts', anyOf: ['view-user-roles', 'edit-user-roles', 'can-manage-user-permissions', 'edit-teacher-profile', 'add-teachers'] },
@@ -30,6 +31,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
 
   // Students
   { prefix: '/analytics/students', anyOf: ['access-students'] },
+  { prefix: '/analytics/student', anyOf: ['access-students'] },
   { prefix: '/analytics/student-groups', anyOf: ['access-students', 'edit-student-groups'] },
   { prefix: '/analytics/parents', anyOf: ['access-students'] },
   { prefix: '/analytics/pathways', anyOf: ['access-students'] },
@@ -70,6 +72,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
   { prefix: '/analytics/budgets', anyOf: ['approve-budget'] },
   { prefix: '/analytics/fiscal-periods', anyOf: ['close-fiscal-period', 'reopen-fiscal-period'] },
   { prefix: '/analytics/payroll', anyOf: ['manage-payroll', 'approve-payroll', 'finalize-payroll'] },
+  { prefix: '/analytics/payslips', anyOf: ['manage-payroll', 'view-fees'] },
   { prefix: '/analytics/salary-components', anyOf: ['manage-payroll'] },
   { prefix: '/analytics/employee-salaries', anyOf: ['manage-payroll'] },
 
@@ -88,9 +91,11 @@ export const ROUTE_GUARDS: RouteGuard[] = [
 
   // Reports
   { prefix: '/analytics/analysis', anyOf: [] },
+  { prefix: '/analytics/marks', anyOf: ['access-exams'] },
   { prefix: '/analytics/merit-list', anyOf: ['view-merit-list', 'access-printouts'] },
   { prefix: '/analytics/mark-sheet', anyOf: ['view-assessments', 'access-printouts'] },
   { prefix: '/analytics/report-forms', anyOf: ['view-report-forms', 'access-printouts'] },
+  { prefix: '/analytics/report', anyOf: ['view-report-forms', 'access-printouts'] },
   { prefix: '/analytics/transcript', anyOf: ['view-transcripts', 'access-printouts'] },
 ];
 
@@ -114,7 +119,7 @@ export function canAccessRoute(
       }
     }
   }
-  if (!guard) return true; // unknown route -> allow (RPCs enforce)
+  if (!guard) return false; // unknown route -> deny (fail closed)
   if (guard.anyOf.length === 0) return true; // any authenticated user
   return guard.anyOf.some((p) => permSet.has(p));
 }

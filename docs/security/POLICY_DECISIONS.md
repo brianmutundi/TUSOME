@@ -47,6 +47,16 @@ Options:
 
 Recommendation: A.
 
+#### PD-3: Empty `anyOf` arrays in the route registry
+Current: `canAccessRoute` treats `anyOf: []` as "any authenticated user may view". ~30 routes use this (lesson-plans, daily-attendance, events, library, etc.).
+
+Options:
+- A: Replace every empty array with an explicit permission code (or a sentinel `access-general` code added via migration). Most correct but requires a per-route permission decision; risk of guessing.
+- B (recommended, interim): Keep empty-as-authenticated but treat the registry as an explicit allowlist of authenticated routes; document each empty route as needing a permission code. No behavior change now.
+- C: Flip empty to deny immediately — would break ~30 pages.
+
+Recommendation: B now; migrate empties to explicit codes in Phase 6 with your input per route. Marked NEEDS DECISION per route in the matrix (Phase 11).
+
 ### Unaudited
 - Whether profiles.role/tenant_id are protected by RLS from self-update (Phase 8).
 - RPC-level enforcement for get_schools, platform_create_school, delete_school (Phase 7/8).
