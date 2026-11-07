@@ -7,9 +7,9 @@
 - Tests run: none (Phase 1 is read-only inventory).
 - Open items: Phase 2 permission engine audit pending.
 
-## Batch: Phase 4 — Navigation
+## Batch: Phase 5 — Route protection
 - Date: 2026-11-07
-- Files changed: none (audit only).
-- Findings: Rail, flyout, mobile bar, sheet and command palette all derive from navGroupsForRole/searchNavForRole (single source). Breadcrumbs are plain /analytics links (no permission gating needed — highlight only). Dashboard 'Related views' ReportLinks are rendered unconditionally; gated at click by AuthGate, but link visibility is not permission-aware -> Phase 6 item.
-- Tests: none new.
-- Open items: Phase 5 route protection continues.
+- Files changed: none (audit + earlier Phase 3 changes cover this).
+- Findings: AuthGate gates all /analytics/* routes, shows skeleton while permissions load, redirects on canAccessRoute failure, and now fails closed on perm-load failure (Phase 3). ParentGate fails closed on error. Unknown routes denied (Phase 3). Dynamic-resource validation is Phase 9.
+- Tests: typecheck 0, 354 tests pass.
+- Open items: Phase 6 components/actions.
