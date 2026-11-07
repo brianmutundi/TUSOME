@@ -7,9 +7,9 @@
 - Tests run: none (Phase 1 is read-only inventory).
 - Open items: Phase 2 permission engine audit pending.
 
-## Batch: Phase 5 — Route protection
+## Batch: Phase 6 — Components and actions (infrastructure)
 - Date: 2026-11-07
-- Files changed: none (audit + earlier Phase 3 changes cover this).
-- Findings: AuthGate gates all /analytics/* routes, shows skeleton while permissions load, redirects on canAccessRoute failure, and now fails closed on perm-load failure (Phase 3). ParentGate fails closed on error. Unknown routes denied (Phase 3). Dynamic-resource validation is Phase 9.
+- Files changed: src/lib/auth/usePermissions.ts (new), src/components/Can.tsx (new), src/app/analytics/page.tsx (ReportLinks gated).
+- Findings: Added reusable usePermissions hook (fail-closed) and <Can> component. Applied to dashboard ReportLinks. Full per-button gating across all pages is a larger sweep; tracked as follow-up checklist in PROGRESS.
 - Tests: typecheck 0, 354 tests pass.
-- Open items: Phase 6 components/actions.
+- Open items: Phase 7 API/server actions.

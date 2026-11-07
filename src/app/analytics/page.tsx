@@ -37,6 +37,7 @@ import type {
   SubjectPerformance,
 } from '@/lib/analytics/types';
 
+import { Can } from '@/components/Can';
 import { ClassGradeSummary } from '@/components/analytics/ClassGradeSummary';
 import { AnalysisReportView } from '@/components/analytics/AnalysisReportView';
 
@@ -390,18 +391,15 @@ export default function AnalyticsPage() {
                 Open a dedicated report for the current exam, class and stream selection.
               </p>
               <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                <ReportLink
-                  href={withSelection('/analytics/merit-list', selection)}
-                  title="Merit List"
-                />
-                <ReportLink
-                  href={withSelection('/analytics/mark-sheet', selection)}
-                  title="Mark Sheet"
-                />
-                <ReportLink
-                  href={withSelection('/analytics/analysis', selection)}
-                  title="Analysis Report"
-                />
+                <Can anyOf={['view-merit-list', 'access-printouts']}>
+                  <ReportLink href={withSelection('/analytics/merit-list', selection)} title="Merit List" />
+                </Can>
+                <Can anyOf={['view-assessments', 'access-printouts']}>
+                  <ReportLink href={withSelection('/analytics/mark-sheet', selection)} title="Mark Sheet" />
+                </Can>
+                <Can anyOf={['view-report-forms', 'access-printouts']}>
+                  <ReportLink href={withSelection('/analytics/analysis', selection)} title="Analysis Report" />
+                </Can>
               </div>
             </div>
 
